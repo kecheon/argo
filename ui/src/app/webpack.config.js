@@ -5,6 +5,7 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const webpack = require("webpack");
 const path = require("path");
+const END_POINT = "http://180.210.14.151:30797"
 
 const isProd = process.env.NODE_ENV === "production";
 
@@ -77,19 +78,19 @@ const config = {
     },
     proxy: {
       "/api": {
-        "target": isProd ? "" : "http://localhost:2746",
+        "target": isProd ? "" : END_POINT,
         "secure": false
       },
       "/artifacts": {
-        "target": isProd ? "" : "http://localhost:2746",
+        "target": isProd ? "" : END_POINT,
         "secure": false
       },
       "/artifacts-by-uid": {
-        "target": isProd ? "" : "http://localhost:2746",
+        "target": isProd ? "" : END_POINT,
         "secure": false
       },
       '/oauth2': {
-        'target': isProd ? '' : 'http://localhost:2746',
+        'target': isProd ? '' : END_POINT,
         'secure': false,
       },
     }
