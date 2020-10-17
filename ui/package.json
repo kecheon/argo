@@ -7,7 +7,7 @@
     ],
     "scripts": {
         "build": "webpack -p --config ./src/app/webpack.config.js",
-        "start": "webpack-dev-server --config ./src/app/webpack.config.js --hot --inline",
+        "start": "webpack-dev-server --config ./src/app/webpack.config.js --mode development",
         "lint": "tslint --fix -p ./src/app"
     },
     "dependencies": {
