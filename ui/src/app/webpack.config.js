@@ -6,6 +6,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const webpack = require("webpack");
 const path = require("path");
 const END_POINT = "http://180.210.14.151:30797"
+const JSON_SERVER = "http://localhost:30797"
 
 const isProd = process.env.NODE_ENV === "production";
 
@@ -93,6 +94,10 @@ const config = {
         'target': isProd ? '' : END_POINT,
         'secure': false,
       },
+      "/auth": {
+        'target': isProd ? '' : JSON_SERVER,
+        'secure': false,
+      }
     }
   }
 };

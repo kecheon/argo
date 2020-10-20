@@ -3,7 +3,8 @@ module.exports = {
   coverageDirectory: "coverage",
   moduleNameMapper: {
     "\\.(gif|jpg|jpeg|svg|png)$": "<rootDir>/__mocks__/fileMock.js",
-    '\\.(css|less|scss)$': '<rootDir>/styleMock.js'
+    '\\.(css|less|scss)$': '<rootDir>/styleMock.js',
+    "^@/(.*)$": "<rootDir>/src/$1"
   },
   transform: {
     "^.+\\.tsx?$": "ts-jest"

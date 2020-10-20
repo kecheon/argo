@@ -19,7 +19,7 @@ import reports from './reports';
 import ErrorBoundary from './shared/components/error-boundary';
 import {services} from './shared/services';
 import {Utils} from './shared/utils';
-import userinfo from './userinfo';
+import userinfo from './user-info';
 import workflowTemplates from './workflow-templates';
 import workflows from './workflows';
 
