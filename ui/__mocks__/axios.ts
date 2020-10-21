@@ -6,5 +6,7 @@ const userInfo = {
 };
 
 export default {
-    get: jest.fn(() => Promise.resolve({data: userInfo}))
+    get: jest.fn(() => Promise.resolve({data: userInfo})),
+    post: jest.fn(() => Promise.resolve({data: {token: 'token_string'}})),
+    delete: jest.fn(() => Promise.resolve({data: {message: 'logout ok'}}))
 };

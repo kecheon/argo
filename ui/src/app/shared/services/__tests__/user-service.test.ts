@@ -1,8 +1,17 @@
 import {UserService} from '../user-service';
 
-it('can get UserInfo with exact type matching', async () => {
+describe('User service', () => {
     const userService = new UserService();
-    const result = await userService.get();
-    console.log(result);
-    expect(result.loggedIn).toBeDefined();
+    it('can login with username and password', async () => {
+        const loginResult = await userService.login('username', 'password');
+        expect(loginResult.token).toBe('token_string');
+    });
+    it('can logout', async () => {
+        const logoutResult = await userService.logout();
+        console.log(logoutResult);
+    });
+    it('can get UserInfo with exact type matching', async () => {
+        const result = await userService.get();
+        expect(result.loggedIn).toBeDefined();
+    });
 });

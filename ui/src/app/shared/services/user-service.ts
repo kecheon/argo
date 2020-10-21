@@ -1,20 +1,19 @@
-import axios from "axios";
+import axios from 'axios';
 import {UserInfo} from '../models';
 
 export class UserService {
-    // public login(username: string, password: string): Promise<{token: string}> {
-    //     return requests
-    //         .post('/session')
-    //         .send({username, password})
-    //         .then(res => ({token: res.body.token}));
-    // }
+    public async login(username: string, password: string): Promise<{token: string}> {
+        const response = await axios.post('/api/v1/auth', {username, password});
+        return response.data;
+    }
 
-    // public logout(): Promise<boolean> {
-    //     return requests.delete('/session').then(() => true);
-    // }
+    public async logout(): Promise<boolean> {
+        const response = await axios.delete('/api/v1/auth');
+        return response.data;
+    }
 
     public async get(): Promise<UserInfo> {
-        const response = await axios.get('/api/v1/auth/userinfo');
+        const response = await axios.get('/api/v1/auth/userinfo', {params: {token: 'token_string'}});
         return response.data as UserInfo;
     }
 }
