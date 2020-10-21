@@ -52,7 +52,7 @@ export class Login extends React.Component<RouteComponentProps<{}>, State> {
         return (
             <div className='login'>
                 <div className='login__content'>
-                    <div className='login__text'>Let's get stuff deployed!</div>
+                    <div className='login__text'>Let's get stuff orchestrated!</div>
                     <div className='argo__logo' />
                 </div>
                 <div className='login__box'>
