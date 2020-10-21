@@ -103,7 +103,7 @@ export class WorkflowsList extends BasePage<RouteComponentProps<any>, State> {
 
     private subscription: Subscription;
 
-    constructor(props: RouteComponentProps<State>, context: any) {
+    constructor(props: RouteComponentProps<any>, context: any) {
         super(props, context);
         const savedOptions = WorkflowsList.getOptions();
         this.state = {
