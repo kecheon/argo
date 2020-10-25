@@ -17,7 +17,7 @@ import help from './help';
 // tslint:disable-next-line: ordered-imports
 import userinfo from './devstack/user-info';
 // tslint:disable-next-line: ordered-imports
-import login from './devstack/login2';
+import login from './devstack/login';
 import register from './devstack/register';
 import reports from './reports';
 import ErrorBoundary from './shared/components/error-boundary';
