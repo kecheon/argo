@@ -14,12 +14,12 @@ import archivedWorkflows from './archived-workflows';
 import clusterWorkflowTemplates from './cluster-workflow-templates';
 import cronWorkflows from './cron-workflows';
 import help from './help';
-import login from './login2';
+import login from './devstack/login2';
 import reports from './reports';
 import ErrorBoundary from './shared/components/error-boundary';
 import {services} from './shared/services';
 import {Utils} from './shared/utils';
-import userinfo from './user-info';
+import userinfo from './devstack/user-info';
 import workflowTemplates from './workflow-templates';
 import workflows from './workflows';
 

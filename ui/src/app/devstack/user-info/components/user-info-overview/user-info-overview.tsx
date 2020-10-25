@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import {DataLoader, Page} from 'argo-ui';
-import {services} from '../../../shared/services';
+import {services} from '../../../../shared/services';
 
 require('./user-info-overview.scss');
 
