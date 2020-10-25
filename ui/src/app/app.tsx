@@ -74,7 +74,8 @@ const navItems = [
     },
     {
         title: 'User',
-        path: userInfoUrl,
+        // path: userInfoUrl,
+        path: loginUrl,
         iconClassName: 'fa fa-user-alt'
     },
     {

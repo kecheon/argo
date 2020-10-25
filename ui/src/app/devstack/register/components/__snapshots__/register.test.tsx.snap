@@ -52,8 +52,63 @@ exports[`Registeration component should render 1`] = `
     <div
       class="argo-container"
     >
-      <div>
-        Sign up form here
+      <div
+        class="wrapper"
+      >
+        <div
+          class="form-wrapper"
+        >
+          <form
+            novalidate=""
+          >
+            <div
+              class="fullName"
+            >
+              <label
+                for="fullName"
+              >
+                Full Name
+              </label>
+              <input
+                name="fullName"
+                type="text"
+              />
+            </div>
+            <div
+              class="email"
+            >
+              <label
+                for="email"
+              >
+                Email
+              </label>
+              <input
+                name="email"
+                type="email"
+              />
+            </div>
+            <div
+              class="password"
+            >
+              <label
+                for="password"
+              >
+                Password
+              </label>
+              <input
+                name="password"
+                type="password"
+              />
+            </div>
+            <div
+              class="submit"
+            >
+              <button>
+                Register Me
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </div>
