@@ -14,4 +14,10 @@ describe('User service', () => {
         const result = await userService.get();
         expect(result.loggedIn).toBeDefined();
     });
+    it('can register', async () => {
+        const userProfile = {username: 'devstack', password: 'somesecret'};
+        await userService.register(userProfile);
+        const result = await userService.get();
+        expect(result.username).toBeDefined();
+    })
 });

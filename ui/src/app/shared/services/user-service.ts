@@ -16,4 +16,8 @@ export class UserService {
         const response = await axios.get('/api/v1/auth/userinfo', {params: {token: 'token_string'}});
         return response.data as UserInfo;
     }
+    public async register(userProfile: object): Promise<UserInfo> {
+        const response = await axios.post('/api/v1/auth/register', userProfile);
+        return response.data as UserInfo
+    }
 }
