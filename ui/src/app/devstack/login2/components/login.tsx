@@ -3,6 +3,7 @@ import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import {Form, Text} from 'react-form';
 import {RouteComponentProps} from 'react-router';
+import {Link} from 'react-router-dom';
 
 import {AppContext} from '../../../shared/context';
 import {AuthSettings} from '../../../shared/models';
@@ -81,9 +82,11 @@ export class Login extends React.Component<RouteComponentProps<{}>, State> {
                         )}
                     </Form>
                     <div className='login__form-row'>
-                        <button className='argo-button argo-button--full-width argo-button--xlg' type='submit'>
-                            Sign Up
-                        </button>
+                        <Link to='/register'>
+                            <button className='argo-button argo-button--full-width argo-button--xlg' type='button'>
+                                Sign Up
+                            </button>
+                        </Link>
                     </div>
                     <div className='login__footer'>
                         <a href='https://argoproj.io' target='_blank'>

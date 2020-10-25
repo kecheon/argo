@@ -1,7 +1,61 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Registeration component should render 1`] = `
-<div>
-  Sign up
+<div
+  class="page page--has-toolbar"
+>
+  <div
+    class="page__top-bar"
+  >
+    <div>
+      <div
+        class="top-bar"
+      >
+        <div
+          class="row"
+        >
+          <div
+            class="columns top-bar__left-side"
+          >
+            <div
+              class="top-bar__breadcrumbs"
+            >
+              <span
+                class="top-bar__breadcrumbs-last-item"
+              >
+                Register
+              </span>
+            </div>
+          </div>
+          <div
+            class="top-bar__title text-truncate top-bar__right-side"
+          >
+            Register
+          </div>
+        </div>
+      </div>
+      <div
+        class="top-bar row"
+      >
+        <div
+          class="columns small-9 top-bar__left-side"
+        />
+        <div
+          class="columns small-3 top-bar__right-side"
+        />
+      </div>
+    </div>
+  </div>
+  <div
+    class="page__content-wrapper"
+  >
+    <div
+      class="argo-container"
+    >
+      <div>
+        Sign up form here
+      </div>
+    </div>
+  </div>
 </div>
 `;

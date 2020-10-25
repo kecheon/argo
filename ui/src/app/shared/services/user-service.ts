@@ -18,6 +18,6 @@ export class UserService {
     }
     public async register(userProfile: object): Promise<UserInfo> {
         const response = await axios.post('/api/v1/auth/register', userProfile);
-        return response.data as UserInfo
+        return response.data as UserInfo;
     }
 }

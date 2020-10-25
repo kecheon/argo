@@ -14,12 +14,15 @@ import archivedWorkflows from './archived-workflows';
 import clusterWorkflowTemplates from './cluster-workflow-templates';
 import cronWorkflows from './cron-workflows';
 import help from './help';
+// tslint:disable-next-line: ordered-imports
+import userinfo from './devstack/user-info';
+// tslint:disable-next-line: ordered-imports
 import login from './devstack/login2';
+import register from './devstack/register';
 import reports from './reports';
 import ErrorBoundary from './shared/components/error-boundary';
 import {services} from './shared/services';
 import {Utils} from './shared/utils';
-import userinfo from './devstack/user-info';
 import workflowTemplates from './workflow-templates';
 import workflows from './workflows';
 
@@ -32,6 +35,7 @@ const helpUrl = uiUrl('help');
 const apiDocsUrl = uiUrl('apidocs');
 const userInfoUrl = uiUrl('userinfo');
 const loginUrl = uiUrl('login');
+const registerUrl = uiUrl('register');
 const timelineUrl = uiUrl('timeline');
 const reportsUrl = uiUrl('reports');
 
@@ -177,6 +181,7 @@ export class App extends React.Component<{}, {version?: Version; popupProps: Pop
                                 <Route exact={true} strict={true} path={apiDocsUrl} component={apidocs.component} />
                                 <Route exact={true} strict={true} path={userInfoUrl} component={userinfo.component} />
                                 <Route exact={true} strict={true} path={loginUrl} component={login.component} />
+                                <Route exact={true} strict={true} path={registerUrl} component={register.component} />
                             </Switch>
                         </ErrorBoundary>
                     </Layout>

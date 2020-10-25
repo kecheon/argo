@@ -1,5 +1,10 @@
-// import {Page} from 'argo-ui';
+import {Page} from 'argo-ui';
 import * as React from 'react';
-// import {uiUrl} from '../../shared/base';
 
-export const Register = () => (<div>Sign up</div>)
+export const Register = () => (
+    <Page title='Register' toolbar={{breadcrumbs: [{title: 'Register'}]}}>
+        <div className='argo-container'>
+            <div>Sign up form here</div>
+        </div>
+    </Page>
+);
