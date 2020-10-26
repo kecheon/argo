@@ -1,6 +1,6 @@
 import {Page} from 'argo-ui';
 import * as React from 'react';
-import './styles.css';
+import {Button, Form} from 'react-bootstrap';
 
 export class Register extends React.Component {
     public handleChange = (event: any) => {};
@@ -9,27 +9,24 @@ export class Register extends React.Component {
         return (
             <Page title='Register' toolbar={{breadcrumbs: [{title: 'Register'}]}}>
                 <div className='argo-container'>
-                    <div className='wrapper'>
-                        <div className='form-wrapper'>
-                            <form onSubmit={this.handleSubmit} noValidate={true}>
-                                <div className='fullName'>
-                                    <label htmlFor='fullName'>Full Name</label>
-                                    <input type='text' name='fullName' onChange={this.handleChange} />
-                                </div>
-                                <div className='email'>
-                                    <label htmlFor='email'>Email</label>
-                                    <input type='email' name='email' onChange={this.handleChange} />
-                                </div>
-                                <div className='password'>
-                                    <label htmlFor='password'>Password</label>
-                                    <input type='password' name='password' onChange={this.handleChange} />
-                                </div>
-                                <div className='submit'>
-                                    <button>Register Me</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
+                    <Form onSubmit={this.handleSubmit}>
+                        <Form.Group controlId='formBasicUsername'>
+                            <Form.Label>User name</Form.Label>
+                            <Form.Control type='text' placeholder='Enter username' />
+                        </Form.Group>
+                        <Form.Group controlId='formBasicEmail'>
+                            <Form.Label>Email address</Form.Label>
+                            <Form.Control type='email' placeholder='Enter email' />
+                            <Form.Text className='text-muted'>We'll never share your email with anyone else.</Form.Text>
+                        </Form.Group>
+                        <Form.Group controlId='formBasicPassword'>
+                            <Form.Label>Password</Form.Label>
+                            <Form.Control type='password' placeholder='Password' />
+                        </Form.Group>
+                        <Button variant='primary' type='submit'>
+                            Submit
+                        </Button>
+                    </Form>
                 </div>
             </Page>
         );
