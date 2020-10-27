@@ -6,8 +6,7 @@ import {RouteComponentProps} from 'react-router';
 import {Link} from 'react-router-dom';
 
 import {AppContext} from '../../../shared/context';
-import {AuthSettings} from '../../../shared/models';
-import {services} from '../../../shared/services';
+import {services} from '../../services';
 
 require('./login.scss');
 
@@ -17,11 +16,9 @@ export interface LoginForm {
 }
 
 interface State {
-    authSettings: AuthSettings;
     loginError: string;
     loginInProgress: boolean;
     returnUrl: string;
-    ssoLoginError: string;
 }
 
 export class Login extends React.Component<RouteComponentProps<{}>, State> {
@@ -32,19 +29,12 @@ export class Login extends React.Component<RouteComponentProps<{}>, State> {
     public static getDerivedStateFromProps(props: RouteComponentProps<{}>): Partial<State> {
         const search = new URLSearchParams(props.history.location.search);
         const returnUrl = search.get('return_url') || '';
-        const ssoLoginError = search.get('sso_error') || '';
-        return {ssoLoginError, returnUrl};
+        return {returnUrl};
     }
 
     constructor(props: RouteComponentProps<{}>) {
         super(props);
-        this.state = {authSettings: null, loginError: null, returnUrl: null, ssoLoginError: null, loginInProgress: false};
-    }
-
-    public async componentDidMount() {
-        this.setState({
-            authSettings: await services.authService.settings()
-        });
+        this.state = {loginError: null, returnUrl: null, loginInProgress: false};
     }
 
     public render() {
@@ -56,7 +46,7 @@ export class Login extends React.Component<RouteComponentProps<{}>, State> {
                 </div>
                 <div className='login__box'>
                     <div className='login__logo width-control'>
-                        <img className='logo-image' src='assets/images/argo_o.svg' alt='argo' />
+                        <img className='logo-image' src='assets/images/devstack/logo.png' alt='devStack' />
                     </div>
                     <Form
                         onSubmit={(params: LoginForm) => this.login(params.username, params.password, this.state.returnUrl)}

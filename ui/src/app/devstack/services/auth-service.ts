@@ -1,5 +1,5 @@
-import {AuthSettings} from '../models';
-import requests from './requests';
+import {AuthSettings} from '../../shared/models';
+import requests from '../../shared/services/requests';
 
 export class AuthService {
     public settings(): Promise<AuthSettings> {

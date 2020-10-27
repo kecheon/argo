@@ -1,7 +1,6 @@
-import {Page} from 'argo-ui';
+import {FormField, FormSelect, Page} from 'argo-ui';
 import * as React from 'react';
-import { Form, Text } from 'react-form';
-import { FormField, FormSelect } from 'argo-ui';
+import {Form, Text} from 'react-form';
 
 interface State {
     signUpProgress: boolean;
@@ -12,11 +11,11 @@ export class Register extends React.Component<State> {
     //     super(props);
     //     this.state = {signUpProgress: false};
     // };
-    state: State = {
-        signUpProgress: false
-    }
-    public handleChange = (event: any) => {};
-    public handleSubmit = (event: any) => {};
+    // public state: State = {
+    //     signUpProgress: false
+    // };
+    // public handleChange = (event: any) => {};
+    // public handleSubmit = (event: any) => {};
     public render() {
         return (
             <Page title='Register' toolbar={{breadcrumbs: [{title: 'Register'}]}}>
@@ -37,7 +36,7 @@ export class Register extends React.Component<State> {
                                     <FormField label='Select' formApi={api}  field='selectField' component={FormSelect} componentProps={{options: ['option1', 'option2']}} />
                                 </div>
                                 <div className='argo-form-row'>
-                                    <button disabled={this.state.signUpProgress} className='argo-button argo-button--full-width argo-button--xlg' type='submit'>
+                                    <button className='argo-button argo-button--full-width argo-button--xlg' type='submit'>
                                         Register me
                                     </button>
                                 </div>

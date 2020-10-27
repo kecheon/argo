@@ -4,13 +4,10 @@ $logoPath: 'assets/images/argologo.svg';
 $logoNegativePath: 'assets/images/argo.png';
 
 .login {
-    min-height:100vh;
+    min-height: 100vh;
     background-position: 15rem;
     background-size: cover;
-    background: linear-gradient(to top left, 
-        rgba(122, 139, 207, 0.8) 0%, 
-        rgba(46, 50, 90, 0.8) 100%), 
-        url("assets/images/stars.gif");
+    background: linear-gradient(to top left, rgba(122, 139, 207, 0.8) 0%, rgba(46, 50, 90, 0.8) 100%), url('assets/images/stars.gif');
     display: flex;
 
     &__content {
@@ -30,15 +27,14 @@ $logoNegativePath: 'assets/images/argo.png';
         height: 50vh;
     }
 
-    &__text{
+    &__text {
         position: relative;
         margin: auto;
         top: -10vh;
-        color: #FFF;
+        color: #fff;
         font-size: 2.5rem;
-        font-weight: 100; 
+        font-weight: 100;
     }
-
 
     &__box-wrapper {
         display: table;
@@ -64,7 +60,7 @@ $logoNegativePath: 'assets/images/argo.png';
         float: right;
         min-height: 100vh;
 
-        .width-control{
+        .width-control {
             max-width: 200px;
             margin: auto;
         }
@@ -73,7 +69,9 @@ $logoNegativePath: 'assets/images/argo.png';
             padding: 40px 0;
         }
 
-        h3, h4, h5 {
+        h3,
+        h4,
+        h5 {
             color: #b268a7;
             text-align: center;
             padding-top: 1em;
@@ -150,18 +148,18 @@ $logoNegativePath: 'assets/images/argo.png';
             top: 1.5rem;
             width: 10rem;
         }
-        &--argo{
+        &--argo {
             height: 5rem;
             background-size: contain;
             background-image: url(assets/images/Argo.svg);
             background-repeat: no-repeat;
             float: left;
-            width: 4rem;  
+            width: 4rem;
         }
 
-        img.logo-image{
-            max-width: 50%;
-            color: #F77530;
+        img.logo-image {
+            max-width: 100%;
+            color: #f77530;
         }
     }
 
@@ -171,11 +169,11 @@ $logoNegativePath: 'assets/images/argo.png';
         position: absolute;
         width: 90%;
         text-align: center;
-        left: 20px;        
+        left: 20px;
 
         & a {
             color: $argo-color-gray-2;
-            img{
+            img {
                 width: 36px;
                 filter: invert(50%);
                 -webkit-filter: invert(50%);
@@ -183,13 +181,13 @@ $logoNegativePath: 'assets/images/argo.png';
         }
 
         .ver {
-            font-size:12px;
+            font-size: 12px;
             color: $argo-color-gray-5;
         }
 
         &__link {
-            font-size:12px;
-            padding:0px 5px;
+            font-size: 12px;
+            padding: 0px 5px;
         }
     }
 
@@ -197,5 +195,4 @@ $logoNegativePath: 'assets/images/argo.png';
         content: '';
         clear: both;
     }
-
 }

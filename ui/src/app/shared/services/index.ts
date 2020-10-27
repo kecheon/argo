@@ -1,9 +1,7 @@
 import {ArchivedWorkflowsService} from './archived-workflows-service';
-import {AuthService} from './auth-service';
 import {ClusterWorkflowTemplateService} from './cluster-workflow-template-service';
 import {CronWorkflowService} from './cron-workflow-service';
 import {InfoService} from './info-service';
-import {UserService} from './user-service';
 import {WorkflowTemplateService} from './workflow-template-service';
 import {WorkflowsService} from './workflows-service';
 
@@ -14,8 +12,6 @@ export interface Services {
     clusterWorkflowTemplate: ClusterWorkflowTemplateService;
     archivedWorkflows: ArchivedWorkflowsService;
     cronWorkflows: CronWorkflowService;
-    users: UserService;
-    authService: AuthService;
 }
 
 export * from './workflows-service';
@@ -27,7 +23,5 @@ export const services: Services = {
     workflowTemplate: new WorkflowTemplateService(),
     clusterWorkflowTemplate: new ClusterWorkflowTemplateService(),
     archivedWorkflows: new ArchivedWorkflowsService(),
-    cronWorkflows: new CronWorkflowService(),
-    users: new UserService(),
-    authService: new AuthService()
+    cronWorkflows: new CronWorkflowService()
 };
