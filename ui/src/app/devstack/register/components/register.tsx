@@ -3,7 +3,18 @@ import * as React from 'react';
 import { Form, Text } from 'react-form';
 import { FormField, FormSelect } from 'argo-ui';
 
-export class Register extends React.Component {
+interface State {
+    signUpProgress: boolean;
+}
+
+export class Register extends React.Component<State> {
+    // constructor(props: {}) {
+    //     super(props);
+    //     this.state = {signUpProgress: false};
+    // };
+    state: State = {
+        signUpProgress: false
+    }
     public handleChange = (event: any) => {};
     public handleSubmit = (event: any) => {};
     public render() {
@@ -24,6 +35,11 @@ export class Register extends React.Component {
                                 </div>
                                 <div className='argo-form-row'>
                                     <FormField label='Select' formApi={api}  field='selectField' component={FormSelect} componentProps={{options: ['option1', 'option2']}} />
+                                </div>
+                                <div className='argo-form-row'>
+                                    <button disabled={this.state.signUpProgress} className='argo-button argo-button--full-width argo-button--xlg' type='submit'>
+                                        Register me
+                                    </button>
                                 </div>
                             </form>
                         )}
