@@ -32,7 +32,7 @@ export class Register extends React.Component {
                                         <Form.Control as='textarea' placeholder='Enter description' />
                                     </Form.Group>
                                     <Form.Group controlId='formBasicEmail'>
-                                        <Form.Label>Description</Form.Label>
+                                        <Form.Label>Email</Form.Label>
                                         <Form.Control type='email' placeholder='Enter email' />
                                     </Form.Group>
                                     <Form.Group controlId='formBasicPassword1'>
@@ -45,7 +45,7 @@ export class Register extends React.Component {
                                     </Form.Group>
                                 </Col>
                                 <Col>
-                                    <Form.Group controlId='formBasicEmail'>
+                                    <Form.Group controlId='formBasicNamespace'>
                                         <Form.Label>Namespace Name*</Form.Label>
                                         <Form.Control type='string' placeholder='Enter namespace' />
                                         <Form.Text className='text-muted'>We'll never share your email with anyone else.</Form.Text>
