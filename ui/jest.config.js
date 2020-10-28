@@ -7,6 +7,7 @@ module.exports = {
     "^@/(.*)$": "<rootDir>/src/$1"
   },
   transform: {
+    "^.+\\.js?$": "ts-jest",
     "^.+\\.tsx?$": "ts-jest"
   },
   // transformIgnorePatterns: [
@@ -14,5 +15,13 @@ module.exports = {
   // ]
   transformIgnorePatterns: ['node_modules/(?!(argo-ui)/)'],
   verbose: true,
-  silent: false
+  silent: false,
+  globals: {
+    "ts-jest": {
+      tsConfig: {
+        // allow js in typescript
+        allowJs: true,
+      },
+    },
+  }
 }

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {UserInfo} from '../../shared/models';
-const endPoint = 'http://183.111.177.141/identity/v3/';
+const keystoneEndPoint = 'http://183.111.177.141/identity/v3/';
 
 export class UserService {
     public async login(username: string, password: string): Promise<any> {
@@ -18,12 +18,12 @@ export class UserService {
                 }
             }
         };
-        const response = await axios.post(`${endPoint}/api/v1/auth`, reqBody);
+        const response = await axios.post(`${keystoneEndPoint}/auth/tokens`, reqBody);
         return response.data;
     }
 
     public async logout(): Promise<boolean> {
-        const response = await axios.delete('/api/v1/auth');
+        const response = await axios.delete(`${keystoneEndPoint}/auth`);
         return response.data;
     }
 
