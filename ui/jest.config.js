@@ -23,5 +23,9 @@ module.exports = {
         allowJs: true,
       },
     },
-  }
+  },
+  "snapshotSerializer": [
+    "enzyme-to-json/serializer"
+  ],
+  "setupFilesAfterEnv": ["<rootDir>/src/setupTests.ts"]
 }
