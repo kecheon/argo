@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {Form} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
+import {uiUrl} from '../../../shared/base';
 
 require('./login.scss');
 
@@ -16,8 +17,15 @@ export interface LoginForm {
 //     loginInProgress: boolean;
 //     returnUrl: string;
 // }
+// const redirect = (path: string) => {
+//     document.location.href = path;
+// };
 
 export const Login = () => {
+    // const loginHandler = () => {
+    //     console.log('handle login');
+    //     window.location.href = '/workflows';
+    // };
     return (
         <div className='login'>
             <div className='login__content'>
@@ -28,25 +36,23 @@ export const Login = () => {
                 <div className='login__logo width-control'>
                     <img className='logo-image' src='assets/images/devstack/logo.png' alt='devStack' />
                 </div>
-                <form role='form' className='width-control'>
-                    <div className='argo-form-row'>
-                        <Form.Group controlId='formBasicUsername'>
-                            <Form.Label>User Name*</Form.Label>
-                            <Form.Control type='text' placeholder='Enter username' />
-                        </Form.Group>{' '}
-                    </div>
-                    <div className='argo-form-row'>
-                        <Form.Group controlId='formBasicPassword1'>
-                            <Form.Label>Password</Form.Label>
-                            <Form.Control type='password' placeholder='Password' />
-                        </Form.Group>
-                    </div>
-                    <div className='login__form-row'>
-                        <button className='argo-button argo-button--full-width argo-button--xlg' type='submit'>
-                            Sign In
-                        </button>
-                    </div>
-                </form>
+                <div className='argo-form-row'>
+                    <Form.Group controlId='formBasicUsername'>
+                        <Form.Label>User Name*</Form.Label>
+                        <Form.Control type='text' placeholder='Enter username' />
+                    </Form.Group>{' '}
+                </div>
+                <div className='argo-form-row'>
+                    <Form.Group controlId='formBasicPassword1'>
+                        <Form.Label>Password</Form.Label>
+                        <Form.Control type='password' placeholder='Password' />
+                    </Form.Group>
+                </div>
+                <div className='login__form-row'>
+                    <button className='argo-button argo-button--full-width argo-button--xlg' onClick={() => (document.location.href = uiUrl('workflows'))}>
+                        Sign In
+                    </button>
+                </div>
                 <div className='login__form-row'>
                     <Link to='/register'>
                         <button className='argo-button argo-button--full-width argo-button--xlg' type='button'>
