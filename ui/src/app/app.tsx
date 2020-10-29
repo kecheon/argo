@@ -15,9 +15,8 @@ import archivedWorkflows from './archived-workflows';
 import clusterWorkflowTemplates from './cluster-workflow-templates';
 import cronWorkflows from './cron-workflows';
 import help from './help';
-// tslint:disable-next-line: ordered-imports
-import userinfo from './devstack/user-info';
-// tslint:disable-next-line: ordered-imports
+// import userinfo from './devstack/user-info';
+import userinfo from './userinfo';
 import login from './devstack/login';
 import register from './devstack/register';
 import reports from './reports';
@@ -75,8 +74,8 @@ const navItems = [
     },
     {
         title: 'User',
-        // path: userInfoUrl,
-        path: loginUrl,
+        path: userInfoUrl,
+        // path: loginUrl,
         iconClassName: 'fa fa-user-alt'
     },
     {
