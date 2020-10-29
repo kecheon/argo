@@ -4,7 +4,9 @@ import {Button, Col, Container, Form, FormControl, InputGroup, Row} from 'react-
 
 export const Register = () => {
     // tslint:disable-next-line:no-console
-    const handleSubmit = () => { console.log('submit clicked') };
+    const handleSubmit = () => {
+        console.log('submit clicked');
+    };
     return (
         <Page title='Register' toolbar={{breadcrumbs: [{title: 'Register'}]}}>
             <div className='argo-container'>
@@ -12,12 +14,12 @@ export const Register = () => {
                     <h3>New Tenant</h3>
                     Create user(admin) and namespace for workflow
                 </div>
-                <Button variant='primary' type='submit'>
+                <button className='argo-button argo-button--base' type='button'>
                     Submit
-                </Button>
-                <Button variant='secondary' type='submit'>
+                </button>
+                <button className='argo-button argo-button--base' type='button'>
                     Cancel
-                </Button>
+                </button>
                 <Form onSubmit={handleSubmit}>
                     <Container>
                         <Row>

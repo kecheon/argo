@@ -22,10 +22,6 @@ export interface LoginForm {
 // };
 
 export const Login = () => {
-    // const loginHandler = () => {
-    //     console.log('handle login');
-    //     window.location.href = '/workflows';
-    // };
     return (
         <div className='login'>
             <div className='login__content'>
@@ -49,13 +45,13 @@ export const Login = () => {
                     </Form.Group>
                 </div>
                 <div className='login__form-row'>
-                    <button className='argo-button argo-button--full-width argo-button--xlg' onClick={() => (document.location.href = uiUrl('workflows'))}>
+                    <button className='argo-button argo-button--base argo-button--full-width argo-button--xlg' onClick={() => (document.location.href = uiUrl('workflows'))}>
                         Sign In
                     </button>
                 </div>
                 <div className='login__form-row'>
                     <Link to='/register'>
-                        <button className='argo-button argo-button--full-width argo-button--xlg' type='button'>
+                        <button className='argo-button argo-button--base argo-button--full-width argo-button--xlg' type='button'>
                             Sign Up
                         </button>
                     </Link>
