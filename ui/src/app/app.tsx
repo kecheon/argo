@@ -43,6 +43,11 @@ export const history = createBrowserHistory();
 
 const navItems = [
     {
+        title: 'Login',
+        path: loginUrl,
+        iconClassName: 'fa fa-sign-in-alt'
+    },
+    {
         title: 'Timeline',
         path: workflowsUrl,
         iconClassName: 'fa fa-stream'
