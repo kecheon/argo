@@ -4,7 +4,7 @@
     ],
     "jsRules": {},
     "rules": {
-        "prettier": true,
+        "prettier": false,
         "quotemark": [true, "single"],
         "no-var-requires": false,
         "interface-name": false,

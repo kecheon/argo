@@ -1,7 +1,7 @@
 import axios from 'axios';
 const endpoint = 'http://183.111.177.141/identity/v3';
 
-xdescribe('API access', () => {
+describe('API access', () => {
     it('get unscoped token by username and password', async done => {
         const data = {
             auth: {

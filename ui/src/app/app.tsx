@@ -14,17 +14,18 @@ import apidocs from './apidocs';
 import archivedWorkflows from './archived-workflows';
 import clusterWorkflowTemplates from './cluster-workflow-templates';
 import cronWorkflows from './cron-workflows';
-import help from './help';
-// import userinfo from './devstack/user-info';
-import userinfo from './userinfo';
 import login from './devstack/login';
 import register from './devstack/register';
+import help from './help';
 import reports from './reports';
 import ErrorBoundary from './shared/components/error-boundary';
 import {services} from './shared/services';
 import {Utils} from './shared/utils';
+// import userinfo from './devstack/user-info';
+import userinfo from './userinfo';
 import workflowTemplates from './workflow-templates';
 import workflows from './workflows';
+import CurrentUser from './devstack/classes/current-user';
 
 const workflowsUrl = uiUrl('workflows');
 const workflowTemplatesUrl = uiUrl('workflow-templates');
@@ -40,6 +41,7 @@ const timelineUrl = uiUrl('timeline');
 const reportsUrl = uiUrl('reports');
 
 export const history = createBrowserHistory();
+
 
 const navItems = [
     {
@@ -96,10 +98,31 @@ const navItems = [
 ];
 
 export class App extends React.Component<{}, {version?: Version; popupProps: PopupProps; namespace?: string}> {
+
+    private get archivedWorkflowsUrl() {
+        return archivedWorkflowsUrl + '/' + (this.state.namespace || '');
+    }
+
+    private get cronWorkflowsUrl() {
+        return cronWorkflowsUrl + '/' + (this.state.namespace || '');
+    }
+
+    private get workflowTemplatesUrl() {
+        return workflowTemplatesUrl + '/' + (this.state.namespace || '');
+    }
+
+    private get workflowsUrl() {
+        return workflowsUrl + '/' + (this.state.namespace || '');
+    }
+
+    private get reportsUrl() {
+        return reportsUrl + '/' + (this.state.namespace || '');
+    }
     public static childContextTypes = {
         history: PropTypes.object,
         apis: PropTypes.object
     };
+    public currentUser: CurrentUser;
 
     private popupManager: PopupManager;
     private notificationsManager: NotificationsManager;
@@ -114,6 +137,7 @@ export class App extends React.Component<{}, {version?: Version; popupProps: Pop
         Utils.onNamespaceChange = namespace => {
             this.setState({namespace});
         };
+        this.currentUser = new CurrentUser(true);
     }
 
     public componentDidMount() {
@@ -136,7 +160,8 @@ export class App extends React.Component<{}, {version?: Version; popupProps: Pop
             notifications: this.notificationsManager,
             popup: this.popupManager,
             navigation: this.navigationManager,
-            history
+            history,
+            currentUser: this.currentUser
         };
         return (
             <Provider value={providerContext}>
@@ -194,26 +219,6 @@ export class App extends React.Component<{}, {version?: Version; popupProps: Pop
                 </Router>
             </Provider>
         );
-    }
-
-    private get archivedWorkflowsUrl() {
-        return archivedWorkflowsUrl + '/' + (this.state.namespace || '');
-    }
-
-    private get cronWorkflowsUrl() {
-        return cronWorkflowsUrl + '/' + (this.state.namespace || '');
-    }
-
-    private get workflowTemplatesUrl() {
-        return workflowTemplatesUrl + '/' + (this.state.namespace || '');
-    }
-
-    private get workflowsUrl() {
-        return workflowsUrl + '/' + (this.state.namespace || '');
-    }
-
-    private get reportsUrl() {
-        return reportsUrl + '/' + (this.state.namespace || '');
     }
 
     public getChildContext() {
