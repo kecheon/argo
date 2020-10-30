@@ -1,9 +1,8 @@
 export default class CurrentUser {
   public loggedIn: boolean;
-  public onChange: boolean;
+  public onChange: any;
 
-  constructor(onChange: boolean){
-    
+  constructor(onChange: any){
     this.loggedIn = false;
     this.onChange = onChange
     this.logIn = this.logIn.bind(this);
@@ -18,28 +17,20 @@ export default class CurrentUser {
    * @return {void}
    */
   public logIn(): void{
-
     // fake request
     setTimeout(()=>{
-    
       this.setProperty(true)
-    
     },1500)
-
   }
 
   public isLoggedIn(){
-
-    return this.loggedIn === true
-
+    return this.loggedIn === false
   }
   
   public setProperty(value: boolean){
-
     this.loggedIn = value
     // update func passed from app
     // updates app state
-  //   this.onChange(this)
+    this.onChange(this)
   }
-
 }
