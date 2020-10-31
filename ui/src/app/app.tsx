@@ -14,6 +14,7 @@ import apidocs from './apidocs';
 import archivedWorkflows from './archived-workflows';
 import clusterWorkflowTemplates from './cluster-workflow-templates';
 import cronWorkflows from './cron-workflows';
+import CurrentUser from './devstack/classes/current-user';
 import login from './devstack/login';
 import register from './devstack/register';
 import help from './help';
@@ -25,7 +26,6 @@ import {Utils} from './shared/utils';
 import userinfo from './userinfo';
 import workflowTemplates from './workflow-templates';
 import workflows from './workflows';
-import CurrentUser from './devstack/classes/current-user';
 
 const workflowsUrl = uiUrl('workflows');
 const workflowTemplatesUrl = uiUrl('workflow-templates');
@@ -97,7 +97,7 @@ const navItems = [
     }
 ];
 
-export class App extends React.Component<{}, {version?: Version; popupProps: PopupProps; namespace?: string}> {
+export class App extends React.Component<{}, {version?: Version; popupProps: PopupProps; namespace?: string; currentUser: CurrentUser;}> {
 
     private get archivedWorkflowsUrl() {
         return archivedWorkflowsUrl + '/' + (this.state.namespace || '');
@@ -122,22 +122,33 @@ export class App extends React.Component<{}, {version?: Version; popupProps: Pop
         history: PropTypes.object,
         apis: PropTypes.object
     };
-    public currentUser: CurrentUser;
 
     private popupManager: PopupManager;
     private notificationsManager: NotificationsManager;
     private navigationManager: NavigationManager;
+    private userManager: CurrentUser;
 
     constructor(props: {}) {
         super(props);
-        this.state = {popupProps: null};
+        this.state = {popupProps: null, currentUser: null};
         this.popupManager = new PopupManager();
         this.notificationsManager = new NotificationsManager();
         this.navigationManager = new NavigationManager(history);
         Utils.onNamespaceChange = namespace => {
             this.setState({namespace});
         };
-        this.currentUser = new CurrentUser(true);
+        this.userManager = new CurrentUser(this.updateCurrentUser);
+    }
+    public logUser(){
+        this.state.currentUser.logIn();
+    }
+    public updateCurrentUser(currentUser: any){
+        this.setState({
+            currentUser
+        })
+    }
+    public getCurrentUser(){
+        return this.state.currentUser
     }
 
     public componentDidMount() {
@@ -161,7 +172,7 @@ export class App extends React.Component<{}, {version?: Version; popupProps: Pop
             popup: this.popupManager,
             navigation: this.navigationManager,
             history,
-            currentUser: this.currentUser
+            userManager: this.userManager
         };
         return (
             <Provider value={providerContext}>

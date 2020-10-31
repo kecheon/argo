@@ -10,7 +10,7 @@ export interface ContextApis {
     notifications: NotificationsApi;
     navigation: NavigationApi;
     history: History;
-    currentUser: CurrentUser;
+    userManager: CurrentUser;
 }
 
 export const {Provider, Consumer} = React.createContext<ContextApis>(null);

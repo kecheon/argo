@@ -1,24 +1,26 @@
 import axios from 'axios';
 import {UserInfo} from '../../shared/models';
-const keystoneEndPoint = 'http://183.111.177.141/identity/v3/';
+const keystoneEndPoint = 'http://localhost:5000';
+// const keystoneEndPoint = 'http://183.111.177.141/identity/v3';
 
 export class UserService {
     public async login(username: string, password: string): Promise<any> {
-        const reqBody = {
-            auth: {
-                identity: {
-                    methods: ['password'],
-                    password: {
-                        user: {
-                            name: username,
-                            domain: {id: 'default'},
-                            password
-                        }
-                    }
-                }
-            }
-        };
-        const response = await axios.post(`${keystoneEndPoint}/auth/tokens`, reqBody);
+        // const reqBody = {
+        //     auth: {
+        //         identity: {
+        //             methods: ['password'],
+        //             password: {
+        //                 user: {
+        //                     name: username,
+        //                     domain: {id: 'default'},
+        //                     password
+        //                 }
+        //             }
+        //         }
+        //     }
+        // };
+        // const response = await axios.post(`${keystoneEndPoint}/auth/tokens`, reqBody);
+        const response = await axios.post(`${keystoneEndPoint}/auth/login`, { email: username, password });
         return response.data;
     }
 

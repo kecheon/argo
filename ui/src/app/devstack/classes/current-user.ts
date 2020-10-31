@@ -1,9 +1,11 @@
 export default class CurrentUser {
   public loggedIn: boolean;
   public onChange: any;
+  public username: string;
 
   constructor(onChange: any){
     this.loggedIn = false;
+    this.username = '',
     this.onChange = onChange
     this.logIn = this.logIn.bind(this);
   }
@@ -16,7 +18,7 @@ export default class CurrentUser {
    * @param  {function} fail     callback
    * @return {void}
    */
-  public logIn(): void{
+  public logIn(): void {
     // fake request
     setTimeout(()=>{
       this.setProperty(true)
@@ -24,7 +26,7 @@ export default class CurrentUser {
   }
 
   public isLoggedIn(){
-    return this.loggedIn === false
+    return this.loggedIn === true
   }
   
   public setProperty(value: boolean){
