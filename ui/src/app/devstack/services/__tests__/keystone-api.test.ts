@@ -1,8 +1,7 @@
 import axios from 'axios';
 const endpoint = 'http://183.111.177.141/identity/v3';
-
 describe('API access', () => {
-    it('get unscoped token by username and password', async done => {
+    it('get unscoped token by username and password', async () => {
         const data = {
             auth: {
                 identity: {
@@ -17,5 +16,6 @@ describe('API access', () => {
 
         const response = await axios.post(url, data);
         expect(response.status).toEqual(201);
+        expect(response.headers['x-subject-token'].length > 0).toBeTruthy();
     });
 });
