@@ -1,3 +1,47 @@
+export interface UserState {
+  isLoggedIn: boolean;
+  username: string;
+  permission: {};
+}
+
+export interface UserStateAction {
+  type: string;
+  payload: any;
+}
+
+export const User: UserState = {
+  isLoggedIn: false,
+  username: '',
+  permission: {}
+}
+
+export const UserStateActionTypes = {
+  LOGGED_IN: 'LOGGED_IN',
+  LOGGED_OUT: 'LOGGED_OUT'
+}
+
+export function userStateReducer(state: object = { isLoggedIn: false, username: '', permission: {}}, action: UserStateAction): UserState {
+  switch(action.type) {
+    case UserStateActionTypes.LOGGED_IN: {
+        return action.payload;
+    }
+    case UserStateActionTypes.LOGGED_OUT: {
+        return {
+          isLoggedIn: false,
+          username: '',
+          permission: {}
+        };
+    }
+    default:
+        return {
+          isLoggedIn: false,
+          username: '',
+          permission: {}
+        };
+  }
+}
+
+
 export default class CurrentUser {
   public loggedIn: boolean;
   public onChange: any;

@@ -14,7 +14,7 @@ import apidocs from './apidocs';
 import archivedWorkflows from './archived-workflows';
 import clusterWorkflowTemplates from './cluster-workflow-templates';
 import cronWorkflows from './cron-workflows';
-import CurrentUser from './devstack/classes/current-user';
+// import CurrentUser from './devstack/classes/current-user';
 import login from './devstack/login';
 import register from './devstack/register';
 import help from './help';
@@ -26,6 +26,7 @@ import {Utils} from './shared/utils';
 import userinfo from './userinfo';
 import workflowTemplates from './workflow-templates';
 import workflows from './workflows';
+import { UserStateProvider } from './devstack/classes/user-service-provider';
 
 const workflowsUrl = uiUrl('workflows');
 const workflowTemplatesUrl = uiUrl('workflow-templates');
@@ -41,7 +42,6 @@ const timelineUrl = uiUrl('timeline');
 const reportsUrl = uiUrl('reports');
 
 export const history = createBrowserHistory();
-
 
 const navItems = [
     {
@@ -97,7 +97,7 @@ const navItems = [
     }
 ];
 
-export class App extends React.Component<{}, {version?: Version; popupProps: PopupProps; namespace?: string; currentUser: CurrentUser;}> {
+export class App extends React.Component<{}, {version?: Version; popupProps: PopupProps; namespace?: string;}> {
 
     private get archivedWorkflowsUrl() {
         return archivedWorkflowsUrl + '/' + (this.state.namespace || '');
@@ -126,30 +126,30 @@ export class App extends React.Component<{}, {version?: Version; popupProps: Pop
     private popupManager: PopupManager;
     private notificationsManager: NotificationsManager;
     private navigationManager: NavigationManager;
-    private userManager: CurrentUser;
+    // private userManager: CurrentUser;
 
     constructor(props: {}) {
         super(props);
-        this.state = {popupProps: null, currentUser: null};
+        this.state = {popupProps: null};
         this.popupManager = new PopupManager();
         this.notificationsManager = new NotificationsManager();
         this.navigationManager = new NavigationManager(history);
         Utils.onNamespaceChange = namespace => {
             this.setState({namespace});
         };
-        this.userManager = new CurrentUser(this.updateCurrentUser);
+        // this.userManager = new CurrentUser(this.updateCurrentUser);
     }
-    public logUser(){
-        this.state.currentUser.logIn();
-    }
-    public updateCurrentUser(currentUser: any){
-        this.setState({
-            currentUser
-        })
-    }
-    public getCurrentUser(){
-        return this.state.currentUser
-    }
+    // public logUser(){
+    //     this.state.currentUser.logIn();
+    // }
+    // public updateCurrentUser(currentUser: any){
+    //     this.setState({
+    //         currentUser
+    //     })
+    // }
+    // public getCurrentUser(){
+    //     return this.state.currentUser
+    // }
 
     public componentDidMount() {
         this.popupManager.popupProps.subscribe(popupProps => this.setState({popupProps}));
@@ -172,62 +172,64 @@ export class App extends React.Component<{}, {version?: Version; popupProps: Pop
             popup: this.popupManager,
             navigation: this.navigationManager,
             history,
-            userManager: this.userManager
+            // userManager: this.userManager
         };
         return (
             <Provider value={providerContext}>
                 {this.state.popupProps && <Popup {...this.state.popupProps} />}
-                <Router history={history}>
-                    <Layout navItems={navItems} version={() => <>{this.state.version ? this.state.version.version : 'unknown'}</>}>
-                        <Notifications notifications={this.notificationsManager.notifications} />
-                        <ErrorBoundary>
-                            <Switch>
-                                <Route exact={true} strict={true} path={uiUrl('')}>
-                                    <Redirect to={workflowsUrl} />
-                                </Route>
-                                <Route exact={true} strict={true} path={timelineUrl}>
-                                    <Redirect to={workflowsUrl} />
-                                </Route>
-                                {this.state.namespace && (
-                                    <Route exact={true} strict={true} path={workflowsUrl}>
-                                        <Redirect to={this.workflowsUrl} />
+                <UserStateProvider>
+                    <Router history={history}>
+                        <Layout navItems={navItems} version={() => <>{this.state.version ? this.state.version.version : 'unknown'}</>}>
+                            <Notifications notifications={this.notificationsManager.notifications} />
+                            <ErrorBoundary>
+                                <Switch>
+                                    <Route exact={true} strict={true} path={uiUrl('')}>
+                                        <Redirect to={workflowsUrl} />
                                     </Route>
-                                )}
-                                {this.state.namespace && (
-                                    <Route exact={true} strict={true} path={workflowTemplatesUrl}>
-                                        <Redirect to={this.workflowTemplatesUrl} />
+                                    <Route exact={true} strict={true} path={timelineUrl}>
+                                        <Redirect to={workflowsUrl} />
                                     </Route>
-                                )}
-                                {this.state.namespace && (
-                                    <Route exact={true} strict={true} path={cronWorkflowsUrl}>
-                                        <Redirect to={this.cronWorkflowsUrl} />
-                                    </Route>
-                                )}
-                                {this.state.namespace && (
-                                    <Route exact={true} strict={true} path={archivedWorkflowsUrl}>
-                                        <Redirect to={this.archivedWorkflowsUrl} />
-                                    </Route>
-                                )}
-                                {this.state.namespace && (
-                                    <Route exact={true} strict={true} path={reportsUrl}>
-                                        <Redirect to={this.reportsUrl} />
-                                    </Route>
-                                )}
-                                <Route path={workflowsUrl} component={workflows.component} />
-                                <Route path={workflowTemplatesUrl} component={workflowTemplates.component} />
-                                <Route path={clusterWorkflowTemplatesUrl} component={clusterWorkflowTemplates.component} />
-                                <Route path={cronWorkflowsUrl} component={cronWorkflows.component} />
-                                <Route path={archivedWorkflowsUrl} component={archivedWorkflows.component} />
-                                <Route path={reportsUrl} component={reports.component} />
-                                <Route exact={true} strict={true} path={helpUrl} component={help.component} />
-                                <Route exact={true} strict={true} path={apiDocsUrl} component={apidocs.component} />
-                                <Route exact={true} strict={true} path={userInfoUrl} component={userinfo.component} />
-                                <Route exact={true} strict={true} path={loginUrl} component={login.component} />
-                                <Route exact={true} strict={true} path={registerUrl} component={register.component} />
-                            </Switch>
-                        </ErrorBoundary>
-                    </Layout>
-                </Router>
+                                    {this.state.namespace && (
+                                        <Route exact={true} strict={true} path={workflowsUrl}>
+                                            <Redirect to={this.workflowsUrl} />
+                                        </Route>
+                                    )}
+                                    {this.state.namespace && (
+                                        <Route exact={true} strict={true} path={workflowTemplatesUrl}>
+                                            <Redirect to={this.workflowTemplatesUrl} />
+                                        </Route>
+                                    )}
+                                    {this.state.namespace && (
+                                        <Route exact={true} strict={true} path={cronWorkflowsUrl}>
+                                            <Redirect to={this.cronWorkflowsUrl} />
+                                        </Route>
+                                    )}
+                                    {this.state.namespace && (
+                                        <Route exact={true} strict={true} path={archivedWorkflowsUrl}>
+                                            <Redirect to={this.archivedWorkflowsUrl} />
+                                        </Route>
+                                    )}
+                                    {this.state.namespace && (
+                                        <Route exact={true} strict={true} path={reportsUrl}>
+                                            <Redirect to={this.reportsUrl} />
+                                        </Route>
+                                    )}
+                                    <Route path={workflowsUrl} component={workflows.component} />
+                                    <Route path={workflowTemplatesUrl} component={workflowTemplates.component} />
+                                    <Route path={clusterWorkflowTemplatesUrl} component={clusterWorkflowTemplates.component} />
+                                    <Route path={cronWorkflowsUrl} component={cronWorkflows.component} />
+                                    <Route path={archivedWorkflowsUrl} component={archivedWorkflows.component} />
+                                    <Route path={reportsUrl} component={reports.component} />
+                                    <Route exact={true} strict={true} path={helpUrl} component={help.component} />
+                                    <Route exact={true} strict={true} path={apiDocsUrl} component={apidocs.component} />
+                                    <Route exact={true} strict={true} path={userInfoUrl} component={userinfo.component} />
+                                    <Route exact={true} strict={true} path={loginUrl} component={login.component} />
+                                    <Route exact={true} strict={true} path={registerUrl} component={register.component} />
+                                </Switch>
+                            </ErrorBoundary>
+                        </Layout>
+                    </Router>
+                </UserStateProvider>
             </Provider>
         );
     }

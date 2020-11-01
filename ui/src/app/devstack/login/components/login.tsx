@@ -25,8 +25,8 @@ export interface LoginForm {
 // };
 
 export const Login = (props: any) => {
-    const [username, setName] = useState('admin@devstack.co.kr');
-    const [password, setPassword] = useState('devstack');
+    const [username, setName] = useState('');
+    const [password, setPassword] = useState('');
     const service = new UserService();
     const handleSubmit = async (e: any) => {
         e.preventDefault();
@@ -37,6 +37,7 @@ export const Login = (props: any) => {
         } else {
             alert(`login Error ${username} ${password}`);
         }
+
     }
     return (
         <div className='login'>

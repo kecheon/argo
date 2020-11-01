@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {UserInfo} from '../../shared/models';
-const keystoneEndPoint = 'http://localhost:5000';
+const keystoneEndPoint = 'http://localhost:5000/api';
 // const keystoneEndPoint = 'http://183.111.177.141/identity/v3';
 
 export class UserService {
