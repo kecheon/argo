@@ -46,6 +46,7 @@ const Login = (props: CurrentUserProps) => {
         }
 
     }
+    console.log(props);
     return (
         <div className='login'>
             <div className='login__content'>

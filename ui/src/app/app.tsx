@@ -15,16 +15,15 @@ import archivedWorkflows from './archived-workflows';
 import clusterWorkflowTemplates from './cluster-workflow-templates';
 import cronWorkflows from './cron-workflows';
 import { UserStateProvider } from './devstack/classes/user-service-provider';
-// import CurrentUser from './devstack/classes/current-user';
 import login from './devstack/login';
 import register from './devstack/register';
-// import userinfo from './devstack/user-info';
+import userinfo from './devstack/userinfo';
 import help from './help';
 import reports from './reports';
 import ErrorBoundary from './shared/components/error-boundary';
 import {services} from './shared/services';
 import {Utils} from './shared/utils';
-import userinfo from './userinfo';
+// import userinfo from './userinfo';
 import workflowTemplates from './workflow-templates';
 import workflows from './workflows';
 
