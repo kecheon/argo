@@ -14,19 +14,19 @@ import apidocs from './apidocs';
 import archivedWorkflows from './archived-workflows';
 import clusterWorkflowTemplates from './cluster-workflow-templates';
 import cronWorkflows from './cron-workflows';
+import { UserStateProvider } from './devstack/classes/user-service-provider';
 // import CurrentUser from './devstack/classes/current-user';
 import login from './devstack/login';
 import register from './devstack/register';
+// import userinfo from './devstack/user-info';
 import help from './help';
 import reports from './reports';
 import ErrorBoundary from './shared/components/error-boundary';
 import {services} from './shared/services';
 import {Utils} from './shared/utils';
-// import userinfo from './devstack/user-info';
 import userinfo from './userinfo';
 import workflowTemplates from './workflow-templates';
 import workflows from './workflows';
-import { UserStateProvider } from './devstack/classes/user-service-provider';
 
 const workflowsUrl = uiUrl('workflows');
 const workflowTemplatesUrl = uiUrl('workflow-templates');
@@ -139,17 +139,6 @@ export class App extends React.Component<{}, {version?: Version; popupProps: Pop
         };
         // this.userManager = new CurrentUser(this.updateCurrentUser);
     }
-    // public logUser(){
-    //     this.state.currentUser.logIn();
-    // }
-    // public updateCurrentUser(currentUser: any){
-    //     this.setState({
-    //         currentUser
-    //     })
-    // }
-    // public getCurrentUser(){
-    //     return this.state.currentUser
-    // }
 
     public componentDidMount() {
         this.popupManager.popupProps.subscribe(popupProps => this.setState({popupProps}));

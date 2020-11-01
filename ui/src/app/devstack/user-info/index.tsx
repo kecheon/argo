@@ -1,5 +1,5 @@
-import {UserInfoContainer} from './components/user-info-container';
+import {UserInfo} from './components/user-info';
 
 export default {
-    component: UserInfoContainer
+    component: UserInfo
 };

@@ -2,8 +2,9 @@ import * as React from 'react';
 import { useState } from 'react';
 import {Form} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
-// import CurrentUser from '../../classes/current-user';
 import {uiUrl} from '../../../shared/base';
+import { UserState, UserStateAction, UserStateActionTypes } from '../../classes/current-user';
+import withUserState from '../../classes/user-service-consumer';
 import {UserService} from '../../services/user-service';
 
 require('./login.scss');
@@ -13,26 +14,32 @@ export interface LoginForm {
     password: string;
 }
 
-// interface State {
-//     username: string;
-//     password: string;
-//     loginError: string;
-//     loginInProgress: boolean;
-//     returnUrl: string;
-// }
-// const redirect = (path: string) => {
-//     document.location.href = path;
-// };
+export interface CurrentUserProps {
+    state: UserState;
+    action: UserStateAction,
+    dispatch: ({type}: { type: string; payload?: any; }) => void;
+}
 
-export const Login = (props: any) => {
+const Login = (props: CurrentUserProps) => {
     const [username, setName] = useState('');
     const [password, setPassword] = useState('');
     const service = new UserService();
+    // const [state, action] = userStateReducer(props.state, props.action);
+    function updateUserState(type: string) {
+        props.dispatch({ type: UserStateActionTypes.LOGGED_IN, payload: {
+            isLoggedIn: true,
+            username: 'admin@devstack.co.kr',
+            permission: {}
+        } });
+        props.dispatch({ type: UserStateActionTypes.LOGGED_OUT });
+    }
     const handleSubmit = async (e: any) => {
         e.preventDefault();
         const result = await service.login(username, password);
         if (result.status === 'success') {
             // update current user and redirect to workflows
+            updateUserState('LOGGED_IN');
+            // props.dispatch({ type: 'LOGGED_IN', payload: { isLoggedIn: true, username, permission: {} }});
             document.location.href = uiUrl('workflows');
         } else {
             alert(`login Error ${username} ${password}`);
@@ -88,3 +95,5 @@ export const Login = (props: any) => {
         </div>
     );
 };
+
+export default withUserState(Login);
