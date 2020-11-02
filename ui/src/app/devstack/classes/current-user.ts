@@ -5,11 +5,13 @@ export interface UserState {
   isLoggedIn: boolean;
   username: string;
   permission: {};
+  accessToken: string;
 }
 export const currentUser: UserState = {
   isLoggedIn: false,
   username: '',
-  permission: {}
+  permission: {},
+  accessToken: ''
 }
 
 export interface UserStateAction {
@@ -23,7 +25,9 @@ export const UserStateActionTypes = {
   LOGGED_OUT: 'LOGGED_OUT'
 }
 
-export function userStateReducer(state: UserState = { isLoggedIn: false, username: '', permission: {}}, action: UserStateAction): UserState {
+export function userStateReducer(state: UserState = {
+  isLoggedIn: false, username: '', permission: {}, accessToken: ''
+}, action: UserStateAction): UserState {
   switch(action.type) {
     case UserStateActionTypes.LOGGED_IN: {
         return action.payload;
@@ -32,14 +36,16 @@ export function userStateReducer(state: UserState = { isLoggedIn: false, usernam
         return {
           isLoggedIn: false,
           username: '',
-          permission: {}
+          permission: {},
+          accessToken: ''
         };
     }
     default:
         return {
           isLoggedIn: false,
           username: '',
-          permission: {}
+          permission: {},
+          accessToken: ''
         };
   }
 }

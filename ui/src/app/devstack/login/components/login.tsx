@@ -3,6 +3,7 @@ import { useState } from 'react';
 import {Form} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 import {uiUrl} from '../../../shared/base';
+import { UserState } from '../../classes/current-user';
 // import { UserState, UserStateAction, UserStateActionTypes } from '../../classes/current-user';
 import withUserState from '../../classes/user-service-consumer';
 import {UserService} from '../../services/user-service';
@@ -43,7 +44,13 @@ const Login = () => {
             // props.dispatch({ type: 'LOGGED_IN', payload: { isLoggedIn: true, username, permission: {} }});
             setUser(result);
             // store the user in localStorage
-            localStorage.setItem("user", JSON.stringify(result));
+            const currentUser:UserState = {
+                isLoggedIn: true,
+                username,
+                permission: {},
+                accessToken: result.Authorization
+            }
+            localStorage.setItem('user', JSON.stringify(currentUser));
             document.location.href = uiUrl('workflows');
         } else {
             alert(`login Error ${username} ${password}`);

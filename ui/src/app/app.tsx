@@ -14,7 +14,7 @@ import apidocs from './apidocs';
 import archivedWorkflows from './archived-workflows';
 import clusterWorkflowTemplates from './cluster-workflow-templates';
 import cronWorkflows from './cron-workflows';
-import { UserStateProvider } from './devstack/classes/user-service-provider';
+// import { UserStateProvider } from './devstack/classes/user-service-provider';
 import login from './devstack/login';
 import register from './devstack/register';
 import userinfo from './devstack/userinfo';
@@ -26,6 +26,7 @@ import {Utils} from './shared/utils';
 // import userinfo from './userinfo';
 import workflowTemplates from './workflow-templates';
 import workflows from './workflows';
+import { UserState } from './devstack/classes/current-user';
 
 const workflowsUrl = uiUrl('workflows');
 const workflowTemplatesUrl = uiUrl('workflow-templates');
@@ -120,7 +121,9 @@ export class App extends React.Component<{}, {version?: Version; popupProps: Pop
     public static childContextTypes = {
         history: PropTypes.object,
         apis: PropTypes.object
-    };
+    }
+    public currentUser: UserState;
+    // public currentUser: {};
 
     private popupManager: PopupManager;
     private notificationsManager: NotificationsManager;
@@ -136,7 +139,7 @@ export class App extends React.Component<{}, {version?: Version; popupProps: Pop
         Utils.onNamespaceChange = namespace => {
             this.setState({namespace});
         };
-        // this.userManager = new CurrentUser(this.updateCurrentUser);
+        this.currentUser = {isLoggedIn: false, username: '', permission: {}, accessToken: ''};
     }
 
     public componentDidMount() {
@@ -152,6 +155,12 @@ export class App extends React.Component<{}, {version?: Version; popupProps: Pop
                     type: NotificationType.Error
                 });
             });
+        const loggedInUser = localStorage.getItem('user');
+        if (loggedInUser) {
+            const foundUser = JSON.parse(loggedInUser);
+            this.currentUser = foundUser;
+            console.log(this.currentUser);
+        }
     }
 
     public render() {
@@ -159,13 +168,12 @@ export class App extends React.Component<{}, {version?: Version; popupProps: Pop
             notifications: this.notificationsManager,
             popup: this.popupManager,
             navigation: this.navigationManager,
+            currentUser: this.currentUser,
             history,
-            // userManager: this.userManager
         };
         return (
             <Provider value={providerContext}>
                 {this.state.popupProps && <Popup {...this.state.popupProps} />}
-                <UserStateProvider>
                     <Router history={history}>
                         <Layout navItems={navItems} version={() => <>{this.state.version ? this.state.version.version : 'unknown'}</>}>
                             <Notifications notifications={this.notificationsManager.notifications} />
@@ -217,7 +225,6 @@ export class App extends React.Component<{}, {version?: Version; popupProps: Pop
                             </ErrorBoundary>
                         </Layout>
                     </Router>
-                </UserStateProvider>
             </Provider>
         );
     }
