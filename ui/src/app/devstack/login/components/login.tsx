@@ -3,7 +3,7 @@ import { useState } from 'react';
 import {Form} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 import {uiUrl} from '../../../shared/base';
-import { UserState, UserStateAction, UserStateActionTypes } from '../../classes/current-user';
+// import { UserState, UserStateAction, UserStateActionTypes } from '../../classes/current-user';
 import withUserState from '../../classes/user-service-consumer';
 import {UserService} from '../../services/user-service';
 
@@ -14,39 +14,56 @@ export interface LoginForm {
     password: string;
 }
 
-export interface CurrentUserProps {
-    state: UserState;
-    action: UserStateAction,
-    dispatch: ({type}: { type: string; payload?: any; }) => void;
-}
+// export interface CurrentUserProps {
+//     state: UserState;
+//     action: UserStateAction,
+//     dispatch: ({type}: { type: string; payload?: any; }) => void;
+// }
 
-const Login = (props: CurrentUserProps) => {
-    const [username, setName] = useState('');
+const Login = () => {
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [user, setUser] = useState();
     const service = new UserService();
     // const [state, action] = userStateReducer(props.state, props.action);
-    function updateUserState(type: string) {
-        props.dispatch({ type: UserStateActionTypes.LOGGED_IN, payload: {
-            isLoggedIn: true,
-            username: 'admin@devstack.co.kr',
-            permission: {}
-        } });
-        props.dispatch({ type: UserStateActionTypes.LOGGED_OUT });
-    }
+    // function updateUserState(type: string) {
+    //     props.dispatch({ type: UserStateActionTypes.LOGGED_IN, payload: {
+    //         isLoggedIn: true,
+    //         username: 'admin@devstack.co.kr',
+    //         permission: {}
+    //     } });
+    //     props.dispatch({ type: UserStateActionTypes.LOGGED_OUT });
+    // }
     const handleSubmit = async (e: any) => {
         e.preventDefault();
         const result = await service.login(username, password);
         if (result.status === 'success') {
             // update current user and redirect to workflows
-            updateUserState('LOGGED_IN');
+            // updateUserState('LOGGED_IN');
             // props.dispatch({ type: 'LOGGED_IN', payload: { isLoggedIn: true, username, permission: {} }});
+            setUser(result);
+            // store the user in localStorage
+            localStorage.setItem("user", JSON.stringify(result));
             document.location.href = uiUrl('workflows');
         } else {
             alert(`login Error ${username} ${password}`);
         }
-
     }
-    console.log(props);
+    // logout the user
+    const handleLogout = () => {
+        setUser(null);
+        setUsername('');
+        setPassword('');
+        localStorage.clear();
+    };
+    if (user) {
+        return (
+          <div>
+            You are already loggged in
+            <button onClick={handleLogout}>logout</button>
+          </div>
+        );
+    }
     return (
         <div className='login'>
             <div className='login__content'>
@@ -63,7 +80,7 @@ const Login = (props: CurrentUserProps) => {
                             <Form.Label>User Name*</Form.Label>
                             <Form.Control type='text' placeholder='Enter username'
                             value={ username }
-                            onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setName(e.target.value)}/>
+                            onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setUsername(e.target.value)}/>
                         </Form.Group>{' '}
                     </div>
                     <div className='argo-form-row'>
