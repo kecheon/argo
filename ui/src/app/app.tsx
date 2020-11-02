@@ -43,6 +43,7 @@ const reportsUrl = uiUrl('reports');
 
 export const history = createBrowserHistory();
 
+
 const navItems = [
     {
         title: 'Login',
@@ -96,7 +97,6 @@ const navItems = [
         iconClassName: 'fa fa-question-circle'
     }
 ];
-
 export class App extends React.Component<{}, {version?: Version; popupProps: PopupProps; namespace?: string;}> {
 
     private get archivedWorkflowsUrl() {
@@ -123,7 +123,7 @@ export class App extends React.Component<{}, {version?: Version; popupProps: Pop
         apis: PropTypes.object
     }
     public currentUser: UserState;
-    // public currentUser: {};
+    public navItems = navItems;
 
     private popupManager: PopupManager;
     private notificationsManager: NotificationsManager;
@@ -159,7 +159,11 @@ export class App extends React.Component<{}, {version?: Version; popupProps: Pop
         if (loggedInUser) {
             const foundUser = JSON.parse(loggedInUser);
             this.currentUser = foundUser;
-            console.log(this.currentUser);
+            this.navItems[0] = {
+                title: 'Logout',
+                path: loginUrl,
+                iconClassName: 'fa fa-sign-out-alt'
+            }
         }
     }
 
@@ -175,7 +179,7 @@ export class App extends React.Component<{}, {version?: Version; popupProps: Pop
             <Provider value={providerContext}>
                 {this.state.popupProps && <Popup {...this.state.popupProps} />}
                     <Router history={history}>
-                        <Layout navItems={navItems} version={() => <>{this.state.version ? this.state.version.version : 'unknown'}</>}>
+                        <Layout navItems={this.navItems} version={() => <>{this.state.version ? this.state.version.version : 'unknown'}</>}>
                             <Notifications notifications={this.notificationsManager.notifications} />
                             <ErrorBoundary>
                                 <Switch>

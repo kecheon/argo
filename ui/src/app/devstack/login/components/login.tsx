@@ -15,33 +15,16 @@ export interface LoginForm {
     password: string;
 }
 
-// export interface CurrentUserProps {
-//     state: UserState;
-//     action: UserStateAction,
-//     dispatch: ({type}: { type: string; payload?: any; }) => void;
-// }
-
 const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [user, setUser] = useState();
     const service = new UserService();
-    // const [state, action] = userStateReducer(props.state, props.action);
-    // function updateUserState(type: string) {
-    //     props.dispatch({ type: UserStateActionTypes.LOGGED_IN, payload: {
-    //         isLoggedIn: true,
-    //         username: 'admin@devstack.co.kr',
-    //         permission: {}
-    //     } });
-    //     props.dispatch({ type: UserStateActionTypes.LOGGED_OUT });
-    // }
     const handleSubmit = async (e: any) => {
         e.preventDefault();
         const result = await service.login(username, password);
         if (result.status === 'success') {
             // update current user and redirect to workflows
-            // updateUserState('LOGGED_IN');
-            // props.dispatch({ type: 'LOGGED_IN', payload: { isLoggedIn: true, username, permission: {} }});
             setUser(result);
             // store the user in localStorage
             const currentUser:UserState = {
@@ -63,6 +46,7 @@ const Login = () => {
         setPassword('');
         localStorage.clear();
     };
+
     if (user) {
         return (
           <div>
