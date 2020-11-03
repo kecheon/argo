@@ -30,9 +30,10 @@ const Login = () => {
             const currentUser:UserState = {
                 isLoggedIn: true,
                 username,
-                permission: {},
+                role: result.role,
                 accessToken: result.Authorization
             }
+            console.log(currentUser);
             localStorage.setItem('user', JSON.stringify(currentUser));
             document.location.href = uiUrl('workflows');
         } else {

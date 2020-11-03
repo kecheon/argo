@@ -145,6 +145,7 @@ export class WorkflowsList extends BasePage<RouteComponentProps<any>, State> {
                                     {
                                         title: 'Submit New Workflow',
                                         iconClassName: 'fa fa-plus',
+                                        disabled: ctx.currentUser.role.level > 0,
                                         action: () => ctx.navigation.goto('.', {new: '{}'})
                                     }
                                 ]

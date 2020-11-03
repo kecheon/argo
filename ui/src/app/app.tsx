@@ -146,7 +146,7 @@ export class App extends React.Component<{}, {version?: Version; popupProps: Pop
         Utils.onNamespaceChange = namespace => {
             this.setState({namespace});
         };
-        this.currentUser = {isLoggedIn: false, username: '', permission: {}, accessToken: ''};
+        this.currentUser = {isLoggedIn: false, username: '', role: {name: '', level: 4}, accessToken: ''};
     }
 
     public componentDidMount() {

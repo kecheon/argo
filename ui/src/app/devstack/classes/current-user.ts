@@ -4,13 +4,16 @@
 export interface UserState {
   isLoggedIn: boolean;
   username: string;
-  permission: {};
+  role: {name: '', level: 4};
   accessToken: string;
 }
 export const currentUser: UserState = {
   isLoggedIn: false,
   username: '',
-  permission: {},
+  role: {
+    name: '',
+    level: 4
+  },
   accessToken: ''
 }
 
@@ -19,14 +22,13 @@ export interface UserStateAction {
   payload: any;
 }
 
-
 export const UserStateActionTypes = {
   LOGGED_IN: 'LOGGED_IN',
   LOGGED_OUT: 'LOGGED_OUT'
 }
 
 export function userStateReducer(state: UserState = {
-  isLoggedIn: false, username: '', permission: {}, accessToken: ''
+  isLoggedIn: false, username: '', role: {name: '', level: 4}, accessToken: ''
 }, action: UserStateAction): UserState {
   switch(action.type) {
     case UserStateActionTypes.LOGGED_IN: {
@@ -36,7 +38,10 @@ export function userStateReducer(state: UserState = {
         return {
           isLoggedIn: false,
           username: '',
-          permission: {},
+          role: {
+            name: '',
+            level: 4
+          },
           accessToken: ''
         };
     }
@@ -44,48 +49,11 @@ export function userStateReducer(state: UserState = {
         return {
           isLoggedIn: false,
           username: '',
-          permission: {},
+          role: {
+            name: '',
+            level: 4
+          },
           accessToken: ''
         };
   }
 }
-
-
-// export default class CurrentUser {
-//   public loggedIn: boolean;
-//   public onChange: any;
-//   public username: string;
-
-//   constructor(onChange: any){
-//     this.loggedIn = false;
-//     this.username = '',
-//     this.onChange = onChange
-//     this.logIn = this.logIn.bind(this);
-//   }
-
-//   /**
-//    * Log user into the web app
-//    * @param  {string} email
-//    * @param  {string} password
-//    * @param  {function} success  callback
-//    * @param  {function} fail     callback
-//    * @return {void}
-//    */
-//   public logIn(): void {
-//     // fake request
-//     setTimeout(()=>{
-//       this.setProperty(true)
-//     },1500)
-//   }
-
-//   public isLoggedIn(){
-//     return this.loggedIn === true
-//   }
-  
-//   public setProperty(value: boolean){
-//     this.loggedIn = value
-//     // update func passed from app
-//     // updates app state
-//     this.onChange(this)
-//   }
-// }
