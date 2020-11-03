@@ -7,10 +7,11 @@ describe('User service', () => {
         jest.resetAllMocks();
     });
     it('can login with username and password', async () => {
-        expect.assertions(1)
-        const result = await userService.login('admin', 'devstack');
+        const result = await userService.login('admin@devstack.co.kr', 'devstack');
+        // console.log(result);
         // expect(userService.login).toHaveBeenCalledWith('admin', 'devstack');
-        expect(result.headers['x-subject-token'].length > 0).toBeTruthy();
+        // expect(result.headers['x-subject-token'].length > 0).toBeTruthy();
+        expect(result.status).toEqual('success');
     });
     it('can logout', async () => {
         await userService.logout();

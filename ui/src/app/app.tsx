@@ -15,9 +15,6 @@ import archivedWorkflows from './archived-workflows';
 import clusterWorkflowTemplates from './cluster-workflow-templates';
 import cronWorkflows from './cron-workflows';
 // import { UserStateProvider } from './devstack/classes/user-service-provider';
-import login from './devstack/login';
-import register from './devstack/register';
-import userinfo from './devstack/userinfo';
 import help from './help';
 import reports from './reports';
 import ErrorBoundary from './shared/components/error-boundary';
@@ -26,7 +23,12 @@ import {Utils} from './shared/utils';
 // import userinfo from './userinfo';
 import workflowTemplates from './workflow-templates';
 import workflows from './workflows';
+// tslint:disable-next-line: ordered-imports
 import { UserState } from './devstack/classes/current-user';
+import login from './devstack/login';
+import logout from './devstack/logout';
+import register from './devstack/register';
+import userinfo from './devstack/userinfo';
 
 const workflowsUrl = uiUrl('workflows');
 const workflowTemplatesUrl = uiUrl('workflow-templates');
@@ -37,18 +39,23 @@ const helpUrl = uiUrl('help');
 const apiDocsUrl = uiUrl('apidocs');
 const userInfoUrl = uiUrl('userinfo');
 const loginUrl = uiUrl('login');
+const logoutUrl = uiUrl('logout');
 const registerUrl = uiUrl('register');
 const timelineUrl = uiUrl('timeline');
 const reportsUrl = uiUrl('reports');
 
 export const history = createBrowserHistory();
 
-
 const navItems = [
     {
         title: 'Login',
         path: loginUrl,
         iconClassName: 'fa fa-sign-in-alt'
+    },
+    {
+        title: 'Logout',
+        path: logoutUrl,
+        iconClassName: 'fa fa-sign-out-alt'
     },
     {
         title: 'Timeline',
@@ -159,11 +166,9 @@ export class App extends React.Component<{}, {version?: Version; popupProps: Pop
         if (loggedInUser) {
             const foundUser = JSON.parse(loggedInUser);
             this.currentUser = foundUser;
-            this.navItems[0] = {
-                title: 'Logout',
-                path: loginUrl,
-                iconClassName: 'fa fa-sign-out-alt'
-            }
+            this.navItems.splice(0, 1);
+        } else {
+            this.navItems.splice(1, 1);
         }
     }
 
@@ -225,6 +230,7 @@ export class App extends React.Component<{}, {version?: Version; popupProps: Pop
                                     <Route exact={true} strict={true} path={userInfoUrl} component={userinfo.component} />
                                     <Route exact={true} strict={true} path={loginUrl} component={login.component} />
                                     <Route exact={true} strict={true} path={registerUrl} component={register.component} />
+                                    {this.currentUser && <Route exact={true} strict={true} path={logoutUrl} component={logout.component} /> }
                                 </Switch>
                             </ErrorBoundary>
                         </Layout>

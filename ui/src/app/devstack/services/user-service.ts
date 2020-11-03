@@ -25,7 +25,7 @@ export class UserService {
     }
 
     public async logout(): Promise<boolean> {
-        const response = await axios.delete(`${keystoneEndPoint}/auth`);
+        const response = await axios.post(`${keystoneEndPoint}/auth/logout`);
         return response.data;
     }
 
