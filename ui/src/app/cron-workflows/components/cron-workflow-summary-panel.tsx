@@ -14,6 +14,7 @@ const parser = require('cron-parser');
 interface Props {
     cronWorkflow: CronWorkflow;
     onChange: (cronWorkflow: CronWorkflow) => void;
+    level: number
 }
 
 export const CronWorkflowSummaryPanel = (props: Props) => {
@@ -77,6 +78,7 @@ export const CronWorkflowSummaryPanel = (props: Props) => {
                                 .then(patched => services.cronWorkflows.update(patched, props.cronWorkflow.metadata.name, props.cronWorkflow.metadata.namespace))
                                 .then(updated => props.onChange(updated));
                         }}
+                        readonly={props.level >=3 }
                     />
                 </div>
             </div>
