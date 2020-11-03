@@ -5,7 +5,7 @@ import {Link} from 'react-router-dom';
 import {uiUrl} from '../../../shared/base';
 import { UserState } from '../../classes/current-user';
 // import { UserState, UserStateAction, UserStateActionTypes } from '../../classes/current-user';
-import withUserState from '../../classes/user-service-consumer';
+// import withUserState from '../../classes/user-service-consumer';
 import {UserService} from '../../services/user-service';
 
 require('./login.scss');
@@ -15,7 +15,7 @@ export interface LoginForm {
     password: string;
 }
 
-const Login = () => {
+export default () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [user, setUser] = useState();
@@ -33,7 +33,6 @@ const Login = () => {
                 role: result.role,
                 accessToken: result.Authorization
             }
-            console.log(currentUser);
             localStorage.setItem('user', JSON.stringify(currentUser));
             document.location.href = uiUrl('workflows');
         } else {
@@ -106,4 +105,4 @@ const Login = () => {
     );
 };
 
-export default withUserState(Login);
+// export default withUserState(Login);

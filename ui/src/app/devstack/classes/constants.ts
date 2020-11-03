@@ -6,7 +6,7 @@ const cronWorkflowsUrl = uiUrl('cron-workflows');
 const archivedWorkflowsUrl = uiUrl('archived-workflows');
 const helpUrl = uiUrl('help');
 const apiDocsUrl = uiUrl('apidocs');
-const userInfoUrl = uiUrl('userinfo');
+const usersUrl = uiUrl('users');
 const loginUrl = uiUrl('login');
 const logoutUrl = uiUrl('logout');
 const reportsUrl = uiUrl('reports');
@@ -57,7 +57,7 @@ export const navItems = {
   tadmin: [
       {
           title: 'User',
-          path: userInfoUrl,
+          path: usersUrl,
           iconClassName: 'fa fa-user-alt'
       }
   ],
