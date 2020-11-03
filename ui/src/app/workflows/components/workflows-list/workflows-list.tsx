@@ -152,7 +152,7 @@ export class WorkflowsList extends BasePage<RouteComponentProps<any>, State> {
                             },
                             tools: []
                         }}>
-                        <WorkflowsToolbar
+                        {(ctx.currentUser.role.level < 3) && <WorkflowsToolbar
                             selectedWorkflows={this.state.selectedWorkflows}
                             clearSelection={() => this.setState({selectedWorkflows: new Map<string, models.Workflow>()})}
                             loadWorkflows={() => {
@@ -160,7 +160,7 @@ export class WorkflowsList extends BasePage<RouteComponentProps<any>, State> {
                                 this.changeFilters(this.state.namespace, this.state.selectedPhases, this.state.selectedLabels, {limit: this.state.pagination.limit});
                             }}
                             isDisabled={this.state.batchActionDisabled}
-                        />
+                        />}
                         <div className='row'>
                             <div className='columns small-12 xlarge-2'>
                                 <div>{this.renderQuery(ctx)}</div>
