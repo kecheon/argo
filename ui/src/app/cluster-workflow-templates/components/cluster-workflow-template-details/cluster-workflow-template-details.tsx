@@ -3,6 +3,7 @@ import {SlidingPanel} from 'argo-ui/src/index';
 import * as React from 'react';
 import {RouteComponentProps} from 'react-router';
 import * as models from '../../../../models';
+import { UserState } from '../../../devstack/classes/current-user';
 import {uiUrl} from '../../../shared/base';
 import {BasePage} from '../../../shared/components/base-page';
 import {ErrorNotice} from '../../../shared/components/error-notice';
@@ -60,12 +61,14 @@ export class ClusterWorkflowTemplateDetails extends BasePage<RouteComponentProps
                                     {
                                         title: 'Submit',
                                         iconClassName: 'fa fa-plus',
-                                        action: () => (this.sidePanel = 'new')
+                                        action: () => (this.sidePanel = 'new'),
+                                        disabled: ctx.currentUser.role.level >= 3
                                     },
                                     {
                                         title: 'Delete',
                                         iconClassName: 'fa fa-trash',
-                                        action: () => this.deleteClusterWorkflowTemplate()
+                                        action: () => this.deleteClusterWorkflowTemplate(),
+                                        disabled: ctx.currentUser.role.level > 0
                                     }
                                 ]
                             },
@@ -78,7 +81,7 @@ export class ClusterWorkflowTemplateDetails extends BasePage<RouteComponentProps
                             ]
                         }}>
                         <div className='argo-container'>
-                            <div className='workflow-details__content'>{this.renderClusterWorkflowTemplate()}</div>
+                            <div className='workflow-details__content'>{this.renderClusterWorkflowTemplate(ctx.currentUser)}</div>
                         </div>
                         {this.state.template && (
                             <SlidingPanel isShown={this.sidePanel !== null} onClose={() => (this.sidePanel = null)}>
@@ -98,14 +101,14 @@ export class ClusterWorkflowTemplateDetails extends BasePage<RouteComponentProps
         );
     }
 
-    private renderClusterWorkflowTemplate() {
+    private renderClusterWorkflowTemplate(currentUser: UserState) {
         if (this.state.error) {
             return <ErrorNotice error={this.state.error} />;
         }
         if (!this.state.template) {
             return <Loading />;
         }
-        return <ClusterWorkflowTemplateSummaryPanel template={this.state.template} onChange={template => this.setState({template})} />;
+        return <ClusterWorkflowTemplateSummaryPanel template={this.state.template} onChange={template => this.setState({template})} currentUser={currentUser} />;
     }
 
     private deleteClusterWorkflowTemplate() {
