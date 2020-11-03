@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import {WorkflowTemplate} from '../../../models';
+import { UserState } from '../../devstack/classes/current-user';
 import {ResourceEditor} from '../../shared/components/resource-editor/resource-editor';
 import {Timestamp} from '../../shared/components/timestamp';
 import {services} from '../../shared/services';
@@ -8,6 +9,7 @@ import {services} from '../../shared/services';
 interface Props {
     template: WorkflowTemplate;
     onChange: (template: WorkflowTemplate) => void;
+    currentUser: UserState
 }
 
 export const WorkflowTemplateSummaryPanel = (props: Props) => {
@@ -40,6 +42,7 @@ export const WorkflowTemplateSummaryPanel = (props: Props) => {
                         }
                         kind='WorkflowTemplate'
                         title='Update Workflow Template'
+                        readonly={props.currentUser.role.level >= 3}
                     />
                 </div>
             </div>
