@@ -2,6 +2,7 @@ import {Page, SlidingPanel} from 'argo-ui';
 import * as React from 'react';
 import {Link, RouteComponentProps} from 'react-router-dom';
 import * as models from '../../../../models';
+import { UserState } from '../../../devstack/classes/current-user';
 import {uiUrl} from '../../../shared/base';
 import {BasePage} from '../../../shared/components/base-page';
 import {ErrorNotice} from '../../../shared/components/error-notice';
@@ -70,7 +71,7 @@ export class CronWorkflowList extends BasePage<RouteComponentProps<any>, State> 
                             tools: [<NamespaceFilter key='namespace-filter' value={this.namespace} onChange={namespace => (this.namespace = namespace)} />]
                         }}>
                         <div className='row'>
-                            <div className='columns small-12'>{this.renderCronWorkflows()}</div>
+                            <div className='columns small-12'>{this.renderCronWorkflows(ctx.currentUser)}</div>
                         </div>
                         <SlidingPanel isShown={this.sidePanel !== null} onClose={() => (this.sidePanel = null)}>
                             <ResourceEditor
@@ -105,7 +106,7 @@ export class CronWorkflowList extends BasePage<RouteComponentProps<any>, State> 
             .catch(error => this.setState({error}));
     }
 
-    private renderCronWorkflows() {
+    private renderCronWorkflows(currentUser: UserState) {
         if (this.state.error) {
             return <ErrorNotice error={this.state.error} style={{margin: 20}} />;
         }
@@ -135,7 +136,7 @@ export class CronWorkflowList extends BasePage<RouteComponentProps<any>, State> 
                         <Link
                             className='row argo-table-list__row'
                             key={`${w.metadata.namespace}/${w.metadata.name}`}
-                            to={uiUrl(`cron-workflows/${w.metadata.namespace}/${w.metadata.name}`)}>
+                            to={uiUrl(`cron-workflows/${w.metadata.namespace}/${w.metadata.name}/${currentUser.role.level}`)}>
                             <div className='columns small-1'>
                                 <i className='fa fa-clock' />
                             </div>

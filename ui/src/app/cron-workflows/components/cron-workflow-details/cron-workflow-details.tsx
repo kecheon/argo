@@ -26,6 +26,10 @@ export class CronWorkflowDetails extends BasePage<RouteComponentProps<any>, Stat
         return this.props.match.params.name;
     }
 
+    private get level() {
+        return this.props.match.params.level;
+    }
+
     constructor(props: RouteComponentProps<any>, context: any) {
         super(props, context);
         this.state = {};
@@ -45,13 +49,13 @@ export class CronWorkflowDetails extends BasePage<RouteComponentProps<any>, Stat
                       title: 'Suspend',
                       iconClassName: 'fa fa-pause',
                       action: () => this.suspendCronWorkflow(),
-                      disabled: !this.state.cronWorkflow
+                      disabled: !this.state.cronWorkflow || this.level >= 3
                   }
                 : {
                       title: 'Resume',
                       iconClassName: 'fa fa-play',
                       action: () => this.resumeCronWorkflow(),
-                      disabled: !this.state.cronWorkflow || !this.state.cronWorkflow.spec.suspend
+                      disabled: !this.state.cronWorkflow || !this.state.cronWorkflow.spec.suspend || this.level >= 3
                   };
         return (
             <Page
@@ -62,12 +66,14 @@ export class CronWorkflowDetails extends BasePage<RouteComponentProps<any>, Stat
                             {
                                 title: 'Submit',
                                 iconClassName: 'fa fa-plus',
-                                action: () => this.submitCronWorkflow()
+                                action: () => this.submitCronWorkflow(),
+                                disabled: this.level >= 3
                             },
                             {
                                 title: 'Delete',
                                 iconClassName: 'fa fa-trash',
-                                action: () => this.deleteCronWorkflow()
+                                action: () => this.deleteCronWorkflow(),
+                                disabled: this.level >= 3
                             },
                             suspendButton
                         ]
