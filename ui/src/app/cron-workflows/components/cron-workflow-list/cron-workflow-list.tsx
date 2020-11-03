@@ -62,7 +62,8 @@ export class CronWorkflowList extends BasePage<RouteComponentProps<any>, State> 
                                     {
                                         title: 'Create New Cron Workflow',
                                         iconClassName: 'fa fa-plus',
-                                        action: () => (this.sidePanel = 'new')
+                                        action: () => (this.sidePanel = 'new'),
+                                        disabled: ctx.currentUser.role.level >= 3
                                     }
                                 ]
                             },
