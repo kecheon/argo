@@ -46,64 +46,76 @@ const reportsUrl = uiUrl('reports');
 
 export const history = createBrowserHistory();
 
-const navItems = [
-    {
-        title: 'Login',
-        path: loginUrl,
-        iconClassName: 'fa fa-sign-in-alt'
-    },
-    {
-        title: 'Logout',
-        path: logoutUrl,
-        iconClassName: 'fa fa-sign-out-alt'
-    },
-    {
-        title: 'Timeline',
-        path: workflowsUrl,
-        iconClassName: 'fa fa-stream'
-    },
-    {
-        title: 'Workflow Templates',
-        path: workflowTemplatesUrl,
-        iconClassName: 'fa fa-window-maximize'
-    },
-    {
-        title: 'Cluster Workflow Templates',
-        path: clusterWorkflowTemplatesUrl,
-        iconClassName: 'fa fa-window-restore'
-    },
-    {
-        title: 'Cron Workflows',
-        path: cronWorkflowsUrl,
-        iconClassName: 'fa fa-clock'
-    },
-    {
-        title: 'Archived Workflows',
-        path: archivedWorkflowsUrl,
-        iconClassName: 'fa fa-archive'
-    },
-    {
-        title: 'Reports',
-        path: reportsUrl,
-        iconClassName: 'fa fa-chart-bar'
-    },
-    {
-        title: 'User',
-        path: userInfoUrl,
-        // path: loginUrl,
-        iconClassName: 'fa fa-user-alt'
-    },
-    {
-        title: 'API Docs',
-        path: apiDocsUrl,
-        iconClassName: 'fa fa-code'
-    },
-    {
-        title: 'Help',
-        path: helpUrl,
-        iconClassName: 'fa fa-question-circle'
-    }
-];
+const navItems = {
+    loggedInUser: [
+        {
+            title: 'Logout',
+            path: logoutUrl,
+            iconClassName: 'fa fa-sign-out-alt'
+        }
+    ],
+    anonymousUser: [
+        {
+            title: 'Login',
+            path: loginUrl,
+            iconClassName: 'fa fa-sign-in-alt'
+        }
+    ],
+    user: [
+        {
+            title: 'Timeline',
+            path: workflowsUrl,
+            iconClassName: 'fa fa-stream'
+        },
+        {
+            title: 'Workflow Templates',
+            path: workflowTemplatesUrl,
+            iconClassName: 'fa fa-window-maximize'
+        },
+        {
+            title: 'Cluster Workflow Templates',
+            path: clusterWorkflowTemplatesUrl,
+            iconClassName: 'fa fa-window-restore'
+        },
+        {
+            title: 'Cron Workflows',
+            path: cronWorkflowsUrl,
+            iconClassName: 'fa fa-clock'
+        },
+        
+        {
+            title: 'Reports',
+            path: reportsUrl,
+            iconClassName: 'fa fa-chart-bar'
+        }
+    ],
+    tadmin: [
+        {
+            title: 'User',
+            path: userInfoUrl,
+            // path: loginUrl,
+            iconClassName: 'fa fa-user-alt'
+        }
+    ],
+    admin: [
+        {
+            title: 'Archived Workflows',
+            path: archivedWorkflowsUrl,
+            iconClassName: 'fa fa-archive'
+        },
+        {
+            title: 'API Docs',
+            path: apiDocsUrl,
+            iconClassName: 'fa fa-code'
+        },
+        {
+            title: 'Help',
+            path: helpUrl,
+            iconClassName: 'fa fa-question-circle'
+        }
+    ]
+};
+
 export class App extends React.Component<{}, {version?: Version; popupProps: PopupProps; namespace?: string;}> {
 
     private get archivedWorkflowsUrl() {
@@ -130,7 +142,7 @@ export class App extends React.Component<{}, {version?: Version; popupProps: Pop
         apis: PropTypes.object
     }
     public currentUser: UserState;
-    public navItems = navItems;
+    public navItems = navItems.user;
 
     private popupManager: PopupManager;
     private notificationsManager: NotificationsManager;
@@ -163,12 +175,19 @@ export class App extends React.Component<{}, {version?: Version; popupProps: Pop
                 });
             });
         const loggedInUser = localStorage.getItem('user');
+
         if (loggedInUser) {
             const foundUser = JSON.parse(loggedInUser);
             this.currentUser = foundUser;
-            this.navItems.splice(0, 1);
+            this.navItems = navItems.loggedInUser.concat(this.navItems);
+            if (this.currentUser.role.level <= 1) {
+                this.navItems = this.navItems.concat(navItems.tadmin);
+            }
+            if (this.currentUser.role.level <= 0) {
+                this.navItems = this.navItems.concat(navItems.admin);
+            }
         } else {
-            this.navItems.splice(1, 1);
+            this.navItems = navItems.anonymousUser.concat(this.navItems);
         }
     }
 
