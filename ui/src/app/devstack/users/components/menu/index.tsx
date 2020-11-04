@@ -7,17 +7,17 @@ const menu = [
   {
       title: 'Manage Users',
       description: 'Create/update/delete User',
-      path: 'userinfo'
+      path: 'list'
   },
   {
       title: 'Manage Namespaces',
       description: 'Create/update/delete Namespaces',
-      path: 'userinfo'
+      path: 'namespaces'
   },
   {
       title: 'Manage Roles',
       description: 'View Roles',
-      path: 'userinfo'
+      path: 'roles'
   }
 ]
 
@@ -26,7 +26,7 @@ export const UsersOverview = () => (
     <div className='settings-overview'>
       <div className='argo-container'>
         {menu.map(item => (
-              <div key={item.path} className='settings-overview__redirect-panel' onClick={() => document.location.href=uiUrl(item.path)}>
+              <div key={item.path} className='settings-overview__redirect-panel' onClick={() => document.location.href=uiUrl(`users/list`)}>
                   <div className='settings-overview__redirect-panel__content'>
                       <div className='settings-overview__redirect-panel__title'>{item.title}</div>
                       <div className='settings-overview__redirect-panel__description'>{item.description}</div>

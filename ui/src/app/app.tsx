@@ -31,6 +31,7 @@ import register from './devstack/register';
 import userinfo from './devstack/userinfo';
 import {navItems} from './devstack/classes/constants';
 import users from './devstack/users';
+import {UsersList} from './devstack/users/components/users-list/users-list';
 
 const workflowsUrl = uiUrl('workflows');
 const workflowTemplatesUrl = uiUrl('workflow-templates');
@@ -46,6 +47,7 @@ const registerUrl = uiUrl('register');
 const timelineUrl = uiUrl('timeline');
 const reportsUrl = uiUrl('reports');
 const usersUrl = uiUrl('users');
+const usersListUrl = uiUrl('users/list');
 
 export const history = createBrowserHistory();
 
@@ -184,6 +186,7 @@ export class App extends React.Component<{}, {version?: Version; popupProps: Pop
                                     <Route exact={true} strict={true} path={registerUrl} component={register.component} />
                                     <Route exact={true} strict={true} path={logoutUrl} component={logout.component} />
                                     <Route exact={true} strict={true} path={usersUrl} component={users.component} />
+                                    <Route exact={true} strict={true} path={usersListUrl} component={UsersList} />
                                 </Switch>
                             </ErrorBoundary>
                         </Layout>
