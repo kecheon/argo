@@ -26,7 +26,16 @@ import {WorkflowFilters} from '../workflow-filters/workflow-filters';
 import {WorkflowsRow} from '../workflows-row/workflows-row';
 import {WorkflowsToolbar} from '../workflows-toolbar/workflows-toolbar';
 
+import {UserService} from '../../../services/user-service';
+
 require('./workflows-list.scss');
+
+interface User {
+    id: string;
+    name: string;
+    domain_id: string;
+    email?: string;
+}
 
 interface State {
     namespace: string;
@@ -35,6 +44,7 @@ interface State {
     selectedLabels: string[];
     selectedWorkflows: Map<string, models.Workflow>;
     workflows?: Workflow[];
+    users?: User[];
     error?: Error;
     batchActionDisabled: Actions.OperationDisabled;
 }
@@ -53,7 +63,7 @@ const allBatchActionsEnabled: Actions.OperationDisabled = {
     TERMINATE: false,
     DELETE: false
 };
-
+const userService = new UserService();
 const LOCAL_STORAGE_KEY = 'ListOptions';
 
 export class UsersList extends BasePage<RouteComponentProps<any>, State> {
@@ -201,7 +211,7 @@ export class UsersList extends BasePage<RouteComponentProps<any>, State> {
     }
 
     private reloadWorkflows() {
-        this.fetchWorkflows(this.state.namespace, this.state.selectedPhases, this.state.selectedLabels, this.state.pagination);
+        this.fetchUsers(this.state.namespace, this.state.selectedPhases, this.state.selectedLabels, this.state.pagination);
     }
 
     private fetchWorkflows(namespace: string, selectedPhases: string[], selectedLabels: string[], pagination: Pagination): void {
@@ -216,7 +226,7 @@ export class UsersList extends BasePage<RouteComponentProps<any>, State> {
                         error: null,
                         namespace,
                         workflows: wfList.items || [],
-                        pagination: {offset: pagination.offset, limit: pagination.limit, nextOffset: wfList.metadata.continue},
+                        pagination: {offset: pagination.offset, limit: pagination.limit, nextOffset: 'wfList.metadata.continue'},
                         selectedPhases,
                         selectedLabels,
                         selectedWorkflows: new Map<string, models.Workflow>()
@@ -260,6 +270,62 @@ export class UsersList extends BasePage<RouteComponentProps<any>, State> {
             .then(_ => this.setState({error: null}))
             .catch(error => this.setState({error}));
     }
+    private fetchUsers(namespace: string, selectedPhases: string[], selectedLabels: string[], pagination: Pagination): void {
+        if (this.subscription) {
+            this.subscription.unsubscribe();
+        }
+        userService
+            .getUsers()
+            .then(usersList => {
+                this.setState(
+                    {
+                        error: null,
+                        namespace,
+                        users: usersList.users || [],
+                        pagination: {offset: pagination.offset, limit: pagination.limit, nextOffset: 'wfList.metadata.continue'},
+                        selectedPhases,
+                        selectedLabels,
+                        selectedWorkflows: new Map<string, models.Workflow>()
+                    },
+                    this.saveHistory
+                );
+                return usersList;
+            })
+            // .then(resourceVersion => {
+            //     this.subscription = services.workflows
+            //         .watchFields({namespace, phases: selectedPhases, labels: selectedLabels, resourceVersion})
+            //         .map(workflowChange => {
+            //             const workflows = this.state.workflows;
+            //             if (!workflowChange) {
+            //                 return {workflows, updated: false};
+            //             }
+            //             const index = workflows.findIndex(item => item.metadata.uid === workflowChange.object.metadata.uid);
+            //             if (index > -1 && workflowChange.object.metadata.resourceVersion === workflows[index].metadata.resourceVersion) {
+            //                 return {workflows, updated: false};
+            //             }
+            //             if (workflowChange.type === 'DELETED') {
+            //                 if (index > -1) {
+            //                     workflows.splice(index, 1);
+            //                 }
+            //             } else {
+            //                 if (index > -1) {
+            //                     workflows[index] = workflowChange.object;
+            //                 } else if (!this.state.pagination.limit) {
+            //                     workflows.unshift(workflowChange.object);
+            //                 }
+            //             }
+            //             return {workflows, updated: true};
+            //         })
+            //         .filter(item => item.updated)
+            //         .map(item => item.workflows)
+            //         .subscribe(
+            //             workflows => this.setState({error: null, workflows}),
+            //             error => this.setState({error})
+            //         );
+            // })
+            .then(_ => this.setState({error: null}))
+            .catch(error => this.setState({error}));
+    }
 
     private changeFilters(namespace: string, selectedPhases: string[], selectedLabels: string[], pagination: Pagination) {
         this.fetchWorkflows(namespace, selectedPhases, selectedLabels, pagination);
@@ -274,11 +340,12 @@ export class UsersList extends BasePage<RouteComponentProps<any>, State> {
     private countsByCompleted() {
         const counts = {complete: 0, incomplete: 0};
         this.state.workflows.forEach(wf => {
-            if (wf.metadata.labels && wf.metadata.labels[labels.completed] === 'true') {
+            // if (wf.metadata.labels && wf.metadata.labels[labels.completed] === 'true') {
                 counts.complete++;
-            } else {
-                counts.incomplete++;
-            }
+                console.log(labels.completed);
+            // } else {
+            //     counts.incomplete++;
+            // }
         });
         return counts;
     }

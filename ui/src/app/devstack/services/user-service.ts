@@ -1,5 +1,7 @@
 import axios from 'axios';
 import {UserInfo} from '../../shared/models';
+import usersList from './__mocks__/users';
+// import { UsersList } from '../users/components/users-list/users-list';
 const keystoneEndPoint = 'http://localhost:5000/api';
 // const keystoneEndPoint = 'http://183.111.177.141/identity/v3';
 
@@ -24,7 +26,7 @@ export class UserService {
         return response.data;
     }
 
-    public async logout(): Promise<boolean> {
+    public async logout(): Promise<any> {
         const response = await axios.post(`${keystoneEndPoint}/auth/logout`);
         return response.data;
     }
@@ -36,5 +38,8 @@ export class UserService {
     public async register(userProfile: object): Promise<UserInfo> {
         const response = await axios.post('/api/v1/auth/register', userProfile);
         return response.data as UserInfo;
+    }
+    public async getUsers(): Promise<any> {
+        return usersList;
     }
 }
