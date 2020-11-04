@@ -143,7 +143,7 @@ export class UsersList extends BasePage<RouteComponentProps<any>, State> {
                             actionMenu: {
                                 items: [
                                     {
-                                        title: 'Submit New Workflow',
+                                        title: 'Create New User',
                                         iconClassName: 'fa fa-plus',
                                         disabled: ctx.currentUser.role.level > 0,
                                         action: () => ctx.navigation.goto('.', {new: '{}'})

@@ -7,6 +7,7 @@ import {DurationPanel} from '../../../../shared/components/duration-panel';
 import {PhaseIcon} from '../../../../shared/components/phase-icon';
 import {Timestamp} from '../../../../shared/components/timestamp';
 import {wfDuration} from '../../../../shared/duration';
+import {WorkflowDrawer} from '../workflow-drawer/workflow-drawer';
 
 interface WorkflowsRowProps {
     workflow: Workflow;
@@ -80,6 +81,17 @@ export class WorkflowsRow extends React.Component<WorkflowsRowProps, WorkflowRow
                             </div>
                         </div>
                     </Link>
+                    {this.state.hideDrawer ? (
+                        <span />
+                    ) : (
+                        <WorkflowDrawer
+                            name={wf.metadata.name}
+                            namespace={wf.metadata.namespace}
+                            onChange={key => {
+                                this.props.onChange(key);
+                            }}
+                        />
+                    )}
                 </div>
             </div>
         );
