@@ -16,7 +16,7 @@ import {Loading} from '../../../../shared/components/loading';
 import {ZeroState} from '../../../../shared/components/zero-state';
 import {exampleWorkflow} from '../../../../shared/examples';
 import {Utils} from '../../../../shared/utils';
-import * as Actions from '../../../../shared/workflow-operations-map';
+import * as Actions from '../workflow-operations-map';
 
 import {CostOptimisationNudge} from '../../../../shared/components/cost-optimisation-nudge';
 import {ErrorNotice} from '../../../../shared/components/error-notice';
@@ -59,12 +59,7 @@ interface WorkflowListRenderOptions {
 }
 
 const allBatchActionsEnabled: Actions.OperationDisabled = {
-    RETRY: false,
-    RESUBMIT: false,
-    SUSPEND: false,
-    RESUME: false,
-    STOP: false,
-    TERMINATE: false,
+    EDIT: false,
     DELETE: false
 };
 const userService = new UserService();
@@ -439,8 +434,8 @@ export class UsersList extends BasePage<RouteComponentProps<any>, State> {
         }
         if (this.state.users.length === 0) {
             return (
-                <ZeroState title='No workflows'>
-                    <p>To create a new workflow, use the button above.</p>
+                <ZeroState title='No users'>
+                    <p>To create a new user, use the button above.</p>
                 </ZeroState>
             );
         }
