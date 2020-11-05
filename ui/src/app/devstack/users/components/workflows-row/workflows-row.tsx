@@ -1,18 +1,20 @@
-import {Ticker} from 'argo-ui/src/index';
+// import {Ticker} from 'argo-ui/src/index';
 import * as React from 'react';
 import {Link} from 'react-router-dom';
-import {Workflow} from '../../../../../models';
+// import {Workflow} from '../../../../../models';
+import {User} from '../models';
 import {uiUrl} from '../../../../shared/base';
-import {DurationPanel} from '../../../../shared/components/duration-panel';
-import {PhaseIcon} from '../../../../shared/components/phase-icon';
-import {Timestamp} from '../../../../shared/components/timestamp';
-import {wfDuration} from '../../../../shared/duration';
+// import {DurationPanel} from '../../../../shared/components/duration-panel';
+// import {PhaseIcon} from '../../../../shared/components/phase-icon';
+// import {Timestamp} from '../../../../shared/components/timestamp';
+// import {wfDuration} from '../../../../shared/duration';
 import {WorkflowDrawer} from '../workflow-drawer/workflow-drawer';
 
 interface WorkflowsRowProps {
-    workflow: Workflow;
+    // workflow: Workflow;
+    user: User;
     onChange: (key: string) => void;
-    select: (wf: Workflow) => void;
+    select: (wf: User) => void;
     checked: boolean;
 }
 
@@ -29,7 +31,7 @@ export class WorkflowsRow extends React.Component<WorkflowsRowProps, WorkflowRow
     }
 
     public render() {
-        const wf = this.props.workflow;
+        const wf = this.props.user;
         return (
             <div className='workflows-list__row-container'>
                 <div className='row argo-table-list__row'>
@@ -42,24 +44,18 @@ export class WorkflowsRow extends React.Component<WorkflowsRowProps, WorkflowRow
                                 e.stopPropagation();
                             }}
                             onChange={e => {
-                                this.props.select(this.props.workflow);
+                                this.props.select(this.props.user);
                             }}
                         />
-                        <PhaseIcon value={wf.status.phase} />
+                        {/* <PhaseIcon value={wf.name} /> */}
                     </div>
-                    <Link to={uiUrl(`workflows/${wf.metadata.namespace}/${wf.metadata.name}`)} className='row small-11'>
-                        <div className='columns small-3'>{wf.metadata.name}</div>
-                        <div className='columns small-2'>{wf.metadata.namespace}</div>
-                        <div className='columns small-2'>
-                            <Timestamp date={wf.status.startedAt} />
-                        </div>
-                        <div className='columns small-2'>
-                            <Timestamp date={wf.status.finishedAt} />
-                        </div>
-                        <div className='columns small-1'>
-                            <Ticker>{() => <DurationPanel phase={wf.status.phase} duration={wfDuration(wf.status)} estimatedDuration={wf.status.estimatedDuration} />}</Ticker>
-                        </div>
-                        <div className='columns small-1'>{wf.status.progress || '-'}</div>
+                    <Link to={uiUrl(`workflows/${wf.domain_id}/${wf.name}`)} className='row small-11'>
+                        <div className='columns small-2'>{wf.name}</div>
+                        <div className='columns small-2'>Description</div>
+                        <div className='columns small-2'>{wf.email}</div>
+                        <div className='columns small-2'>{wf.id}</div>
+                        <div className='columns small-1'>{wf.enabled ? 'Yes' : 'No'}</div>
+                        <div className='columns small-2'>{wf.domain_id}</div>
                         <div className='columns small-1'>
                             <div className='workflows-list__labels-container'>
                                 <div
@@ -85,8 +81,8 @@ export class WorkflowsRow extends React.Component<WorkflowsRowProps, WorkflowRow
                         <span />
                     ) : (
                         <WorkflowDrawer
-                            name={wf.metadata.name}
-                            namespace={wf.metadata.namespace}
+                            name={wf.name}
+                            namespace={wf.domain_id}
                             onChange={key => {
                                 this.props.onChange(key);
                             }}

@@ -1,7 +1,8 @@
 import {NotificationType} from 'argo-ui';
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
-import {Workflow} from '../../../../../models';
+// import {Workflow} from '../../../../../models';
+import {User} from '../models';
 import {AppContext, Consumer} from '../../../../shared/context';
 import * as Actions from '../../../../shared/workflow-operations-map';
 import {WorkflowOperation, WorkflowOperationAction} from '../../../../shared/workflow-operations-map';
@@ -9,7 +10,7 @@ import {WorkflowOperation, WorkflowOperationAction} from '../../../../shared/wor
 require('./workflows-toolbar.scss');
 
 interface WorkflowsToolbarProps {
-    selectedWorkflows: Map<string, Workflow>;
+    selectedWorkflows: Map<string, User>;
     loadWorkflows: () => void;
     isDisabled: Actions.OperationDisabled;
     clearSelection: () => void;
@@ -56,16 +57,17 @@ export class WorkflowsToolbar extends React.Component<WorkflowsToolbarProps, {}>
             return;
         }
         const promises: Promise<any>[] = [];
-        this.props.selectedWorkflows.forEach((wf: Workflow) => {
-            promises.push(
-                action(wf).catch(() => {
-                    this.props.loadWorkflows();
-                    this.appContext.apis.notifications.show({
-                        content: `Unable to ${title} workflow`,
-                        type: NotificationType.Error
-                    });
-                })
-            );
+        this.props.selectedWorkflows.forEach((wf: User) => {
+            // promises.push(
+            //     action(wf).catch(() => {
+            //         this.props.loadWorkflows();
+            //         this.appContext.apis.notifications.show({
+            //             content: `Unable to ${title} workflow`,
+            //             type: NotificationType.Error
+            //         });
+            //     })
+            // );
+            console.log(wf);
         });
         return Promise.all(promises);
     }
