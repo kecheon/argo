@@ -4,5 +4,8 @@ export interface User {
   domain_id: string;
   email?: string;
   enabled?: boolean;
-  password_expires_at?: string
+  password_expires_at?: string;
+  links?: {
+    self: string;
+  }
 }

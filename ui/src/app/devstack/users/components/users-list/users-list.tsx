@@ -36,6 +36,9 @@ interface User {
     name: string;
     domain_id: string;
     email?: string;
+    links?: {
+        self: string;
+    }
 }
 
 interface State {

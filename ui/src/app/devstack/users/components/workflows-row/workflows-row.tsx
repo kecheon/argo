@@ -1,9 +1,9 @@
 // import {Ticker} from 'argo-ui/src/index';
 import * as React from 'react';
-import {Link} from 'react-router-dom';
+// import {Link} from 'react-router-dom';
 // import {Workflow} from '../../../../../models';
 import {User} from '../models';
-import {uiUrl} from '../../../../shared/base';
+// import {uiUrl} from '../../../../shared/base';
 // import {DurationPanel} from '../../../../shared/components/duration-panel';
 // import {PhaseIcon} from '../../../../shared/components/phase-icon';
 // import {Timestamp} from '../../../../shared/components/timestamp';
@@ -49,7 +49,7 @@ export class WorkflowsRow extends React.Component<WorkflowsRowProps, WorkflowRow
                         />
                         {/* <PhaseIcon value={wf.name} /> */}
                     </div>
-                    <Link to={uiUrl(`workflows/${wf.domain_id}/${wf.name}`)} className='row small-11'>
+                    <div className='row small-11'>
                         <div className='columns small-2'>{wf.name}</div>
                         <div className='columns small-2'>Description</div>
                         <div className='columns small-2'>{wf.email}</div>
@@ -76,13 +76,15 @@ export class WorkflowsRow extends React.Component<WorkflowsRowProps, WorkflowRow
                                 </div>
                             </div>
                         </div>
-                    </Link>
+                    </div>
                     {this.state.hideDrawer ? (
                         <span />
                     ) : (
                         <WorkflowDrawer
                             name={wf.name}
-                            namespace={wf.domain_id}
+                            id={wf.id}
+                            domain_id={wf.domain_id}
+                            links={wf.links}
                             onChange={key => {
                                 this.props.onChange(key);
                             }}

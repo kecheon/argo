@@ -42,4 +42,7 @@ export class UserService {
     public async getUsers(): Promise<any> {
         return usersList;
     }
+    public async getProfile(link: string): Promise<any> {
+        return { userProfile: 'user profile by the self link' }
+    }
 }
