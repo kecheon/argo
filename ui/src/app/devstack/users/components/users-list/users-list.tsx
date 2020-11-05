@@ -8,26 +8,27 @@ import {Page, SlidingPanel} from 'argo-ui';
 import {labels, Workflow} from '../../../../../models';
 import {uiUrl} from '../../../../shared/base';
 import {Consumer} from '../../../../shared/context';
-import {services} from '../../../../shared/services';
+// import {services} from '../../../../shared/services';
 
 import {BasePage} from '../../../../shared/components/base-page';
 import {Loading} from '../../../../shared/components/loading';
 // import {Query} from '../../../../shared/components/query';
 import {ZeroState} from '../../../../shared/components/zero-state';
-import {exampleWorkflow} from '../../../../shared/examples';
+// import {exampleWorkflow} from '../../../../shared/examples';
 import {Utils} from '../../../../shared/utils';
 import * as Actions from '../workflow-operations-map';
 
 import {CostOptimisationNudge} from '../../../../shared/components/cost-optimisation-nudge';
 import {ErrorNotice} from '../../../../shared/components/error-notice';
 import {PaginationPanel} from '../../../../shared/components/pagination-panel';
-import {ResourceEditor} from '../../../../shared/components/resource-editor/resource-editor';
+// import {ResourceEditor} from '../../../../shared/components/resource-editor/resource-editor';
 import {Pagination, parseLimit} from '../../../../shared/pagination';
 // import {WorkflowFilters} from '../workflow-filters/workflow-filters';
 import {WorkflowsRow} from '../workflows-row/workflows-row';
 import {WorkflowsToolbar} from '../workflows-toolbar/workflows-toolbar';
 
 import {UserService} from '../../../services/user-service';
+import CreateUser from '../create-user/create-user';
 
 require('./workflows-list.scss');
 
@@ -189,8 +190,9 @@ export class UsersList extends BasePage<RouteComponentProps<any>, State> {
                             <div className='columns small-12 xlarge-10'>{this.renderUsers()}</div>
                         </div>
                         <SlidingPanel isShown={!!this.wfInput} onClose={() => ctx.navigation.goto('.', {new: null})}>
-                            <ResourceEditor
-                                title='Submit Workflow'
+                            <CreateUser />
+                            {/* <ResourceEditor
+                                title='Create new user'
                                 kind='Workflow'
                                 upload={true}
                                 editing={true}
@@ -201,7 +203,7 @@ export class UsersList extends BasePage<RouteComponentProps<any>, State> {
                                         .create(wfValue, wfValue.metadata.namespace || this.state.namespace)
                                         .then(wf => ctx.navigation.goto(uiUrl(`workflows/${wf.metadata.namespace}/${wf.metadata.name}`)))
                                 }
-                            />
+                            /> */}
                         </SlidingPanel>
                     </Page>
                 )}
