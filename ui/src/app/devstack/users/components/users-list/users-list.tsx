@@ -16,7 +16,7 @@ import {Loading} from '../../../../shared/components/loading';
 import {ZeroState} from '../../../../shared/components/zero-state';
 // import {exampleWorkflow} from '../../../../shared/examples';
 import {Utils} from '../../../../shared/utils';
-import * as Actions from '../workflow-operations-map';
+import * as Actions from '../user-operations-map';
 
 import {CostOptimisationNudge} from '../../../../shared/components/cost-optimisation-nudge';
 import {ErrorNotice} from '../../../../shared/components/error-notice';

@@ -1,6 +1,8 @@
 import {Workflow} from '../../../../models';
-import {services} from '../../../shared/services';
-import {Utils} from '../../../shared/utils';
+import {UserService} from '../../services/user-service';
+// import {Utils} from '../../../shared/utils';
+
+const service = new UserService();
 
 export type OperationDisabled = {
     [action in WorkflowOperationName]: boolean;
@@ -58,13 +60,13 @@ export const WorkflowOperationsMap: WorkflowOperations = {
     EDIT: {
         title: 'EDIT',
         iconClassName: 'fa fa-edit',
-        disabled: (wf: Workflow) => !Utils.isWorkflowRunning(wf),
-        action: (wf: Workflow) => services.workflows.terminate(wf.metadata.name, wf.metadata.namespace)
+        disabled: () => false,
+        action: (wf: Workflow) => service.getProfile('link')
     },
     DELETE: {
         title: 'DELETE',
         iconClassName: 'fa fa-trash',
         disabled: () => false,
-        action: (wf: Workflow) => services.workflows.delete(wf.metadata.name, wf.metadata.namespace)
+        action: (wf: Workflow) => service.delete('user id')
     }
 };

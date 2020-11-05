@@ -45,4 +45,7 @@ export class UserService {
     public async getProfile(link: string): Promise<any> {
         return { userProfile: 'user profile by the self link' }
     }
+    public async delete(link: string): Promise<any> {
+        return { status: 'success', message: 'user deleted' }
+    }
 }

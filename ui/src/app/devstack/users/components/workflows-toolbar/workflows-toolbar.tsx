@@ -4,7 +4,7 @@ import * as React from 'react';
 // import {Workflow} from '../../../../../models';
 import {User} from '../models';
 import {AppContext, Consumer} from '../../../../shared/context';
-import * as Actions from '../workflow-operations-map';
+import * as Actions from '../user-operations-map';
 import {WorkflowOperation, WorkflowOperationAction} from '../../../../shared/workflow-operations-map';
 
 require('./workflows-toolbar.scss');
