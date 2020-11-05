@@ -464,14 +464,14 @@ export class UsersList extends BasePage<RouteComponentProps<any>, State> {
                             <div className='columns small-1'>DETAILS</div>
                         </div>
                     </div>
-                    {this.state.users.map(wf => {
+                    {this.state.users.map(user => {
                         return (
                             <WorkflowsRow
-                                user={wf}
-                                key={wf.id}
-                                checked={this.state.selectedWorkflows.has(wf.id)}
+                                user={user}
+                                key={user.id}
+                                checked={this.state.selectedWorkflows.has(user.id)}
                                 onChange={key => {
-                                    const value = `${key}=${wf.id}`;
+                                    const value = `${key}=${user.id}`;
                                     let newTags: string[] = [];
                                     if (this.state.selectedLabels.indexOf(value) === -1) {
                                         newTags = this.state.selectedLabels.concat(value);
@@ -479,16 +479,16 @@ export class UsersList extends BasePage<RouteComponentProps<any>, State> {
                                     }
                                     this.changeFilters(this.state.namespace, this.state.selectedPhases, newTags, this.state.pagination);
                                 }}
-                                select={subWf => {
-                                    const wfUID = subWf.id;
-                                    if (!wfUID) {
+                                select={subUser => {
+                                    const userUID = subUser.id;
+                                    if (!userUID) {
                                         return;
                                     }
                                     const currentlySelected: Map<string, User> = this.state.selectedWorkflows;
-                                    if (!currentlySelected.has(wfUID)) {
-                                        currentlySelected.set(wfUID, subWf);
+                                    if (!currentlySelected.has(userUID)) {
+                                        currentlySelected.set(userUID, subUser);
                                     } else {
-                                        currentlySelected.delete(wfUID);
+                                        currentlySelected.delete(userUID);
                                     }
                                     this.updateCurrentlySelectedAndBatchActions(currentlySelected);
                                 }}
