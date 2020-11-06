@@ -28,7 +28,7 @@ import {WorkflowsRow} from './components/workflows-row/workflows-row';
 import {WorkflowsToolbar} from './components/workflows-toolbar/workflows-toolbar';
 
 // import {UserService} from '../../../services/user-service';
-import CreateUser from './components/create-user/create-user';
+import CreateUser from './components/create-namespace/create-namespace';
 import { NamespaceService } from '../../../services/namespace-service';
 import {Namespace} from '../models';
 
@@ -297,9 +297,9 @@ export class UsersNamespaces extends BasePage<RouteComponentProps<any>, State> {
                             <div className='columns small-2'>NAME</div>
                             <div className='columns small-2'>DESCRIPTION</div>
                             <div className='columns small-2'>Namespace ID</div>
-                            <div className='columns small-1'>ENABLED</div>
+                            <div className='columns small-2'>ENABLED</div>
                             <div className='columns small-2'>DOMAIN ID</div>
-                            <div className='columns small-1'>DETAILS</div>
+                            <div className='columns small-2'>DETAILS</div>
                         </div>
                     </div>
                     {this.state.namespaces.map(namespace => {

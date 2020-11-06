@@ -53,9 +53,9 @@ export class WorkflowsRow extends React.Component<WorkflowsRowProps, WorkflowRow
                         <div className='columns small-2'>{wf.name}</div>
                         <div className='columns small-2'>{wf.description}</div>
                         <div className='columns small-2'>{wf.id}</div>
-                        <div className='columns small-1'>{wf.enabled ? 'Yes' : 'No'}</div>
+                        <div className='columns small-2'>{wf.enabled ? 'Yes' : 'No'}</div>
                         <div className='columns small-2'>{wf.domain_id}</div>
-                        <div className='columns small-1'>
+                        <div className='columns small-2'>
                             <div className='workflows-list__labels-container'>
                                 <div
                                     onClick={e => {
