@@ -32,7 +32,7 @@ import userinfo from './devstack/userinfo';
 import {navItems} from './devstack/classes/constants';
 import users from './devstack/users';
 import {UsersList} from './devstack/users/components/users-list/users-list';
-import UsersNamespaces from './devstack/users/components/namespaces';
+import {UsersNamespaces} from './devstack/users/components/namespaces/namespaces-list';
 
 const workflowsUrl = uiUrl('workflows');
 const workflowTemplatesUrl = uiUrl('workflow-templates');

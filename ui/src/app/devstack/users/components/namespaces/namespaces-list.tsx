@@ -27,8 +27,10 @@ import {Pagination, parseLimit} from '../../../../shared/pagination';
 import {WorkflowsRow} from './components/workflows-row/workflows-row';
 import {WorkflowsToolbar} from './components/workflows-toolbar/workflows-toolbar';
 
-import {UserService} from '../../../services/user-service';
+// import {UserService} from '../../../services/user-service';
 import CreateUser from './components/create-user/create-user';
+import { NamespaceService } from '../../../services/namespace-service';
+import {Namespace} from '../models';
 
 require('./workflows-list.scss');
 
@@ -47,8 +49,9 @@ interface State {
     pagination: Pagination;
     selectedPhases: string[];
     selectedLabels: string[];
-    selectedWorkflows: Map<string, User>;
+    selectedWorkflows: Map<string, Namespace>;
     workflows?: Workflow[];
+    namespaces?: Namespace[];
     users?: User[];
     error?: Error;
     batchActionDisabled: Actions.OperationDisabled;
@@ -63,7 +66,8 @@ const allBatchActionsEnabled: Actions.OperationDisabled = {
     EDIT: false,
     DELETE: false
 };
-const userService = new UserService();
+// const userService = new UserService();
+const namespaceService = new NamespaceService();
 const LOCAL_STORAGE_KEY = 'ListOptions';
 
 export class UsersNamespaces extends BasePage<RouteComponentProps<any>, State> {
@@ -124,19 +128,19 @@ export class UsersNamespaces extends BasePage<RouteComponentProps<any>, State> {
             namespace: this.props.match.params.namespace || '',
             selectedPhases: this.queryParams('phase').length > 0 ? this.queryParams('phase') : savedOptions.selectedPhases,
             selectedLabels: this.queryParams('label'),
-            selectedWorkflows: new Map<string, User>(),
+            selectedWorkflows: new Map<string, Namespace>(),
             batchActionDisabled: {...allBatchActionsEnabled}
         };
     }
 
     public componentDidMount(): void {
-        this.setState({selectedWorkflows: new Map<string, User>()}, () => {
+        this.setState({selectedWorkflows: new Map<string, Namespace>()}, () => {
             this.reloadWorkflows();
         });
     }
 
     public componentWillUnmount(): void {
-        this.setState({selectedWorkflows: new Map<string, User>()});
+        this.setState({selectedWorkflows: new Map<string, Namespace>()});
         if (this.subscription) {
             this.subscription.unsubscribe();
         }
@@ -153,7 +157,7 @@ export class UsersNamespaces extends BasePage<RouteComponentProps<any>, State> {
                             actionMenu: {
                                 items: [
                                     {
-                                        title: 'Create New User',
+                                        title: 'Create New Namespace',
                                         iconClassName: 'fa fa-plus',
                                         disabled: ctx.currentUser.role.level > 0,
                                         action: () => ctx.navigation.goto('.', {new: '{}'})
@@ -164,9 +168,9 @@ export class UsersNamespaces extends BasePage<RouteComponentProps<any>, State> {
                         }}>
                         {(ctx.currentUser.role.level < 3) && <WorkflowsToolbar
                             selectedWorkflows={this.state.selectedWorkflows}
-                            clearSelection={() => this.setState({selectedWorkflows: new Map<string, User>()})}
+                            clearSelection={() => this.setState({selectedWorkflows: new Map<string, Namespace>()})}
                             loadWorkflows={() => {
-                                this.setState({selectedWorkflows: new Map<string, User>()});
+                                this.setState({selectedWorkflows: new Map<string, Namespace>()});
                                 this.changeFilters(this.state.namespace, this.state.selectedPhases, this.state.selectedLabels, {limit: this.state.pagination.limit});
                             }}
                             isDisabled={this.state.batchActionDisabled}
@@ -187,7 +191,7 @@ export class UsersNamespaces extends BasePage<RouteComponentProps<any>, State> {
                                     />
                                 </div>
                             </div> */}
-                            <div className='columns small-12 xlarge-10'>{this.renderUsers()}</div>
+                            <div className='columns small-12 xlarge-10'>{this.renderNamespaces()}</div>
                         </div>
                         <SlidingPanel isShown={!!this.wfInput} onClose={() => ctx.navigation.goto('.', {new: null})}>
                             <CreateUser />
@@ -212,135 +216,46 @@ export class UsersNamespaces extends BasePage<RouteComponentProps<any>, State> {
     }
 
     private reloadWorkflows() {
-        this.fetchUsers(this.state.namespace, this.state.selectedPhases, this.state.selectedLabels, this.state.pagination);
+        this.fetchNamespaces(this.state.namespace, this.state.selectedPhases, this.state.selectedLabels, this.state.pagination);
     }
 
-    // private fetchWorkflows(namespace: string, selectedPhases: string[], selectedLabels: string[], pagination: Pagination): void {
-    //     if (this.subscription) {
-    //         this.subscription.unsubscribe();
-    //     }
-    //     services.workflows
-    //         .list(namespace, selectedPhases, selectedLabels, pagination)
-    //         .then(wfList => {
-    //             this.setState(
-    //                 {
-    //                     error: null,
-    //                     namespace,
-    //                     workflows: wfList.items || [],
-    //                     pagination: {offset: pagination.offset, limit: pagination.limit, nextOffset: 'wfList.metadata.continue'},
-    //                     selectedPhases,
-    //                     selectedLabels,
-    //                     selectedWorkflows: new Map<string, models.Workflow>()
-    //                 },
-    //                 this.saveHistory
-    //             );
-    //             return wfList.metadata.resourceVersion;
-    //         })
-    //         .then(resourceVersion => {
-    //             this.subscription = services.workflows
-    //                 .watchFields({namespace, phases: selectedPhases, labels: selectedLabels, resourceVersion})
-    //                 .map(workflowChange => {
-    //                     const workflows = this.state.workflows;
-    //                     if (!workflowChange) {
-    //                         return {workflows, updated: false};
-    //                     }
-    //                     const index = workflows.findIndex(item => item.metadata.uid === workflowChange.object.metadata.uid);
-    //                     if (index > -1 && workflowChange.object.metadata.resourceVersion === workflows[index].metadata.resourceVersion) {
-    //                         return {workflows, updated: false};
-    //                     }
-    //                     if (workflowChange.type === 'DELETED') {
-    //                         if (index > -1) {
-    //                             workflows.splice(index, 1);
-    //                         }
-    //                     } else {
-    //                         if (index > -1) {
-    //                             workflows[index] = workflowChange.object;
-    //                         } else if (!this.state.pagination.limit) {
-    //                             workflows.unshift(workflowChange.object);
-    //                         }
-    //                     }
-    //                     return {workflows, updated: true};
-    //                 })
-    //                 .filter(item => item.updated)
-    //                 .map(item => item.workflows)
-    //                 .subscribe(
-    //                     workflows => this.setState({error: null, workflows}),
-    //                     error => this.setState({error})
-    //                 );
-    //         })
-    //         .then(_ => this.setState({error: null}))
-    //         .catch(error => this.setState({error}));
-    // }
-    private fetchUsers(namespace: string, selectedPhases: string[], selectedLabels: string[], pagination: Pagination): void {
+    private fetchNamespaces(namespace: string, selectedPhases: string[], selectedLabels: string[], pagination: Pagination): void {
         if (this.subscription) {
             this.subscription.unsubscribe();
         }
-        userService
-            .getUsers()
-            .then(usersList => {
+        namespaceService
+            .get()
+            .then(namespacesList => {
                 this.setState(
                     {
                         error: null,
-                        namespace,
-                        users: usersList.users || [],
-                        pagination: {offset: pagination.offset, limit: pagination.limit, nextOffset: 'wfList.metadata.continue'},
+                        namespaces: namespacesList || [],
+                        // pagination: {offset: pagination.offset, limit: pagination.limit, nextOffset: 'wfList.metadata.continue'},
                         selectedPhases,
                         selectedLabels,
-                        selectedWorkflows: new Map<string, User>()
+                        selectedWorkflows: new Map<string, Namespace>()
                     },
                     this.saveHistory
                 );
-                return usersList;
+                return namespacesList;
             })
-            // .then(resourceVersion => {
-            //     this.subscription = services.workflows
-            //         .watchFields({namespace, phases: selectedPhases, labels: selectedLabels, resourceVersion})
-            //         .map(workflowChange => {
-            //             const workflows = this.state.workflows;
-            //             if (!workflowChange) {
-            //                 return {workflows, updated: false};
-            //             }
-            //             const index = workflows.findIndex(item => item.metadata.uid === workflowChange.object.metadata.uid);
-            //             if (index > -1 && workflowChange.object.metadata.resourceVersion === workflows[index].metadata.resourceVersion) {
-            //                 return {workflows, updated: false};
-            //             }
-            //             if (workflowChange.type === 'DELETED') {
-            //                 if (index > -1) {
-            //                     workflows.splice(index, 1);
-            //                 }
-            //             } else {
-            //                 if (index > -1) {
-            //                     workflows[index] = workflowChange.object;
-            //                 } else if (!this.state.pagination.limit) {
-            //                     workflows.unshift(workflowChange.object);
-            //                 }
-            //             }
-            //             return {workflows, updated: true};
-            //         })
-            //         .filter(item => item.updated)
-            //         .map(item => item.workflows)
-            //         .subscribe(
-            //             workflows => this.setState({error: null, workflows}),
-            //             error => this.setState({error})
-            //         );
-            // })
             .then(_ => this.setState({error: null}))
             .catch(error => this.setState({error}));
     }
 
     private changeFilters(namespace: string, selectedPhases: string[], selectedLabels: string[], pagination: Pagination) {
-        this.fetchUsers(namespace, selectedPhases, selectedLabels, pagination);
+        this.fetchNamespaces(namespace, selectedPhases, selectedLabels, pagination);
     }
 
     private saveHistory() {
         UsersNamespaces.saveOptions(this.options);
-        this.url = uiUrl('users/list' + this.state.namespace || '' + '?' + this.filterParams.toString());
+        this.url = uiUrl('users/namespaces' + this.state.namespace || '' + '?' + this.filterParams.toString());
         Utils.setCurrentNamespace(this.state.namespace);
     }
 
     private countsByCompleted() {
         const counts = {complete: 0, incomplete: 0};
-        this.state.users.forEach(wf => {
+        this.state.namespaces.forEach(wf => {
             // if (wf.metadata.labels && wf.metadata.labels[labels.completed] === 'true') {
                 counts.complete++;
                 console.log(labels.completed);
@@ -351,90 +266,14 @@ export class UsersNamespaces extends BasePage<RouteComponentProps<any>, State> {
         return counts;
     }
 
-    // private renderWorkflows() {
-    //     if (this.state.error) {
-    //         return <ErrorNotice error={this.state.error} onReload={() => this.reloadWorkflows()} reloadAfterSeconds={10} />;
-    //     }
-    //     if (!this.state.users) {
-    //         return <Loading />;
-    //     }
-    //     if (this.state.users.length === 0) {
-    //         return (
-    //             <ZeroState title='No workflows'>
-    //                 <p>To create a new workflow, use the button above.</p>
-    //             </ZeroState>
-    //         );
-    //     }
-
-    //     const counts = this.countsByCompleted();
-
-    //     return (
-    //         <>
-    //             {(counts.complete > 100 || counts.incomplete > 100) && (
-    //                 <CostOptimisationNudge name='workflow-list'>
-    //                     You have at least {counts.incomplete} incomplete, and {counts.complete} complete workflows. Reducing these amounts will reduce your costs.
-    //                 </CostOptimisationNudge>
-    //             )}
-    //             <div className='argo-table-list'>
-    //                 <div className='row argo-table-list__head'>
-    //                     <div className='columns workflows-list__status small-1' />
-    //                     <div className='row small-11'>
-    //                         <div className='columns small-3'>NAME</div>
-    //                         <div className='columns small-2'>NAMESPACE</div>
-    //                         <div className='columns small-2'>STARTED</div>
-    //                         <div className='columns small-2'>FINISHED</div>
-    //                         <div className='columns small-1'>DURATION</div>
-    //                         <div className='columns small-1'>PROGRESS</div>
-    //                         <div className='columns small-1'>DETAILS</div>
-    //                     </div>
-    //                 </div>
-    //                 {this.state.workflows.map(wf => {
-    //                     return (
-    //                         <WorkflowsRow
-    //                             workflow={wf}
-    //                             key={wf.metadata.uid}
-    //                             checked={this.state.selectedWorkflows.has(wf.metadata.uid)}
-    //                             onChange={key => {
-    //                                 const value = `${key}=${wf.metadata.labels[key]}`;
-    //                                 let newTags: string[] = [];
-    //                                 if (this.state.selectedLabels.indexOf(value) === -1) {
-    //                                     newTags = this.state.selectedLabels.concat(value);
-    //                                     this.setState({selectedLabels: newTags});
-    //                                 }
-    //                                 this.changeFilters(this.state.namespace, this.state.selectedPhases, newTags, this.state.pagination);
-    //                             }}
-    //                             select={subWf => {
-    //                                 const wfUID = subWf.metadata.uid;
-    //                                 if (!wfUID) {
-    //                                     return;
-    //                                 }
-    //                                 const currentlySelected: Map<string, Workflow> = this.state.selectedWorkflows;
-    //                                 if (!currentlySelected.has(wfUID)) {
-    //                                     currentlySelected.set(wfUID, subWf);
-    //                                 } else {
-    //                                     currentlySelected.delete(wfUID);
-    //                                 }
-    //                                 this.updateCurrentlySelectedAndBatchActions(currentlySelected);
-    //                             }}
-    //                         />
-    //                     );
-    //                 })}
-    //             </div>
-    //             <PaginationPanel
-    //                 onChange={pagination => this.changeFilters(this.state.namespace, this.state.selectedPhases, this.state.selectedLabels, pagination)}
-    //                 pagination={this.state.pagination}
-    //             />
-    //         </>
-    //     );
-    // }
-    private renderUsers() {
+    private renderNamespaces() {
         if (this.state.error) {
             return <ErrorNotice error={this.state.error} onReload={() => this.reloadWorkflows()} reloadAfterSeconds={10} />;
         }
-        if (!this.state.users) {
+        if (!this.state.namespaces) {
             return <Loading />;
         }
-        if (this.state.users.length === 0) {
+        if (this.state.namespaces.length === 0) {
             return (
                 <ZeroState title='No users'>
                     <p>To create a new user, use the button above.</p>
@@ -464,7 +303,7 @@ export class UsersNamespaces extends BasePage<RouteComponentProps<any>, State> {
                             <div className='columns small-1'>DETAILS</div>
                         </div>
                     </div>
-                    {this.state.users.map(user => {
+                    {this.state.namespaces.map(user => {
                         return (
                             <WorkflowsRow
                                 user={user}
@@ -484,7 +323,7 @@ export class UsersNamespaces extends BasePage<RouteComponentProps<any>, State> {
                                     if (!userUID) {
                                         return;
                                     }
-                                    const currentlySelected: Map<string, User> = this.state.selectedWorkflows;
+                                    const currentlySelected: Map<string, Namespace> = this.state.selectedWorkflows;
                                     if (!currentlySelected.has(userUID)) {
                                         currentlySelected.set(userUID, subUser);
                                     } else {
@@ -504,7 +343,7 @@ export class UsersNamespaces extends BasePage<RouteComponentProps<any>, State> {
         );
     }
 
-    private updateCurrentlySelectedAndBatchActions(newSelectedWorkflows: Map<string, User>): void {
+    private updateCurrentlySelectedAndBatchActions(newSelectedWorkflows: Map<string, Namespace>): void {
         const actions: any = Actions.WorkflowOperationsMap;
         const nowDisabled: any = {...allBatchActionsEnabled};
         for (const action of Object.keys(nowDisabled)) {
@@ -512,54 +351,6 @@ export class UsersNamespaces extends BasePage<RouteComponentProps<any>, State> {
                 nowDisabled[action] = nowDisabled[action] || actions[action].disabled(wf);
             }
         }
-        this.setState({batchActionDisabled: nowDisabled, selectedWorkflows: new Map<string, User>(newSelectedWorkflows)});
+        this.setState({batchActionDisabled: nowDisabled, selectedWorkflows: new Map<string, Namespace>(newSelectedWorkflows)});
     }
-
-    // private renderQuery(ctx: any) {
-    //     return (
-    //         <Query>
-    //             {q => (
-    //                 <div>
-    //                     <i className='fa fa-search' />
-    //                     {q.get('search') && (
-    //                         <i
-    //                             className='fa fa-times'
-    //                             onClick={() => {
-    //                                 ctx.navigation.goto('.', {search: null}, {replace: true});
-    //                             }}
-    //                         />
-    //                     )}
-    //                     <Autocomplete
-    //                         filterSuggestions={true}
-    //                         renderInput={inputProps => (
-    //                             <input
-    //                                 {...inputProps}
-    //                                 onFocus={e => {
-    //                                     e.target.select();
-    //                                     if (inputProps.onFocus) {
-    //                                         inputProps.onFocus(e);
-    //                                     }
-    //                                 }}
-    //                                 className='argo-field'
-    //                             />
-    //                         )}
-    //                         renderItem={item => (
-    //                             <React.Fragment>
-    //                                 <i className='icon argo-icon-workflow' /> {item.label}
-    //                             </React.Fragment>
-    //                         )}
-    //                         onSelect={val => {
-    //                             ctx.navigation.goto(uiUrl(`users/${val}`));
-    //                         }}
-    //                         onChange={e => {
-    //                             ctx.navigation.goto('.', {search: e.target.value}, {replace: true});
-    //                         }}
-    //                         value={q.get('search') || ''}
-    //                         items={(this.state.workflows || []).map(wf => wf.metadata.namespace + '/' + wf.metadata.name)}
-    //                     />
-    //                 </div>
-    //             )}
-    //         </Query>
-    //     );
-    // }
 }

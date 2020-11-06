@@ -2,7 +2,7 @@
 import * as React from 'react';
 // import {Link} from 'react-router-dom';
 // import {Workflow} from '../../../../../models';
-import {User} from '../../../models';
+import {Namespace} from '../../../models';
 // import {uiUrl} from '../../../../shared/base';
 // import {DurationPanel} from '../../../../shared/components/duration-panel';
 // import {PhaseIcon} from '../../../../shared/components/phase-icon';
@@ -12,9 +12,9 @@ import {WorkflowDrawer} from '../workflow-drawer/workflow-drawer';
 
 interface WorkflowsRowProps {
     // workflow: Workflow;
-    user: User;
+    user: Namespace;
     onChange: (key: string) => void;
-    select: (wf: User) => void;
+    select: (wf: Namespace) => void;
     checked: boolean;
 }
 
@@ -52,7 +52,6 @@ export class WorkflowsRow extends React.Component<WorkflowsRowProps, WorkflowRow
                     <div className='row small-11'>
                         <div className='columns small-2'>{wf.name}</div>
                         <div className='columns small-2'>Description</div>
-                        <div className='columns small-2'>{wf.email}</div>
                         <div className='columns small-2'>{wf.id}</div>
                         <div className='columns small-1'>{wf.enabled ? 'Yes' : 'No'}</div>
                         <div className='columns small-2'>{wf.domain_id}</div>

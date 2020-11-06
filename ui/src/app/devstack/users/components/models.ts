@@ -9,3 +9,20 @@ export interface User {
     self: string;
   }
 }
+
+export interface Namespace {
+  is_wf: boolean;
+  wf: object;
+  id: string;
+  name?: string;
+  domain_id?: string;
+  description: string;
+  enabled: boolean;
+  parent_id?: string;
+  is_domain?: boolean;
+  tags?: [];
+  options?: object;
+  links?: {
+    self: string;
+  }
+}

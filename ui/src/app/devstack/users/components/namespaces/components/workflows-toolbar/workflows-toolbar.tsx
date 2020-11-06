@@ -2,7 +2,7 @@ import {NotificationType} from 'argo-ui';
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
 // import {Workflow} from '../../../../../models';
-import {User} from '../../../models';
+import {Namespace} from '../../../models';
 import {AppContext, Consumer} from '../../../../../../shared/context';
 import * as Actions from '../user-operations-map';
 import {WorkflowOperation, WorkflowOperationAction} from '../../../../../../shared/workflow-operations-map';
@@ -10,7 +10,7 @@ import {WorkflowOperation, WorkflowOperationAction} from '../../../../../../shar
 require('./workflows-toolbar.scss');
 
 interface WorkflowsToolbarProps {
-    selectedWorkflows: Map<string, User>;
+    selectedWorkflows: Map<string, Namespace>;
     loadWorkflows: () => void;
     isDisabled: Actions.OperationDisabled;
     clearSelection: () => void;
@@ -57,7 +57,7 @@ export class WorkflowsToolbar extends React.Component<WorkflowsToolbarProps, {}>
             return;
         }
         const promises: Promise<any>[] = [];
-        this.props.selectedWorkflows.forEach((wf: User) => {
+        this.props.selectedWorkflows.forEach((wf: Namespace) => {
             // promises.push(
             //     action(wf).catch(() => {
             //         this.props.loadWorkflows();
