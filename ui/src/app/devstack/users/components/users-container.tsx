@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Redirect, Route, RouteComponentProps, Switch} from 'react-router';
-import {UsersOverview} from './menu';
+import {UsersOverview} from '../menu';
 import {UsersList} from './users-list/users-list';
 
 export const UsersContainer = (props: RouteComponentProps<any>) => (

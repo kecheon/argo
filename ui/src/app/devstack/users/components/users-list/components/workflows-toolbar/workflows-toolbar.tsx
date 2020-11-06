@@ -2,10 +2,10 @@ import {NotificationType} from 'argo-ui';
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
 // import {Workflow} from '../../../../../models';
-import {User} from '../models';
-import {AppContext, Consumer} from '../../../../shared/context';
+import {User} from '../../../models';
+import {AppContext, Consumer} from '../../../../../../shared/context';
 import * as Actions from '../user-operations-map';
-import {WorkflowOperation, WorkflowOperationAction} from '../../../../shared/workflow-operations-map';
+import {WorkflowOperation, WorkflowOperationAction} from '../../../../../../shared/workflow-operations-map';
 
 require('./workflows-toolbar.scss');
 

@@ -1,5 +1,5 @@
-import {Workflow} from '../../../../models';
-import {UserService} from '../../services/user-service';
+import {Workflow} from '../../../../../../models';
+import {UserService} from '../../../../services/user-service';
 // import {Utils} from '../../../shared/utils';
 
 const service = new UserService();

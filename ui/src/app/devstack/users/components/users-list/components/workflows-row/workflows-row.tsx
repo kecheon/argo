@@ -2,7 +2,7 @@
 import * as React from 'react';
 // import {Link} from 'react-router-dom';
 // import {Workflow} from '../../../../../models';
-import {User} from '../models';
+import {User} from '../../../models';
 // import {uiUrl} from '../../../../shared/base';
 // import {DurationPanel} from '../../../../shared/components/duration-panel';
 // import {PhaseIcon} from '../../../../shared/components/phase-icon';

@@ -16,7 +16,7 @@ import {Loading} from '../../../../shared/components/loading';
 import {ZeroState} from '../../../../shared/components/zero-state';
 // import {exampleWorkflow} from '../../../../shared/examples';
 import {Utils} from '../../../../shared/utils';
-import * as Actions from '../user-operations-map';
+import * as Actions from './components/user-operations-map';
 
 import {CostOptimisationNudge} from '../../../../shared/components/cost-optimisation-nudge';
 import {ErrorNotice} from '../../../../shared/components/error-notice';
@@ -24,11 +24,11 @@ import {PaginationPanel} from '../../../../shared/components/pagination-panel';
 // import {ResourceEditor} from '../../../../shared/components/resource-editor/resource-editor';
 import {Pagination, parseLimit} from '../../../../shared/pagination';
 // import {WorkflowFilters} from '../workflow-filters/workflow-filters';
-import {WorkflowsRow} from '../workflows-row/workflows-row';
-import {WorkflowsToolbar} from '../workflows-toolbar/workflows-toolbar';
+import {WorkflowsRow} from './components/workflows-row/workflows-row';
+import {WorkflowsToolbar} from './components/workflows-toolbar/workflows-toolbar';
 
 import {UserService} from '../../../services/user-service';
-import CreateUser from '../create-user/create-user';
+import CreateUser from './components/create-user/create-user';
 
 require('./workflows-list.scss');
 

@@ -2,14 +2,14 @@ import * as React from 'react';
 // import {Workflow} from '../../../../../models';
 
 // import {InlineTable} from '../../../../shared/components/inline-table/inline-table';
-import {Loading} from '../../../../shared/components/loading';
+import {Loading} from '../../../../../../shared/components/loading';
 // import {ConditionsPanel} from '../../../../shared/conditions-panel';
 // import {formatDuration} from '../../../../shared/duration';
 // import {services} from '../../../../shared/services';
-import { User } from '../models';
+import { User } from '../../../models';
 // import {WorkflowFrom} from '../workflow-from';
 // import {WorkflowLabels} from '../workflow-labels/workflow-labels';
-import {UserService} from '../../../services/user-service';
+import {UserService} from '../../../../../services/user-service';
 
 require('./workflow-drawer.scss');
 
