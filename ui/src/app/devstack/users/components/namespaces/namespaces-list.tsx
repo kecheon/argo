@@ -294,23 +294,22 @@ export class UsersNamespaces extends BasePage<RouteComponentProps<any>, State> {
                     <div className='row argo-table-list__head'>
                         <div className='columns workflows-list__status small-1' />
                         <div className='row small-11'>
-                            <div className='columns small-2'>USER NAME</div>
+                            <div className='columns small-2'>NAME</div>
                             <div className='columns small-2'>DESCRIPTION</div>
-                            <div className='columns small-2'>EMAIL</div>
-                            <div className='columns small-2'>USER ID</div>
+                            <div className='columns small-2'>Namespace ID</div>
                             <div className='columns small-1'>ENABLED</div>
-                            <div className='columns small-2'>DOMAIN NAME</div>
+                            <div className='columns small-2'>DOMAIN ID</div>
                             <div className='columns small-1'>DETAILS</div>
                         </div>
                     </div>
-                    {this.state.namespaces.map(user => {
+                    {this.state.namespaces.map(namespace => {
                         return (
                             <WorkflowsRow
-                                user={user}
-                                key={user.id}
-                                checked={this.state.selectedWorkflows.has(user.id)}
+                                namespace={namespace}
+                                key={namespace.id}
+                                checked={this.state.selectedWorkflows.has(namespace.id)}
                                 onChange={key => {
-                                    const value = `${key}=${user.id}`;
+                                    const value = `${key}=${namespace.id}`;
                                     let newTags: string[] = [];
                                     if (this.state.selectedLabels.indexOf(value) === -1) {
                                         newTags = this.state.selectedLabels.concat(value);
@@ -318,16 +317,16 @@ export class UsersNamespaces extends BasePage<RouteComponentProps<any>, State> {
                                     }
                                     this.changeFilters(this.state.namespace, this.state.selectedPhases, newTags, this.state.pagination);
                                 }}
-                                select={subUser => {
-                                    const userUID = subUser.id;
-                                    if (!userUID) {
+                                select={subNamespace => {
+                                    const namespaceUID = subNamespace.id;
+                                    if (!namespaceUID) {
                                         return;
                                     }
                                     const currentlySelected: Map<string, Namespace> = this.state.selectedWorkflows;
-                                    if (!currentlySelected.has(userUID)) {
-                                        currentlySelected.set(userUID, subUser);
+                                    if (!currentlySelected.has(namespaceUID)) {
+                                        currentlySelected.set(namespaceUID, subNamespace);
                                     } else {
-                                        currentlySelected.delete(userUID);
+                                        currentlySelected.delete(namespaceUID);
                                     }
                                     this.updateCurrentlySelectedAndBatchActions(currentlySelected);
                                 }}

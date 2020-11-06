@@ -12,7 +12,7 @@ import {WorkflowDrawer} from '../workflow-drawer/workflow-drawer';
 
 interface WorkflowsRowProps {
     // workflow: Workflow;
-    user: Namespace;
+    namespace: Namespace;
     onChange: (key: string) => void;
     select: (wf: Namespace) => void;
     checked: boolean;
@@ -31,7 +31,7 @@ export class WorkflowsRow extends React.Component<WorkflowsRowProps, WorkflowRow
     }
 
     public render() {
-        const wf = this.props.user;
+        const wf = this.props.namespace;
         return (
             <div className='workflows-list__row-container'>
                 <div className='row argo-table-list__row'>
@@ -44,14 +44,14 @@ export class WorkflowsRow extends React.Component<WorkflowsRowProps, WorkflowRow
                                 e.stopPropagation();
                             }}
                             onChange={e => {
-                                this.props.select(this.props.user);
+                                this.props.select(this.props.namespace);
                             }}
                         />
                         {/* <PhaseIcon value={wf.name} /> */}
                     </div>
                     <div className='row small-11'>
                         <div className='columns small-2'>{wf.name}</div>
-                        <div className='columns small-2'>Description</div>
+                        <div className='columns small-2'>{wf.description}</div>
                         <div className='columns small-2'>{wf.id}</div>
                         <div className='columns small-1'>{wf.enabled ? 'Yes' : 'No'}</div>
                         <div className='columns small-2'>{wf.domain_id}</div>
