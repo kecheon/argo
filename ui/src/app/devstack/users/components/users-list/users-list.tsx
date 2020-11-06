@@ -191,19 +191,6 @@ export class UsersList extends BasePage<RouteComponentProps<any>, State> {
                         </div>
                         <SlidingPanel isShown={!!this.wfInput} onClose={() => ctx.navigation.goto('.', {new: null})}>
                             <CreateUser />
-                            {/* <ResourceEditor
-                                title='Create new user'
-                                kind='Workflow'
-                                upload={true}
-                                editing={true}
-                                namespace={this.state.namespace || 'default'}
-                                value={exampleWorkflow()}
-                                onSubmit={wfValue =>
-                                    services.workflows
-                                        .create(wfValue, wfValue.metadata.namespace || this.state.namespace)
-                                        .then(wf => ctx.navigation.goto(uiUrl(`workflows/${wf.metadata.namespace}/${wf.metadata.name}`)))
-                                }
-                            /> */}
                         </SlidingPanel>
                     </Page>
                 )}
@@ -215,62 +202,6 @@ export class UsersList extends BasePage<RouteComponentProps<any>, State> {
         this.fetchUsers(this.state.namespace, this.state.selectedPhases, this.state.selectedLabels, this.state.pagination);
     }
 
-    // private fetchWorkflows(namespace: string, selectedPhases: string[], selectedLabels: string[], pagination: Pagination): void {
-    //     if (this.subscription) {
-    //         this.subscription.unsubscribe();
-    //     }
-    //     services.workflows
-    //         .list(namespace, selectedPhases, selectedLabels, pagination)
-    //         .then(wfList => {
-    //             this.setState(
-    //                 {
-    //                     error: null,
-    //                     namespace,
-    //                     workflows: wfList.items || [],
-    //                     pagination: {offset: pagination.offset, limit: pagination.limit, nextOffset: 'wfList.metadata.continue'},
-    //                     selectedPhases,
-    //                     selectedLabels,
-    //                     selectedWorkflows: new Map<string, models.Workflow>()
-    //                 },
-    //                 this.saveHistory
-    //             );
-    //             return wfList.metadata.resourceVersion;
-    //         })
-    //         .then(resourceVersion => {
-    //             this.subscription = services.workflows
-    //                 .watchFields({namespace, phases: selectedPhases, labels: selectedLabels, resourceVersion})
-    //                 .map(workflowChange => {
-    //                     const workflows = this.state.workflows;
-    //                     if (!workflowChange) {
-    //                         return {workflows, updated: false};
-    //                     }
-    //                     const index = workflows.findIndex(item => item.metadata.uid === workflowChange.object.metadata.uid);
-    //                     if (index > -1 && workflowChange.object.metadata.resourceVersion === workflows[index].metadata.resourceVersion) {
-    //                         return {workflows, updated: false};
-    //                     }
-    //                     if (workflowChange.type === 'DELETED') {
-    //                         if (index > -1) {
-    //                             workflows.splice(index, 1);
-    //                         }
-    //                     } else {
-    //                         if (index > -1) {
-    //                             workflows[index] = workflowChange.object;
-    //                         } else if (!this.state.pagination.limit) {
-    //                             workflows.unshift(workflowChange.object);
-    //                         }
-    //                     }
-    //                     return {workflows, updated: true};
-    //                 })
-    //                 .filter(item => item.updated)
-    //                 .map(item => item.workflows)
-    //                 .subscribe(
-    //                     workflows => this.setState({error: null, workflows}),
-    //                     error => this.setState({error})
-    //                 );
-    //         })
-    //         .then(_ => this.setState({error: null}))
-    //         .catch(error => this.setState({error}));
-    // }
     private fetchUsers(namespace: string, selectedPhases: string[], selectedLabels: string[], pagination: Pagination): void {
         if (this.subscription) {
             this.subscription.unsubscribe();
@@ -292,38 +223,6 @@ export class UsersList extends BasePage<RouteComponentProps<any>, State> {
                 );
                 return usersList;
             })
-            // .then(resourceVersion => {
-            //     this.subscription = services.workflows
-            //         .watchFields({namespace, phases: selectedPhases, labels: selectedLabels, resourceVersion})
-            //         .map(workflowChange => {
-            //             const workflows = this.state.workflows;
-            //             if (!workflowChange) {
-            //                 return {workflows, updated: false};
-            //             }
-            //             const index = workflows.findIndex(item => item.metadata.uid === workflowChange.object.metadata.uid);
-            //             if (index > -1 && workflowChange.object.metadata.resourceVersion === workflows[index].metadata.resourceVersion) {
-            //                 return {workflows, updated: false};
-            //             }
-            //             if (workflowChange.type === 'DELETED') {
-            //                 if (index > -1) {
-            //                     workflows.splice(index, 1);
-            //                 }
-            //             } else {
-            //                 if (index > -1) {
-            //                     workflows[index] = workflowChange.object;
-            //                 } else if (!this.state.pagination.limit) {
-            //                     workflows.unshift(workflowChange.object);
-            //                 }
-            //             }
-            //             return {workflows, updated: true};
-            //         })
-            //         .filter(item => item.updated)
-            //         .map(item => item.workflows)
-            //         .subscribe(
-            //             workflows => this.setState({error: null, workflows}),
-            //             error => this.setState({error})
-            //         );
-            // })
             .then(_ => this.setState({error: null}))
             .catch(error => this.setState({error}));
     }
@@ -351,82 +250,6 @@ export class UsersList extends BasePage<RouteComponentProps<any>, State> {
         return counts;
     }
 
-    // private renderWorkflows() {
-    //     if (this.state.error) {
-    //         return <ErrorNotice error={this.state.error} onReload={() => this.reloadWorkflows()} reloadAfterSeconds={10} />;
-    //     }
-    //     if (!this.state.users) {
-    //         return <Loading />;
-    //     }
-    //     if (this.state.users.length === 0) {
-    //         return (
-    //             <ZeroState title='No workflows'>
-    //                 <p>To create a new workflow, use the button above.</p>
-    //             </ZeroState>
-    //         );
-    //     }
-
-    //     const counts = this.countsByCompleted();
-
-    //     return (
-    //         <>
-    //             {(counts.complete > 100 || counts.incomplete > 100) && (
-    //                 <CostOptimisationNudge name='workflow-list'>
-    //                     You have at least {counts.incomplete} incomplete, and {counts.complete} complete workflows. Reducing these amounts will reduce your costs.
-    //                 </CostOptimisationNudge>
-    //             )}
-    //             <div className='argo-table-list'>
-    //                 <div className='row argo-table-list__head'>
-    //                     <div className='columns workflows-list__status small-1' />
-    //                     <div className='row small-11'>
-    //                         <div className='columns small-3'>NAME</div>
-    //                         <div className='columns small-2'>NAMESPACE</div>
-    //                         <div className='columns small-2'>STARTED</div>
-    //                         <div className='columns small-2'>FINISHED</div>
-    //                         <div className='columns small-1'>DURATION</div>
-    //                         <div className='columns small-1'>PROGRESS</div>
-    //                         <div className='columns small-1'>DETAILS</div>
-    //                     </div>
-    //                 </div>
-    //                 {this.state.workflows.map(wf => {
-    //                     return (
-    //                         <WorkflowsRow
-    //                             workflow={wf}
-    //                             key={wf.metadata.uid}
-    //                             checked={this.state.selectedWorkflows.has(wf.metadata.uid)}
-    //                             onChange={key => {
-    //                                 const value = `${key}=${wf.metadata.labels[key]}`;
-    //                                 let newTags: string[] = [];
-    //                                 if (this.state.selectedLabels.indexOf(value) === -1) {
-    //                                     newTags = this.state.selectedLabels.concat(value);
-    //                                     this.setState({selectedLabels: newTags});
-    //                                 }
-    //                                 this.changeFilters(this.state.namespace, this.state.selectedPhases, newTags, this.state.pagination);
-    //                             }}
-    //                             select={subWf => {
-    //                                 const wfUID = subWf.metadata.uid;
-    //                                 if (!wfUID) {
-    //                                     return;
-    //                                 }
-    //                                 const currentlySelected: Map<string, Workflow> = this.state.selectedWorkflows;
-    //                                 if (!currentlySelected.has(wfUID)) {
-    //                                     currentlySelected.set(wfUID, subWf);
-    //                                 } else {
-    //                                     currentlySelected.delete(wfUID);
-    //                                 }
-    //                                 this.updateCurrentlySelectedAndBatchActions(currentlySelected);
-    //                             }}
-    //                         />
-    //                     );
-    //                 })}
-    //             </div>
-    //             <PaginationPanel
-    //                 onChange={pagination => this.changeFilters(this.state.namespace, this.state.selectedPhases, this.state.selectedLabels, pagination)}
-    //                 pagination={this.state.pagination}
-    //             />
-    //         </>
-    //     );
-    // }
     private renderUsers() {
         if (this.state.error) {
             return <ErrorNotice error={this.state.error} onReload={() => this.reloadWorkflows()} reloadAfterSeconds={10} />;
@@ -514,52 +337,4 @@ export class UsersList extends BasePage<RouteComponentProps<any>, State> {
         }
         this.setState({batchActionDisabled: nowDisabled, selectedWorkflows: new Map<string, User>(newSelectedWorkflows)});
     }
-
-    // private renderQuery(ctx: any) {
-    //     return (
-    //         <Query>
-    //             {q => (
-    //                 <div>
-    //                     <i className='fa fa-search' />
-    //                     {q.get('search') && (
-    //                         <i
-    //                             className='fa fa-times'
-    //                             onClick={() => {
-    //                                 ctx.navigation.goto('.', {search: null}, {replace: true});
-    //                             }}
-    //                         />
-    //                     )}
-    //                     <Autocomplete
-    //                         filterSuggestions={true}
-    //                         renderInput={inputProps => (
-    //                             <input
-    //                                 {...inputProps}
-    //                                 onFocus={e => {
-    //                                     e.target.select();
-    //                                     if (inputProps.onFocus) {
-    //                                         inputProps.onFocus(e);
-    //                                     }
-    //                                 }}
-    //                                 className='argo-field'
-    //                             />
-    //                         )}
-    //                         renderItem={item => (
-    //                             <React.Fragment>
-    //                                 <i className='icon argo-icon-workflow' /> {item.label}
-    //                             </React.Fragment>
-    //                         )}
-    //                         onSelect={val => {
-    //                             ctx.navigation.goto(uiUrl(`users/${val}`));
-    //                         }}
-    //                         onChange={e => {
-    //                             ctx.navigation.goto('.', {search: e.target.value}, {replace: true});
-    //                         }}
-    //                         value={q.get('search') || ''}
-    //                         items={(this.state.workflows || []).map(wf => wf.metadata.namespace + '/' + wf.metadata.name)}
-    //                     />
-    //                 </div>
-    //             )}
-    //         </Query>
-    //     );
-    // }
 }
