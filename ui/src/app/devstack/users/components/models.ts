@@ -26,3 +26,18 @@ export interface Namespace {
     self: string;
   }
 }
+
+export interface Role {
+  is_wf: boolean;
+  wf: {
+    k8s_role: string;
+  };
+  id: string;
+  name: string;
+  domain_id?: string;
+  description: string;
+  options: object;
+  links?: {
+    self: string;
+  }
+}

@@ -33,6 +33,7 @@ import {navItems} from './devstack/classes/constants';
 import users from './devstack/users';
 import {UsersList} from './devstack/users/components/users-list/users-list';
 import {UsersNamespaces} from './devstack/users/components/namespaces/namespaces-list';
+import {UsersRoles} from './devstack/users/components/roles/roles-list';
 
 const workflowsUrl = uiUrl('workflows');
 const workflowTemplatesUrl = uiUrl('workflow-templates');
@@ -50,6 +51,7 @@ const reportsUrl = uiUrl('reports');
 const usersUrl = uiUrl('users');
 const usersListUrl = uiUrl('users/list');
 const usersNamespacesUrl = uiUrl('users/namespaces');
+const usersRolesUrl = uiUrl('users/roles');
 
 export const history = createBrowserHistory();
 
@@ -189,6 +191,7 @@ export class App extends React.Component<{}, {version?: Version; popupProps: Pop
                                     <Route exact={true} strict={true} path={logoutUrl} component={logout.component} />
                                     <Route exact={true} strict={true} path={usersNamespacesUrl} component={UsersNamespaces} />
                                     <Route exact={true} strict={true} path={usersListUrl} component={UsersList} />
+                                    <Route exact={true} strict={true} path={usersRolesUrl} component={UsersRoles} />
                                     <Route exact={true} strict={true} path={usersUrl} component={users.component} />
                                 </Switch>
                             </ErrorBoundary>
