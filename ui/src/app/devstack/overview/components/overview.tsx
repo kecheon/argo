@@ -1,7 +1,6 @@
 import { Page } from 'argo-ui';
 import * as React from 'react';
 
-
 export default () => {
   return (
     <Page title='Overview'>
@@ -23,7 +22,7 @@ export default () => {
                       </div>
                       <div className='columns small-3'>
                         <i className='fa fa-window-maximize fa-5x' />
-                        <br/>Workflow template 2
+                        <br/>Workflow Template 2
                       </div>
                       <div className='columns small-3'>
                         <i className='fa fa-window-restore fa-5x' />

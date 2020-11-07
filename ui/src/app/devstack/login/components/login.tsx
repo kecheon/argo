@@ -27,14 +27,18 @@ export default () => {
             // update current user and redirect to workflows
             setUser(result);
             // store the user in localStorage
-            const currentUser:UserState = {
+            const currentUser: UserState = {
                 isLoggedIn: true,
                 username,
                 role: result.role,
                 accessToken: result.Authorization
             }
             localStorage.setItem('user', JSON.stringify(currentUser));
-            document.location.href = uiUrl('workflows');
+            if (currentUser.role.level <= 0) {
+                document.location.href = uiUrl('overview');
+            } else {
+                document.location.href = uiUrl('workflows');
+            }
         } else {
             alert(`login Error ${username} ${password}`);
         }
