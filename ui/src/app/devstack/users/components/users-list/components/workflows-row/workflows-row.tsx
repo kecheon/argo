@@ -54,9 +54,9 @@ export class WorkflowsRow extends React.Component<WorkflowsRowProps, WorkflowRow
                         <div className='columns small-2'>Description</div>
                         <div className='columns small-2'>{wf.email}</div>
                         <div className='columns small-2'>{wf.id}</div>
-                        <div className='columns small-2'>{wf.enabled ? 'Yes' : 'No'}</div>
+                        <div className='columns small-1'>{wf.enabled ? 'Yes' : 'No'}</div>
                         <div className='columns small-2'>{wf.domain_id}</div>
-                        {/* <div className='columns small-1'>
+                        <div className='columns small-1'>
                             <div className='workflows-list__labels-container'>
                                 <div
                                     onClick={e => {
@@ -66,16 +66,16 @@ export class WorkflowsRow extends React.Component<WorkflowsRowProps, WorkflowRow
                                     className={`workflows-row__action workflows-row__action--${this.state.hideDrawer ? 'show' : 'hide'}`}>
                                     {this.state.hideDrawer ? (
                                         <span>
-                                            SHOW <i className='fas fa-caret-down' />{' '}
+                                            EDIT <i className='fas fa-caret-down' />{' '}
                                         </span>
                                     ) : (
                                         <span>
-                                            HIDE <i className='fas fa-caret-up' />
+                                            CANCEL <i className='fas fa-caret-up' />
                                         </span>
                                     )}
                                 </div>
                             </div>
-                        </div> */}
+                        </div>
                     </div>
                     {this.state.hideDrawer ? (
                         <span />
