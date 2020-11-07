@@ -34,6 +34,7 @@ import users from './devstack/users';
 import {UsersList} from './devstack/users/components/users-list/users-list';
 import {UsersNamespaces} from './devstack/users/components/namespaces/namespaces-list';
 import {UsersRoles} from './devstack/users/components/roles/roles-list';
+import overview from './devstack/overview';
 
 const workflowsUrl = uiUrl('workflows');
 const workflowTemplatesUrl = uiUrl('workflow-templates');
@@ -52,6 +53,7 @@ const usersUrl = uiUrl('users');
 const usersListUrl = uiUrl('users/list');
 const usersNamespacesUrl = uiUrl('users/namespaces');
 const usersRolesUrl = uiUrl('users/roles');
+const overviewUrl = uiUrl('overview');
 
 export const history = createBrowserHistory();
 
@@ -193,6 +195,7 @@ export class App extends React.Component<{}, {version?: Version; popupProps: Pop
                                     <Route exact={true} strict={true} path={usersListUrl} component={UsersList} />
                                     <Route exact={true} strict={true} path={usersRolesUrl} component={UsersRoles} />
                                     <Route exact={true} strict={true} path={usersUrl} component={users.component} />
+                                    <Route exact={true} strict={true} path={overviewUrl} component={overview.component} />
                                 </Switch>
                             </ErrorBoundary>
                         </Layout>

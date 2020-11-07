@@ -10,6 +10,7 @@ const usersUrl = uiUrl('users');
 const loginUrl = uiUrl('login');
 const logoutUrl = uiUrl('logout');
 const reportsUrl = uiUrl('reports');
+const overviewUrl = uiUrl('overview');
 
 export const navItems = {
   loggedInUser: [
@@ -76,6 +77,11 @@ export const navItems = {
           title: 'Help',
           path: helpUrl,
           iconClassName: 'fa fa-question-circle'
+      },
+      {
+          title: 'Overview',
+          path: overviewUrl,
+          iconClassName: 'fa fa-eye'
       }
   ]
 };
