@@ -1,3 +1,4 @@
+import { Page } from 'argo-ui';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import {uiUrl} from '../../../shared/base';
@@ -28,9 +29,14 @@ export const Logout = () => {
         handleLogout();
     })
     return (
-      <div>
-          You are logging out... wait for a moment.
-          <button onClick={handleLogout}>logout</button>
-      </div>
+      <Page title='logout'>
+          <div className='login__logo width-control'>
+            <img className='logo-image' src='assets/images/devstack/logo.png' alt='devStack' />
+            <div className='width-control'>
+              You are logging out... wait for a moment.
+              <button onClick={handleLogout}>logout</button>
+            </div>
+          </div>
+      </Page>
     );
 }
