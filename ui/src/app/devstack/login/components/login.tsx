@@ -25,6 +25,7 @@ export default () => {
         const result = await service.login(username, password);
         if (result.status === 'success') {
             // update current user and redirect to workflows
+            console.log(user);
             setUser(result);
             // store the user in localStorage
             const currentUser: UserState = {
