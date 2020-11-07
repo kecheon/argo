@@ -44,21 +44,21 @@ export default () => {
         }
     }
     // logout the user
-    const handleLogout = () => {
-        setUser(null);
-        setUsername('');
-        setPassword('');
-        localStorage.clear();
-    };
+    // const handleLogout = () => {
+    //     setUser(null);
+    //     setUsername('');
+    //     setPassword('');
+    //     localStorage.clear();
+    // };
 
-    if (user) {
-        return (
-          <div>
-            You are already loggged in
-            <button onClick={handleLogout}>logout</button>
-          </div>
-        );
-    }
+    // if (user) {
+    //     return (
+    //       <div>
+    //         You are already loggged in
+    //         <button onClick={handleLogout}>logout</button>
+    //       </div>
+    //     );
+    // }
     return (
         <div className='login'>
             <div className='login__content'>
