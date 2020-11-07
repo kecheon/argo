@@ -61,7 +61,7 @@ export default () => {
                         <Form.Control type='text' placeholder='Enter namespace name'
                         value={ name }
                         onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setName(e.target.value)}/>
-                    </Form.Group>{' '}
+                    </Form.Group>
                 </div>
                 <div className='argo-form-row'>
                     <Form.Group controlId='formBasicUserId'>

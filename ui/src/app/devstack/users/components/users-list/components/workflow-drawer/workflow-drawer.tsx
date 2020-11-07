@@ -61,7 +61,7 @@ export class WorkflowDrawer extends React.Component<WorkflowDrawerProps, Workflo
                                     <Form.Label>User Name*</Form.Label>
                                     <Form.Control type='text' placeholder='Enter username'
                                     value={ this.state.userProfile.name } />
-                                </Form.Group>{' '}
+                                </Form.Group>
                             </div>
                             <div className='argo-form-row'>
                                 <Form.Group controlId='formBasicDescription'>

@@ -299,7 +299,7 @@ export class UsersNamespaces extends BasePage<RouteComponentProps<any>, State> {
                             <div className='columns small-2'>Namespace ID</div>
                             <div className='columns small-2'>ENABLED</div>
                             <div className='columns small-2'>DOMAIN ID</div>
-                            {/* <div className='columns small-2'>DETAILS</div> */}
+                            <div className='columns small-2'>DETAILS</div>
                         </div>
                     </div>
                     {this.state.namespaces.map(namespace => {

@@ -17,4 +17,8 @@ export class NamespaceService {
     public async create(data: NamespaceForm): Promise<any> {
         return { status: 'success', message: 'namespace created' }
     }
+    public async getProfile(link: string): Promise<any> {
+        // tslint:disable-next-line: max-line-length
+        return {'is_wf': true, 'wf': {'k8s_ns': 'dl-inferencing', 'quota_cpu': 10, 'quota_ram': 16}, 'id': '978a647141a04db2a28c19eba924f6c0', 'name': 'dl-inferencing', 'domain_id': 'default', 'description': 'inference', 'enabled': true, 'parent_id': 'default', 'is_domain': false, 'tags': [], 'options': {}, 'links': {'self': 'http://183.111.177.141/identity/v3/projects/978a647141a04db2a28c19eba924f6c0'}};
+    }
 }

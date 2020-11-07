@@ -6,14 +6,16 @@ import {Loading} from '../../../../../../shared/components/loading';
 // import {ConditionsPanel} from '../../../../shared/conditions-panel';
 // import {formatDuration} from '../../../../shared/duration';
 // import {services} from '../../../../shared/services';
-import { User } from '../../../models';
+import { Namespace } from '../../../models';
 // import {WorkflowFrom} from '../workflow-from';
 // import {WorkflowLabels} from '../workflow-labels/workflow-labels';
-import {UserService} from '../../../../../services/user-service';
+import {NamespaceService} from '../../../../../services/namespace-service';
+import {Consumer} from '../../../../../../shared/context';
+import { Form } from 'react-bootstrap';
 
 require('./workflow-drawer.scss');
 
-const userService = new UserService();
+const namespaceService = new NamespaceService();
 
 interface WorkflowDrawerProps {
     name: string;
@@ -24,8 +26,8 @@ interface WorkflowDrawerProps {
 }
 
 interface WorkflowDrawerState {
-    workflow?: User;
-    userProfile?: string;
+    workflow?: Namespace;
+    namespaceProfile?: any;
 }
 
 export class WorkflowDrawer extends React.Component<WorkflowDrawerProps, WorkflowDrawerState> {
@@ -35,88 +37,80 @@ export class WorkflowDrawer extends React.Component<WorkflowDrawerProps, Workflo
     }
 
     public componentDidMount() {
-        userService.getProfile(this.props.links.self).then(userProfile => {
-            console.log(userProfile);
-            this.setState({userProfile});
+        namespaceService.getProfile(this.props.links.self).then(namespaceProfile => {
+            this.setState({namespaceProfile});
         });
     }
 
     public render() {
-        if (!this.state.workflow) {
+        if (!this.state.namespaceProfile) {
             return <Loading />;
         }
         return (
-            <div className='workflow-drawer'>
-                <div>
-                    drawer
-                    { this.state.userProfile }
-                </div>
-                {/* {!wf.status.message ? null : (
-                    <div className='workflow-drawer__section workflow-drawer__message'>
-                        <div className='workflow-drawer__title workflow-drawer__message--label'>MESSAGE</div>
-                        <div className='workflow-drawer__message--content'>{wf.status.message}</div>
+            <Consumer>
+                {ctx => (
+                    <div className='workflow-drawer'>
+                        <form>
+                            <div className='login__form-row'>
+                                <button className='argo-button argo-button--base' type='submit'>
+                                    <i className='fa fa-plus-circle' /> Submit
+                                </button>
+                                <button className='argo-button argo-button--base' type='button' onClick={() => ctx.navigation.goto('.', {new: null})}>
+                                    <i className='fa fa-times-circle' /> Cancel
+                                </button>
+                            </div>
+                            <div className='argo-form-row'>
+                                <Form.Group controlId='formBasicName'>
+                                    <Form.Label>Name*</Form.Label>
+                                    <Form.Control type='text' placeholder='Enter namespace name'
+                                    value={ this.state.namespaceProfile.name }/>
+                                </Form.Group>
+                            </div>
+                            <div className='argo-form-row'>
+                                <Form.Group controlId='formBasicUserId'>
+                                    <Form.Label>Member</Form.Label>
+                                    <Form.Control type='text' placeholder='User id'
+                                    value={ this.state.namespaceProfile.userId } />
+                                </Form.Group>
+                            </div>
+                            <div className='argo-form-row'>
+                                <Form.Group controlId='formBasicRole'>
+                                    <Form.Label>Role</Form.Label>
+                                    <Form.Control type='text' placeholder='Role'
+                                    value={ this.state.namespaceProfile.role } />
+                                </Form.Group>
+                            </div>
+                            <div className='argo-form-row'>
+                                <Form.Group controlId='formBasicCpu'>
+                                    <Form.Label>CPU</Form.Label>
+                                    <Form.Control type='number' placeholder='CPU'
+                                    value={ this.state.namespaceProfile.quota_cpu } />
+                                </Form.Group>
+                            </div>
+                            <div className='argo-form-row'>
+                                <Form.Group controlId='formBasicMemory'>
+                                    <Form.Label>Memory</Form.Label>
+                                    <Form.Control type='number' placeholder='memory size'
+                                    value={ this.state.namespaceProfile.quota_ram} />
+                                </Form.Group>
+                            </div>
+                            <div className='argo-form-row'>
+                                <Form.Group controlId='formBasicEnabled'>
+                                    <Form.Label>Enabled</Form.Label>
+                                    <Form.Control type='boolean' placeholder='Enabled'
+                                    value={ this.state.namespaceProfile.enabled } />
+                                </Form.Group>
+                            </div>
+                            
+                            <div className='login__footer'>
+                                <a href='https://argoproj.io' target='_blank'>
+                                    <img className='logo-image' src='assets/images/argologo.svg' alt='argo' />
+                                </a>
+                            </div>
+                        </form>
                     </div>
                 )}
-                {!wf.status.conditions ? null : (
-                    <div className='workflow-drawer__section'>
-                        <div className='workflow-drawer__title'>CONDITIONS</div>
-                        <div className='workflow-drawer__conditions'>
-                            <ConditionsPanel conditions={wf.status.conditions} />
-                        </div>
-                    </div>
-                )} */}
-                {/* {!wf.status.resourcesDuration ? null : (
-                    <div className='workflow-drawer__section'>
-                        <div>
-                            <InlineTable
-                                rows={[
-                                    {
-                                        left: (
-                                            <div className='workflow-drawer__title'>
-                                                RESOURCES DURATION&nbsp;
-                                                <a href='https://github.com/argoproj/argo/blob/master/docs/resource-duration.md' target='_blank'>
-                                                    <i className='fas fa-info-circle' />
-                                                </a>
-                                            </div>
-                                        ),
-                                        right: (
-                                            <div>
-                                                <div>
-                                                    <span className='workflow-drawer__resourcesDuration--value'>{formatDuration(wf.status.resourcesDuration.cpu, 1)}</span>
-                                                    <span>(*1 CPU)</span>
-                                                </div>
-                                                <div>
-                                                    <span className='workflow-drawer__resourcesDuration--value'>{formatDuration(wf.status.resourcesDuration.memory, 1)}</span>
-                                                    <span>(*100Mi Memory)</span>
-                                                </div>
-                                            </div>
-                                        )
-                                    }
-                                ]}
-                            />
-                        </div>
-                    </div>
-                )} */}
-                <div className='workflow-drawer__section'>
-                    <div className='workflow-drawer__title'>FROM</div>
-                    <div className='workflow-drawer__workflowFrom'>
-                        From
-                        {/* <WorkflowFrom namespace={wf.metadata.namespace} labels={wf.metadata.labels} /> */}
-                    </div>
-                </div>
-                <div className='workflow-drawer__section workflow-drawer__labels'>
-                    <div className='workflow-drawer__title'>LABELS</div>
-                        Labels
-                    {/* <div className='workflow-drawer__labels--list'>
-                        <WorkflowLabels
-                            workflow={wf}
-                            onChange={key => {
-                                this.props.onChange(key);
-                            }}
-                        />
-                    </div> */}
-                </div>
-            </div>
-        );
+            </Consumer>
+          );
     }
 }
