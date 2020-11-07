@@ -60,7 +60,6 @@ interface WorkflowListRenderOptions {
 }
 
 const allBatchActionsEnabled: Actions.OperationDisabled = {
-    EDIT: false,
     DELETE: false
 };
 const userService = new UserService();

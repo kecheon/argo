@@ -8,7 +8,7 @@ export type OperationDisabled = {
     [action in WorkflowOperationName]: boolean;
 };
 
-export type WorkflowOperationName = 'EDIT' | 'DELETE';
+export type WorkflowOperationName = 'DELETE';
 
 export interface WorkflowOperation {
     title: WorkflowOperationName;
@@ -57,12 +57,12 @@ export const WorkflowOperationsMap: WorkflowOperations = {
     //     disabled: (wf: Workflow) => !Utils.isWorkflowRunning(wf),
     //     action: (wf: Workflow) => services.workflows.stop(wf.metadata.name, wf.metadata.namespace)
     // },
-    EDIT: {
-        title: 'EDIT',
-        iconClassName: 'fa fa-edit',
-        disabled: () => false,
-        action: (wf: Workflow) => service.getProfile('link')
-    },
+    // EDIT: {
+    //     title: 'EDIT',
+    //     iconClassName: 'fa fa-edit',
+    //     disabled: () => false,
+    //     action: (wf: Workflow) => service.getProfile('link')
+    // },
     DELETE: {
         title: 'DELETE',
         iconClassName: 'fa fa-trash',
