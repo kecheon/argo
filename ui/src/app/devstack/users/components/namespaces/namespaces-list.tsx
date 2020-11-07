@@ -27,22 +27,11 @@ import {Pagination, parseLimit} from '../../../../shared/pagination';
 import {WorkflowsRow} from './components/workflows-row/workflows-row';
 import {WorkflowsToolbar} from './components/workflows-toolbar/workflows-toolbar';
 
-// import {UserService} from '../../../services/user-service';
 import CreateUser from './components/create-namespace/create-namespace';
 import { NamespaceService } from '../../../services/namespace-service';
 import {Namespace} from '../models';
 
 require('./workflows-list.scss');
-
-interface User {
-    id: string;
-    name: string;
-    domain_id: string;
-    email?: string;
-    links?: {
-        self: string;
-    }
-}
 
 interface State {
     namespace: string;
@@ -52,7 +41,6 @@ interface State {
     selectedWorkflows: Map<string, Namespace>;
     workflows?: Workflow[];
     namespaces?: Namespace[];
-    users?: User[];
     error?: Error;
     batchActionDisabled: Actions.OperationDisabled;
 }
