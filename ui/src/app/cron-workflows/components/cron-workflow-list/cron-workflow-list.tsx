@@ -128,7 +128,8 @@ export class CronWorkflowList extends BasePage<RouteComponentProps<any>, State> 
                     <div className='row argo-table-list__head'>
                         <div className='columns small-1' />
                         <div className='columns small-3'>NAME</div>
-                        <div className='columns small-3'>NAMESPACE</div>
+                        <div className='columns small-2'>NAMESPACE</div>
+                        <div className='columns small-2'>CREATOR</div>
                         <div className='columns small-2'>SCHEDULE</div>
                         <div className='columns small-3'>CREATED</div>
                     </div>
@@ -141,7 +142,8 @@ export class CronWorkflowList extends BasePage<RouteComponentProps<any>, State> 
                                 <i className='fa fa-clock' />
                             </div>
                             <div className='columns small-3'>{w.metadata.name}</div>
-                            <div className='columns small-3'>{w.metadata.namespace}</div>
+                            <div className='columns small-2'>{w.metadata.namespace}</div>
+                            <div className='columns small-2'>{w.metadata.labels['workflows.argoproj.io/creator']}</div>
                             <div className='columns small-2'>{w.spec.schedule}</div>
                             <div className='columns small-3'>
                                 <Timestamp date={w.metadata.creationTimestamp} />
