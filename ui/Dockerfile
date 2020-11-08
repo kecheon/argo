@@ -1,11 +1,9 @@
 FROM node:12
-RUN mkdir -p /usr
-WORKDIR /usr
+WORKDIR /usr/src/app
 
-COPY ./package.json .
-COPY ./src/app/webpack.config.js webpack.config.js
+COPY ./package*.json ./
 RUN npm install && npm cache clean --force
-COPY ./src /usr
+COPY . .
 
 EXPOSE 8080
 CMD ["npm", "start"]
