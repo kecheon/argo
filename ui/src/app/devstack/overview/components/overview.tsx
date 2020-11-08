@@ -1,6 +1,7 @@
 import { Page } from 'argo-ui';
 import * as React from 'react';
 import {uiUrl} from '../../../shared/base';
+require('./overview.scss');
 
 export default () => {
   return (
@@ -17,19 +18,19 @@ export default () => {
           <div className='workflows-list__row-container'>
               <div className='row argo-table-list__row'>
                   <div className='row small-12'>
-                      <div className='columns small-3' onClick={() => document.location.href=uiUrl('workflows')}>
+                      <div className='columns small-3 pointer' onClick={() => document.location.href=uiUrl('workflows')}>
                         <i className='fa fa-stream fa-5x' />
                         <br/>Workflow 4
                       </div>
-                      <div className='columns small-3' onClick={() => document.location.href=uiUrl('workflow-templates')}>
+                      <div className='columns small-3 pointer' onClick={() => document.location.href=uiUrl('workflow-templates')}>
                         <i className='fa fa-window-maximize fa-5x' />
                         <br/>Workflow Template 2
                       </div>
-                      <div className='columns small-3' onClick={() => document.location.href=uiUrl('cluster-workflow-templates')}>
+                      <div className='columns small-3 pointer' onClick={() => document.location.href=uiUrl('cluster-workflow-templates')}>
                         <i className='fa fa-window-restore fa-5x' />
                         <br/>Cluster Workflow Template 2
                       </div>
-                      <div className='columns small-3' onClick={() => document.location.href=uiUrl('cron-workflows')}>
+                      <div className='columns small-3 pointer' onClick={() => document.location.href=uiUrl('cron-workflows')}>
                         <i className='fa fa-clock fa-5x' />
                         <br/>Cron Workflow Template 2
                       </div>
