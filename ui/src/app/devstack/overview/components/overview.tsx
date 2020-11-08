@@ -9,10 +9,10 @@ export default () => {
         <div className='argo-table-list'>
           <div className='row argo-table-list__head'>
               <div className='row small-12'>
-                  <div className='columns small-3'>WORKFLOW</div>
-                  <div className='columns small-3'>WORKFLOW TEMPLATE</div>
-                  <div className='columns small-3'>CLUSTER WORKFLOW TEMPLATE</div>
-                  <div className='columns small-3'>CRON WORKFLOW TEMPLATE</div>
+                  <div className='columns small-3 pointer'>WORKFLOW</div>
+                  <div className='columns small-3 pointer'>WORKFLOW TEMPLATE</div>
+                  <div className='columns small-3 pointer'>CLUSTER WORKFLOW TEMPLATE</div>
+                  <div className='columns small-3 pointer'>CRON WORKFLOW TEMPLATE</div>
               </div>
           </div>
           <div className='workflows-list__row-container'>
