@@ -81,23 +81,23 @@ const config = {
     },
     proxy: {
       "/api": {
-        "target": isProd ? "" : END_POINT,
+        "target": isProd ? END_POINT : END_POINT,
         "secure": false
       },
       "/artifacts": {
-        "target": isProd ? "" : END_POINT,
+        "target": isProd ? END_POINT : END_POINT,
         "secure": false
       },
       "/artifacts-by-uid": {
-        "target": isProd ? "" : END_POINT,
+        "target": isProd ? END_POINT : END_POINT,
         "secure": false
       },
       '/oauth2': {
-        'target': isProd ? '' : END_POINT,
+        'target': isProd ? END_POINT : END_POINT,
         'secure': false,
       },
       "/auth": {
-        'target': isProd ? '' : JSON_SERVER,
+        'target': isProd ? JSON_SERVER : JSON_SERVER,
         'secure': false,
       }
     }
