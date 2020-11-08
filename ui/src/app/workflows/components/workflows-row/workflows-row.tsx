@@ -10,6 +10,9 @@ import {wfDuration} from '../../../shared/duration';
 import {WorkflowDrawer} from '../workflow-drawer/workflow-drawer';
 
 interface WorkflowsRowProps {
+    role: {
+        level: number;
+    }
     workflow: Workflow;
     onChange: (key: string) => void;
     select: (wf: Workflow) => void;
@@ -49,7 +52,7 @@ export class WorkflowsRow extends React.Component<WorkflowsRowProps, WorkflowRow
                     </div>
                     <Link to={uiUrl(`workflows/${wf.metadata.namespace}/${wf.metadata.name}`)} className='row small-11'>
                         <div className='columns small-3'>{wf.metadata.name}</div>
-                        <div className='columns small-2'>{wf.metadata.namespace}</div>
+                        {((this.props.role.level <=0) && <div className='columns small-2'>{wf.metadata.namespace}</div>)}
                         <div className='columns small-2'>
                             <Timestamp date={wf.status.startedAt} />
                         </div>

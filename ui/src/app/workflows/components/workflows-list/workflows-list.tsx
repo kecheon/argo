@@ -177,7 +177,7 @@ export class WorkflowsList extends BasePage<RouteComponentProps<any>, State> {
                                     />
                                 </div>
                             </div>
-                            <div className='columns small-12 xlarge-10'>{this.renderWorkflows()}</div>
+                            <div className='columns small-12 xlarge-10'>{this.renderWorkflows(ctx.currentUser.role)}</div>
                         </div>
                         <SlidingPanel isShown={!!this.wfInput} onClose={() => ctx.navigation.goto('.', {new: null})}>
                             <ResourceEditor
@@ -283,7 +283,7 @@ export class WorkflowsList extends BasePage<RouteComponentProps<any>, State> {
         return counts;
     }
 
-    private renderWorkflows() {
+    private renderWorkflows(role: any) {
         if (this.state.error) {
             return <ErrorNotice error={this.state.error} onReload={() => this.reloadWorkflows()} reloadAfterSeconds={10} />;
         }
@@ -312,7 +312,7 @@ export class WorkflowsList extends BasePage<RouteComponentProps<any>, State> {
                         <div className='columns workflows-list__status small-1' />
                         <div className='row small-11'>
                             <div className='columns small-3'>NAME</div>
-                            <div className='columns small-2'>NAMESPACE</div>
+                            {((role.level <= 0) && <div className='columns small-2'>NAMESPACE</div>)}
                             <div className='columns small-2'>STARTED</div>
                             <div className='columns small-2'>FINISHED</div>
                             <div className='columns small-1'>DURATION</div>
@@ -323,6 +323,7 @@ export class WorkflowsList extends BasePage<RouteComponentProps<any>, State> {
                     {this.state.workflows.map(wf => {
                         return (
                             <WorkflowsRow
+                                role={role}
                                 workflow={wf}
                                 key={wf.metadata.uid}
                                 checked={this.state.selectedWorkflows.has(wf.metadata.uid)}
