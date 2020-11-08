@@ -7,7 +7,7 @@
     ],
     "scripts": {
         "build": "webpack -p --config ./src/app/webpack.config.js",
-        "start": "webpack-dev-server --config ./src/app/webpack.config.js --mode development --host 0.0.0.0 --port",
+        "start": "webpack-dev-server --config ./src/app/webpack.config.js --mode development --host 0.0.0.0",
         "lint": "tslint --fix -p ./src/app",
         "test": "jest",
         "watch": "jest --watch",
