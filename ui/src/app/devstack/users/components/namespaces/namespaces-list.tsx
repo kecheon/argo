@@ -27,7 +27,7 @@ import {Pagination, parseLimit} from '../../../../shared/pagination';
 import {WorkflowsRow} from './components/workflows-row/workflows-row';
 import {WorkflowsToolbar} from './components/workflows-toolbar/workflows-toolbar';
 
-import CreateUser from './components/create-namespace/create-namespace';
+import CreateNamespace from './components/create-namespace/create-namespace';
 import { NamespaceService } from '../../../services/namespace-service';
 import {Namespace} from '../models';
 
@@ -181,7 +181,7 @@ export class UsersNamespaces extends BasePage<RouteComponentProps<any>, State> {
                             <div className='columns small-12 xlarge-10'>{this.renderNamespaces()}</div>
                         </div>
                         <SlidingPanel isShown={!!this.wfInput} onClose={() => ctx.navigation.goto('.', {new: null})}>
-                            <CreateUser />
+                            <CreateNamespace />
                             {/* <ResourceEditor
                                 title='Create new user'
                                 kind='Workflow'
