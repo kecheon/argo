@@ -53,7 +53,7 @@ const usersUrl = uiUrl('users');
 const usersListUrl = uiUrl('users/list');
 const usersNamespacesUrl = uiUrl('users/namespaces');
 const usersRolesUrl = uiUrl('users/roles');
-const overviewUrl = uiUrl('overview');
+const overviewUrl = uiUrl('overview')
 
 export const history = createBrowserHistory();
 
@@ -125,7 +125,7 @@ export class App extends React.Component<{}, {version?: Version; popupProps: Pop
                 this.navItems = this.navItems.concat(navItems.tadmin);
             }
             if (this.currentUser.role.level <= 0) {
-                this.navItems = this.navItems.concat(navItems.admin);
+                this.navItems = navItems.admin2.concat(this.navItems).concat(navItems.admin);
             }
         } else {
             this.navItems = navItems.anonymousUser.concat(this.navItems);

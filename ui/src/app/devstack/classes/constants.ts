@@ -13,6 +13,13 @@ const reportsUrl = uiUrl('reports');
 const overviewUrl = uiUrl('overview');
 
 export const navItems = {
+  admin2: [
+    {
+        title: 'Overview',
+        path: overviewUrl,
+        iconClassName: 'fa fa-eye'
+    }
+  ],
   loggedInUser: [
       {
           title: 'Logout',
@@ -77,11 +84,6 @@ export const navItems = {
           title: 'Help',
           path: helpUrl,
           iconClassName: 'fa fa-question-circle'
-      },
-      {
-          title: 'Overview',
-          path: overviewUrl,
-          iconClassName: 'fa fa-eye'
       }
   ]
 };
