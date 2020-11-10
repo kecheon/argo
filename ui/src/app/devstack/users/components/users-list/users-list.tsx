@@ -34,6 +34,7 @@ require('./workflows-list.scss');
 
 interface User {
     id: string;
+    is_wf?: boolean;
     name: string;
     domain_id: string;
     email?: string;
@@ -288,33 +289,35 @@ export class UsersList extends BasePage<RouteComponentProps<any>, State> {
                     </div>
                     {this.state.users.map(user => {
                         return (
-                            <WorkflowsRow
-                                user={user}
-                                key={user.id}
-                                checked={this.state.selectedWorkflows.has(user.id)}
-                                onChange={key => {
-                                    const value = `${key}=${user.id}`;
-                                    let newTags: string[] = [];
-                                    if (this.state.selectedLabels.indexOf(value) === -1) {
-                                        newTags = this.state.selectedLabels.concat(value);
-                                        this.setState({selectedLabels: newTags});
-                                    }
-                                    this.changeFilters(this.state.namespace, this.state.selectedPhases, newTags, this.state.pagination);
-                                }}
-                                select={subUser => {
-                                    const userUID = subUser.id;
-                                    if (!userUID) {
-                                        return;
-                                    }
-                                    const currentlySelected: Map<string, User> = this.state.selectedWorkflows;
-                                    if (!currentlySelected.has(userUID)) {
-                                        currentlySelected.set(userUID, subUser);
-                                    } else {
-                                        currentlySelected.delete(userUID);
-                                    }
-                                    this.updateCurrentlySelectedAndBatchActions(currentlySelected);
-                                }}
-                            />
+                            ((user.is_wf) &&
+                                <WorkflowsRow
+                                    user={user}
+                                    key={user.id}
+                                    checked={this.state.selectedWorkflows.has(user.id)}
+                                    onChange={key => {
+                                        const value = `${key}=${user.id}`;
+                                        let newTags: string[] = [];
+                                        if (this.state.selectedLabels.indexOf(value) === -1) {
+                                            newTags = this.state.selectedLabels.concat(value);
+                                            this.setState({selectedLabels: newTags});
+                                        }
+                                        this.changeFilters(this.state.namespace, this.state.selectedPhases, newTags, this.state.pagination);
+                                    }}
+                                    select={subUser => {
+                                        const userUID = subUser.id;
+                                        if (!userUID) {
+                                            return;
+                                        }
+                                        const currentlySelected: Map<string, User> = this.state.selectedWorkflows;
+                                        if (!currentlySelected.has(userUID)) {
+                                            currentlySelected.set(userUID, subUser);
+                                        } else {
+                                            currentlySelected.delete(userUID);
+                                        }
+                                        this.updateCurrentlySelectedAndBatchActions(currentlySelected);
+                                    }}
+                                />
+                            )
                         );
                     })}
                 </div>
