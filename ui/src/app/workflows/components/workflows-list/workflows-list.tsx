@@ -205,6 +205,7 @@ export class WorkflowsList extends BasePage<RouteComponentProps<any>, State> {
     }
 
     private fetchWorkflows(namespace: string, selectedPhases: string[], selectedLabels: string[], pagination: Pagination): void {
+        console.log(namespace);
         if (this.subscription) {
             this.subscription.unsubscribe();
         }
