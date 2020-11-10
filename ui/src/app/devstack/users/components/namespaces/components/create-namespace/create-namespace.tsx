@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Form} from 'react-bootstrap';
+import {Col, Form} from 'react-bootstrap';
 import { useState } from 'react';
 import { NamespaceService } from '../../../../../services/namespace-service';
 import {Consumer} from '../../../../../../shared/context';
@@ -64,20 +64,19 @@ export default () => {
                     </Form.Group>
                 </div>
                 <div className='argo-form-row'>
-                    <Form.Group controlId='formBasicUserId'>
-                        <Form.Label>Member</Form.Label>
-                        <Form.Control type='text' placeholder='User id'
-                        value={ userId }
-                        onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setUserId(e.target.value)}/>
-                    </Form.Group>
-                </div>
-                <div className='argo-form-row'>
-                    <Form.Group controlId='formBasicRole'>
-                        <Form.Label>Role</Form.Label>
-                        <Form.Control type='text' placeholder='Role'
-                        value={ role }
-                        onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setRole(e.target.value)}/>
-                    </Form.Group>
+                    <Form.Row>
+                        <Form.Group as={Col} controlId='formBasicUserId'>
+                            <Form.Label>Users</Form.Label>
+                            <Form.Control as='select' multiple={true} placeholder='User id'
+                            onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setUserId(e.target.value)}/>
+                        </Form.Group>
+                        <Form.Group as={Col} controlId='formBasicRole'>
+                            <Form.Label>Project members</Form.Label>
+                            <Form.Control type='text' placeholder='Role'
+                            value={ role }
+                            onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setRole(e.target.value)}/>
+                        </Form.Group>
+                    </Form.Row>
                 </div>
                 <div className='argo-form-row'>
                     <Form.Group controlId='formBasicCpu'>
