@@ -23,6 +23,7 @@ export class WorkflowFilters extends React.Component<WorkflowFilterProps, {}> {
                     <div className='columns small-3 xlarge-12'>
                         <p className='wf-filters-container__title'>Namespace</p>
                         <NamespaceFilter
+                            workflows={this.props.workflows}
                             value={this.props.namespace}
                             onChange={ns => {
                                 this.props.onChange(ns, this.props.selectedPhases, this.props.selectedLabels);
