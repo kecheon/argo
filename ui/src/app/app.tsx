@@ -149,7 +149,7 @@ export class App extends React.Component<{}, {version?: Version; popupProps: Pop
                             <ErrorBoundary>
                                 <Switch>
                                     <Route exact={true} strict={true} path={uiUrl('')}>
-                                        <Redirect to={workflowsUrl} />
+                                        <Redirect to={this.currentUser.isLoggedIn? workflowsUrl : loginUrl} />
                                     </Route>
                                     <Route exact={true} strict={true} path={timelineUrl}>
                                         <Redirect to={workflowsUrl} />
