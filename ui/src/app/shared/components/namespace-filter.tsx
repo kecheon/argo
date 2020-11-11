@@ -13,10 +13,7 @@ export const NamespaceFilter = (props: State) => {
   let options: any[] = [];
   if (props.workflows) {
     options = props.workflows.map(wf => wf.metadata.namespace).filter((value, index, self) => self.indexOf(value) === index)
-    // options = options.map(option => {title: option, value: option});
-    options = [''].concat(options);
-    options = options.map(option => ({title: option, value: option}))
-    options[0].title = 'All namespaces';
+    options = [{title: 'All namespaces', value: ''}].concat(options);
   }
   // return <InputFilter value={props.value} name='ns' onChange={ns => props.onChange(ns)} />;
   return <Select options={options} onChange={(ns) => props.onChange(ns.value)} placeholder={'Select namespace'} />
