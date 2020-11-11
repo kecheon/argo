@@ -37,7 +37,7 @@ export class WorkflowDrawer extends React.Component<WorkflowDrawerProps, Workflo
     }
 
     public componentDidMount() {
-        userService.getProfile(this.props.links.self).then(userProfile => {
+        userService.getProfile(this.props.id).then(userProfile => {
             this.setState({userProfile});
         });
     }
