@@ -128,7 +128,7 @@ export class App extends React.Component<{}, {version?: Version; popupProps: Pop
                 this.navItems = navItems.admin2.concat(this.navItems).concat(navItems.admin);
             }
         } else {
-            this.navItems = navItems.anonymousUser.concat(this.navItems);
+            this.navItems = navItems.anonymousUser;
         }
     }
 
