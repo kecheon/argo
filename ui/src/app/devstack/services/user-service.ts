@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {UserInfo} from '../../shared/models';
 import usersList from './__mocks__/users';
+import userProfile from './__mocks__/user-profile';
 // import { UsersList } from '../users/components/users-list/users-list';
 const keystoneEndPoint = 'http://183.111.177.141:5000/api';
 // const keystoneEndPoint = 'http://183.111.177.141/identity/v3';
@@ -35,15 +36,15 @@ export class UserService {
         const response = await axios.get('/api/v1/auth/userinfo', {params: {token: 'token_string'}});
         return response.data as UserInfo;
     }
-    public async register(userProfile: object): Promise<any> {
-        const response = await axios.post(`${keystoneEndPoint}/user`, userProfile);
+    public async register(userProfileData: object): Promise<any> {
+        const response = await axios.post(`${keystoneEndPoint}/user`, userProfileData);
         return response.data;
     }
     public async getUsers(): Promise<any> {
         return usersList;
     }
     public async getProfile(link: string): Promise<any> {
-        return {'is_wf': true, 'wf': {'k8s-sa': 'dl-inferer'}, 'email': 'dl-inferer@dl.com', 'description': 'dl-inferer', 'id': '5f29308913f946d5a6b88b6a4c806f02', 'name': 'dl-inferer', 'domain_id': 'default', 'enabled': true, 'default_namespace_id': '978a647141a04db2a28c19eba924f6c0', 'password_expires_at': 'null', 'options': {'lock_password': false}, 'links': {'self': 'http://183.111.177.141/identity/v3/users/5f29308913f946d5a6b88b6a4c806f02'}};
+        return userProfile;
     }
     public async delete(link: string): Promise<any> {
         return { status: 'success', message: 'user deleted' }
