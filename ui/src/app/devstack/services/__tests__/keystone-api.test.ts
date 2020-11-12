@@ -19,7 +19,7 @@ describe('API access', () => {
         expect(response.headers['x-subject-token'].length > 0).toBeTruthy();
     });
     it('can login via local rest API', async () => {
-        const url = 'http://localhost:5000/api/auth/login';
+        const url = 'http://183.111.177.141:5000/api/auth/login';
         const response = await axios.post(url, { email: 'admin@devstack.co.kr', password: 'devstack' });
         expect(response.status).toEqual(200);
         expect(response.data.status).toEqual('success');
