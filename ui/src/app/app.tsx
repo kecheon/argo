@@ -152,7 +152,7 @@ export class App extends React.Component<{}, {version?: Version; popupProps: Pop
                                         <Redirect to={this.currentUser.isLoggedIn? workflowsUrl : loginUrl} />
                                     </Route>
                                     <Route exact={true} strict={true} path={timelineUrl}>
-                                        <Redirect to={workflowsUrl} />
+                                        <Redirect to={this.currentUser.isLoggedIn? workflowsUrl : loginUrl} />
                                     </Route>
                                     {this.state.namespace && (
                                         <Route exact={true} strict={true} path={workflowsUrl}>
@@ -179,7 +179,7 @@ export class App extends React.Component<{}, {version?: Version; popupProps: Pop
                                             <Redirect to={this.reportsUrl} />
                                         </Route>
                                     )}
-                                    <Route path={workflowsUrl} component={workflows.component} />
+                                    <Route path={workflowsUrl} component={this.currentUser.isLoggedIn ? workflows.component : login.component} />
                                     <Route path={workflowTemplatesUrl} component={workflowTemplates.component} />
                                     <Route path={clusterWorkflowTemplatesUrl} component={clusterWorkflowTemplates.component} />
                                     <Route path={cronWorkflowsUrl} component={cronWorkflows.component} />
