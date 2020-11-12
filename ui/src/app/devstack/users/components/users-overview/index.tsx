@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Page} from 'argo-ui';
 require('./menu.scss');
-import {uiUrl} from '../../../shared/base';
+import {uiUrl} from '../../../../shared/base';
 
 const menu = [
   {

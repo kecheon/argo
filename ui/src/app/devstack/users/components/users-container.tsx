@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Redirect, Route, RouteComponentProps, Switch} from 'react-router';
-import {UsersOverview} from '../menu';
+import {UsersOverview} from './users-overview';
 import {UsersNamespaces} from './namespaces/namespaces-list';
 import {UsersList} from './users-list/users-list';
 
