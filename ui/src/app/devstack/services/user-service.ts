@@ -1,6 +1,5 @@
 import axios from 'axios';
 import {UserInfo} from '../../shared/models';
-import usersList from './__mocks__/users';
 import userProfile from './__mocks__/user-profile';
 // import { UsersList } from '../users/components/users-list/users-list';
 const keystoneEndPoint = 'http://183.111.177.141:5000/api';
@@ -41,7 +40,8 @@ export class UserService {
         return response.data;
     }
     public async getUsers(): Promise<any> {
-        return usersList;
+        const response = await axios.get(`${keystoneEndPoint}/users/list`)
+        return response.data;
     }
     public async getProfile(link: string): Promise<any> {
         return userProfile;

@@ -77,6 +77,7 @@
         "json-server": "^0.16.2",
         "miragejs": "^0.1.41",
         "monaco-editor-webpack-plugin": "^1.9.0",
+        "msw": "^0.21.3",
         "node-sass": "^4.14.1",
         "prettier": "^1.19.1",
         "raw-loader": "^0.5.1",

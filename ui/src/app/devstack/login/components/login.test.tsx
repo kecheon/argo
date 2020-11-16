@@ -3,7 +3,7 @@ import '@testing-library/jest-dom/extend-expect';
 import {shallow} from 'enzyme';
 import * as React from 'react';
 // import {BrowserRouter as Router} from 'react-router-dom';
-import {Login} from './login';
+import Login from './login';
 
 describe('Login component', () => {
     test('renders the component', () => {
