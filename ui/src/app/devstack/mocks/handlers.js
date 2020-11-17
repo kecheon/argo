@@ -3,7 +3,6 @@ import usersList from './users';
 
 const keystoneEndPoint = 'http://183.111.177.141:5000/api';
 
-
 class LocalStorage {
   constructor() {
     this.store = {
@@ -20,8 +19,8 @@ class LocalStorage {
     delete this.store[key];
   }
 };
-
 const localStorage = new LocalStorage();
+
 export const handlers = [
     rest.post(`${keystoneEndPoint}/auth/login`, (req, res, ctx) => {
         localStorage.setItem('isLoggedIn', true);

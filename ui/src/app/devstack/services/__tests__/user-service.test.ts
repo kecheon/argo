@@ -1,6 +1,6 @@
-import { setupServer } from 'msw/node';
 import {UserService} from '../user-service';
 import {server} from '../../mocks/server';
+import usersList from '../../mocks/users';
 
 describe('User service', () => {
     beforeAll(() => server.listen());
@@ -25,6 +25,14 @@ describe('User service', () => {
     });
     it('get users list', async () => {
         await userService.login('admin@devstack.co.kr', 'devstack');
+        const result = await userService.getUsers();
+        expect(result.status).toEqual('success');
+        expect(result.users.length > 0).toBeTruthy();
+    });
+    it('testing with jest spy get users list', async () => {
+        jest.spyOn(userService, 'getUsers').mockImplementation(() => {
+            return Promise.resolve({ users: usersList.users, status: 'success' });
+        })
         const result = await userService.getUsers();
         expect(result.status).toEqual('success');
         expect(result.users.length > 0).toBeTruthy();
