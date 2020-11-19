@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
 import {Form} from 'react-bootstrap';
-import {Link} from 'react-router-dom';
 import {uiUrl} from '../../../shared/base';
 import { UserState } from '../../classes/current-user';
 // import { UserState, UserStateAction, UserStateActionTypes } from '../../classes/current-user';
@@ -18,7 +17,7 @@ export interface LoginForm {
 export default () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [user, setUser] = useState();
+    const [user, setUser] = useState(null);
     const service = new UserService();
     const handleSubmit = async (e: any) => {
         e.preventDefault();
@@ -75,16 +74,18 @@ export default () => {
                         <Form.Group controlId='formBasicUsername'>
                             <Form.Label>User Name*</Form.Label>
                             <Form.Control type='text' placeholder='Enter username'
-                            value={ username }
-                            onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setUsername(e.target.value)}/>
+                                value={ username }
+                                name='username'
+                                onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setUsername(e.target.value)}/>
                         </Form.Group>
                     </div>
                     <div className='argo-form-row'>
                         <Form.Group controlId='formBasicPassword1'>
                             <Form.Label>Password</Form.Label>
                             <Form.Control type='password' placeholder='Password'
-                            value={ password }
-                            onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setPassword(e.target.value)}/>
+                                value={ password }
+                                name='password'
+                                onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setPassword(e.target.value)}/>
                         </Form.Group>
                     </div>
                     <div className='login__form-row'>
@@ -93,11 +94,12 @@ export default () => {
                         </button>
                     </div>
                     <div className='login__form-row'>
-                        <Link to='/register'>
-                            <button className='argo-button argo-button--base argo-button--full-width argo-button--xlg' type='button'>
-                                Sign Up
-                            </button>
-                        </Link>
+                        <button className='argo-button argo-button--base argo-button--full-width argo-button--xlg' 
+                            type='button'
+                            onClick={() => document.location.href=uiUrl('register')}
+                        >
+                            Sign Up
+                        </button>
                     </div>
                     <div className='login__footer'>
                         <a href='https://argoproj.io' target='_blank'>
