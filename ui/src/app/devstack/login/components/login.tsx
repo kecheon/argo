@@ -61,10 +61,6 @@ export default () => {
     // }
     return (
         <div className='login'>
-            <div className='login__content'>
-                <div className='login__text'>Let's get stuff orchestrated!</div>
-                <div className='argo__logo' />
-            </div>
             <div className='login__box'>
                 <form onSubmit={ handleSubmit }>
                     <div className='login__logo width-control'>
