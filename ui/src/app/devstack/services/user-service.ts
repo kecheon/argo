@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {UserInfo} from '../../shared/models';
 import userProfile from './__mocks__/user-profile';
+import users from './__mocks__/users';
 // import { UsersList } from '../users/components/users-list/users-list';
 const keystoneEndPoint = 'http://183.111.177.141:5000/api';
 // const keystoneEndPoint = 'http://183.111.177.141/identity/v3';
@@ -40,8 +41,8 @@ export class UserService {
         return response.data;
     }
     public async getUsers(): Promise<any> {
-        const response = await axios.get(`${keystoneEndPoint}/users/list`)
-        return response.data;
+        // const response = await axios.get(`${keystoneEndPoint}/users/list`)
+        return users;
     }
     public async getProfile(link: string): Promise<any> {
         return userProfile;
