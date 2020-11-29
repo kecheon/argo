@@ -146,7 +146,7 @@ export class UsersNamespaces extends BasePage<RouteComponentProps<any>, State> {
                                     {
                                         title: 'Create New Namespace',
                                         iconClassName: 'fa fa-plus',
-                                        disabled: ctx.currentUser.role.level > 0,
+                                        disabled: ctx.currentUser.role.level > 1,
                                         action: () => ctx.navigation.goto('.', {new: '{}'})
                                     }
                                 ]
