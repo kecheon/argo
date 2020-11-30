@@ -38,6 +38,9 @@ describe('Keystone API access', () => {
         console.log(projects)
 
         // 3. get project scoped token
+        // there exist multiple projects; test 1st one
+        // dow we use same token for each project?
+
         const prjScopedTokenEndPoint = `${endpoint}/auth/tokens`;
         const authData = {
             'auth': {
@@ -57,8 +60,12 @@ describe('Keystone API access', () => {
           'Content-Type': 'application/json'
         }
         const prjTokenResponse = await axios.post(prjScopedTokenEndPoint, authData, {headers: authHeaders});
-        expect(prjTokenResponse.data.token).not.toBeNull();
-        console.log(prjTokenResponse.data);
+        const prjToken = prjTokenResponse.data.token;
+        expect(prjToken).not.toBeNull();
+        console.log(prjToken);
+
+        // 4. access argo backend with above token methods
+        // UI don't care under this layer, it attach just prjToken to the request headers
     });
     it('can login via local rest API', async () => {
         const url = 'http://183.111.177.141:5000/api/auth/login';
