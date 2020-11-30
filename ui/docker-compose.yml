@@ -9,4 +9,8 @@ services:
     ports:
       - '8080:8080'
     volumes: 
-      - ../api:/usr/src/api
+      - ../api:/usr/argo/api
+      - node_modules:/usr/argo/ui/node_modules
+      - ./src:/usr/argo/ui/src
+volumes:
+  node_modules: {}
