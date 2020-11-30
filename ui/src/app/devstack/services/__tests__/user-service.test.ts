@@ -27,7 +27,7 @@ describe('User service', () => {
         await userService.login('admin@devstack.co.kr', 'devstack');
         const result = await userService.getUsers();
         expect(result.status).toEqual('success');
-        expect(result.users.length > 0).toBeTruthy();
+        expect(result.users.users.length > 0).toBeTruthy();
     });
     it('testing with jest spy get users list', async () => {
         jest.spyOn(userService, 'getUsers').mockImplementation(() => {

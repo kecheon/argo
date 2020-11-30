@@ -54,6 +54,7 @@ export const handlers = [
       )
     }),
     rest.get(`${keystoneEndPoint}/users/list`, (req, res, ctx) => {
+        console.log(req)
         const isLoggedIn = localStorage.getItem('isLoggedIn');
         if (!isLoggedIn) {
           return res(
