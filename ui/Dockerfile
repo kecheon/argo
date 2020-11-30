@@ -1,9 +1,9 @@
 FROM node:12
 WORKDIR /usr/argo/ui
 
-ADD ./package*.json ./
+COPY ./package*.json ./
 RUN npm install && npm cache clean --force
-ADD . .
+COPY . .
 
 EXPOSE 8080
 CMD ["npm", "start"]
