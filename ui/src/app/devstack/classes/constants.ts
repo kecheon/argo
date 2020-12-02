@@ -11,15 +11,9 @@ const loginUrl = uiUrl('login');
 const logoutUrl = uiUrl('logout');
 const reportsUrl = uiUrl('reports');
 const overviewUrl = uiUrl('overview');
+const metricUrl = uiUrl('metric');
 
 export const navItems = {
-  admin2: [
-    {
-        title: 'Overview',
-        path: overviewUrl,
-        iconClassName: 'fa fa-eye'
-    }
-  ],
   loggedInUser: [
       {
           title: 'Logout',
@@ -33,6 +27,13 @@ export const navItems = {
           path: loginUrl,
           iconClassName: 'fa fa-sign-in-alt'
       }
+  ],
+  admin2: [
+    {
+        title: 'Overview',
+        path: overviewUrl,
+        iconClassName: 'fa fa-eye'
+    }
   ],
   user: [
       {
@@ -74,6 +75,11 @@ export const navItems = {
           title: 'Archived Workflows',
           path: archivedWorkflowsUrl,
           iconClassName: 'fa fa-archive'
+      },
+      {
+          title: 'Metric',
+          path: metricUrl,
+          iconClassName: 'fa fa-ruler-combined'
       },
       {
           title: 'API Docs',
