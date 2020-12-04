@@ -28,8 +28,8 @@ export default () => {
             // store the user in localStorage
             const currentUser: UserState = {
                 isLoggedIn: true,
-                username,
-                role: result.data.role,
+                username: result.data.name,
+                role: {name: result.data.roles[0], level: 0},
                 accessToken: result.data.jwtToken
             }
             localStorage.setItem('user', JSON.stringify(currentUser));

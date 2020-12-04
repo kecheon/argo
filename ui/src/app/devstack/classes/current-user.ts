@@ -4,7 +4,7 @@
 export interface UserState {
   isLoggedIn: boolean;
   username: string;
-  role: {name: '', level: 4};
+  role: {name: string, level: number};
   accessToken: string;
 }
 export const currentUser: UserState = {
