@@ -24,9 +24,7 @@ export default () => {
         const result = await service.login(username, password);
         if (result.status === 200) {
             // update current user and redirect to workflows
-            console.log(result);
             console.log(user);
-            setUser(result.data);
             // store the user in localStorage
             const currentUser: UserState = {
                 isLoggedIn: true,
@@ -35,6 +33,8 @@ export default () => {
                 accessToken: result.data.jwtToken
             }
             localStorage.setItem('user', JSON.stringify(currentUser));
+            localStorage.setItem('accessToken', currentUser.accessToken);
+            setUser(currentUser);
             if (currentUser.role.level <= 0) {
                 document.location.href = uiUrl('overview');
             } else {

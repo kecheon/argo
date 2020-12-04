@@ -2,12 +2,12 @@ import {Observable, Observer} from 'rxjs';
 import * as _superagent from 'superagent';
 import {SuperAgentRequest} from 'superagent';
 import {apiUrl, uiUrl} from '../base';
-import {argoToken} from '../../devstack/classes/constants';
 
 const superagentPromise = require('superagent-promise');
 
 const auth = (req: SuperAgentRequest) => {
-    req.set('Authorization', argoToken);
+    const accessToken = localStorage.getItem('accessToken');
+    req.set('Authorization', `Bearer ${accessToken}`);
     return req.on('error', handle);
 };
 
