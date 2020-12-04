@@ -3,32 +3,18 @@ import {UserInfo} from '../../shared/models';
 import userProfile from './__mocks__/user-profile';
 import listOfUsers from './__mocks__/users';
 // import { UsersList } from '../users/components/users-list/users-list';
-const keystoneEndPoint = 'http://183.111.177.141:5000/api';
+// const keystoneEndPoint = 'http://183.111.177.141:5000/api';
 // const keystoneEndPoint = 'http://183.111.177.141/identity/v3';
+const keystoneEndPoint = 'http://localhost:3000';
 
 export class UserService {
     public async login(username: string, password: string): Promise<any> {
-        // const reqBody = {
-        //     auth: {
-        //         identity: {
-        //             methods: ['password'],
-        //             password: {
-        //                 user: {
-        //                     name: username,
-        //                     domain: {id: 'default'},
-        //                     password
-        //                 }
-        //             }
-        //         }
-        //     }
-        // };
-        // const response = await axios.post(`${keystoneEndPoint}/auth/tokens`, reqBody);
-        const response = await axios.post(`${keystoneEndPoint}/auth/login`, { email: username, password });
-        return response.data;
+        const response = await axios.post(`${keystoneEndPoint}/account/login`, { username, domainId: 'default', password });
+        return response;
     }
 
     public async logout(): Promise<any> {
-        const response = await axios.post(`${keystoneEndPoint}/auth/logout`);
+        const response = await axios.post(`${keystoneEndPoint}/account/logout`);
         return response.data;
     }
 

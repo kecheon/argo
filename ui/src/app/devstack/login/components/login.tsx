@@ -22,16 +22,17 @@ export default () => {
     const handleSubmit = async (e: any) => {
         e.preventDefault();
         const result = await service.login(username, password);
-        if (result.status === 'success') {
+        if (result.status === 200) {
             // update current user and redirect to workflows
+            console.log(result);
             console.log(user);
-            setUser(result);
+            setUser(result.data);
             // store the user in localStorage
             const currentUser: UserState = {
                 isLoggedIn: true,
                 username,
-                role: result.role,
-                accessToken: result.Authorization
+                role: result.data.role,
+                accessToken: result.data.jwtToken
             }
             localStorage.setItem('user', JSON.stringify(currentUser));
             if (currentUser.role.level <= 0) {
