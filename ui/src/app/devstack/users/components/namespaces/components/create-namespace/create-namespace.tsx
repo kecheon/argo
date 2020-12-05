@@ -47,7 +47,7 @@ export default () => {
   }
   const options: any = [
       {title: 'swift', value: 'admin'},
-      {title: 'glance', value: 'viewer'},
+      {title: 'glance', value: 'executor'},
       {title: 'ydcho', value: 'viewer'},
   ];
   const options2: any = [
