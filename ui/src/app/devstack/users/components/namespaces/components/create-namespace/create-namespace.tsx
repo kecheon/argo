@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { NamespaceService } from '../../../../../services/namespace-service';
 import {Consumer} from '../../../../../../shared/context';
 import { Select } from 'argo-ui/src/components';
+import { Row } from 'react-bootstrap';
 
 export interface NamespaceForm {
   name: string;
@@ -67,62 +68,71 @@ export default () => {
                     </button>
                 </div>
                 <div className='argo-form-row'>
-                    <Form.Group controlId='formBasicName'>
-                        <Form.Label>Name*</Form.Label>
-                        <Form.Control type='text' placeholder='Enter namespace name'
-                        value={ name }
-                        onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setName(e.target.value)}/>
+                    <Form.Group as={Row} controlId='formBasicName'>
+                        <Form.Label column={true} sm={2}>Name*</Form.Label>
+                        <Col sm={10}>
+                            <Form.Control type='text' placeholder='Enter namespace name'
+                                value={ name }
+                                onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setName(e.target.value)}/>
+                        </Col>
                     </Form.Group>
                 </div>
                 <div className='argo-form-row'>
-                    <Form.Label>Member</Form.Label>
-                    <Form.Row>
-                        <Form.Group as={Col} controlId='formBasicUserId'>
-                            <Form.Label>All Users</Form.Label>
-                            <Select options={options} multiSelect={true} onMultiChange={() => setUserId('test')} />
-                        </Form.Group>
-                        <Form.Group as={Col} controlId='formBasicRole'>
-                            <Form.Label>Project Members</Form.Label>
-                            <Select options={options2} multiSelect={true} onMultiChange={() => setRole('test')} />
-                        </Form.Group>
-                    </Form.Row>
-                </div>
-                <div className='argo-form-row'>
-                    <Form.Row>
-                        <Form.Label>Quota</Form.Label>
-                        <Form.Group as={Col} controlId='formBasicCpu'>
-                            <Form.Label>CPU</Form.Label>
-                            <Form.Control type='number' placeholder='CPU'
-                            value={ cpu }
-                            onChange={(e: { target: { value: React.SetStateAction<number>; }; }) => setCpu(e.target.value)}/>
-                        </Form.Group>
-                        <Form.Group as={Col} controlId='formBasicMemory'>
-                            <Form.Label>Memory</Form.Label>
-                            <Form.Control type='number' placeholder='memory size'
-                            value={ memory }
-                            onChange={(e: { target: { value: React.SetStateAction<number>; }; }) => setMemory(e.target.value)}/>
-                        </Form.Group>
-                    </Form.Row>
-                </div>
-                <div className='argo-form-row'>
-                    <Form.Group controlId='formBasicEnabled'>
-                        <Form.Check type='checkbox' label='Enabled'
-                            onChange={(e: { target: { value: React.SetStateAction<boolean>; }; }) => setEnabled(e.target.value)}/>
+                    <Form.Group as={Row} controlId='formBasicMember'>
+                        <Form.Label column={true} sm={2}>Member</Form.Label>
+                        <Col sm={10}>
+                        <Form.Row>
+                            <Form.Group as={Col} controlId='formBasicUserId'>
+                                <Form.Label>All Users</Form.Label>
+                                <Select options={options} multiSelect={true} onMultiChange={() => setUserId('test')} />
+                            </Form.Group>
+                            <Form.Group as={Col} controlId='formBasicRole'>
+                                <Form.Label>Project Members</Form.Label>
+                                <Select options={options2} multiSelect={true} onMultiChange={() => setRole('test')} />
+                            </Form.Group>
+                        </Form.Row>
+                        </Col>
                     </Form.Group>
                 </div>
                 <div className='argo-form-row'>
-                    <Form.Group controlId='formBasicDescription'>
-                        <Form.Label>Description</Form.Label>
-                        <Form.Control as='textarea'
-                            value={description}
-                            onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setDescription(e.target.value)}/>
+                    <Form.Group as={Row} controlId='formBasicQuota'>
+                        <Form.Label column={true} sm={2}>Quota</Form.Label>
+                        <Col sm={10}>
+                            <Form.Row>
+                                <Form.Group as={Col} controlId='formBasicCpu'>
+                                    <Form.Label>CPU</Form.Label>
+                                    <Form.Control type='number' placeholder='CPU'
+                                    value={ cpu }
+                                    onChange={(e: { target: { value: React.SetStateAction<number>; }; }) => setCpu(e.target.value)}/>
+                                </Form.Group>
+                                <Form.Group as={Col} controlId='formBasicMemory'>
+                                    <Form.Label>Memory</Form.Label>
+                                    <Form.Control type='number' placeholder='memory size'
+                                    value={ memory }
+                                    onChange={(e: { target: { value: React.SetStateAction<number>; }; }) => setMemory(e.target.value)}/>
+                                </Form.Group>
+                            </Form.Row>
+                        </Col>
                     </Form.Group>
                 </div>
-                
-                <div className='login__footer'>
-                    <a href='https://argoproj.io' target='_blank'>
-                        <img className='logo-image' src='assets/images/argologo.svg' alt='argo' />
-                    </a>
+                <div className='argo-form-row'>
+                    <Form.Group as={Row} controlId='formBasicEnabled'>
+                        <Form.Label column={true} sm={2}>Enabled</Form.Label>
+                        <Col sm={2}>
+                            <Form.Check inline={true} type={'checkbox'}
+                                onChange={(e: { target: { value: React.SetStateAction<boolean>; }; }) => setEnabled(e.target.value)}/>
+                        </Col>
+                    </Form.Group>
+                </div>
+                <div className='argo-form-row'>
+                    <Form.Group as={Row} controlId='formBasicDescription'>
+                        <Form.Label column={true} sm={2}>Description</Form.Label>
+                        <Col sm={10}>
+                            <Form.Control as='textarea'
+                                value={description}
+                                onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setDescription(e.target.value)}/>
+                        </Col>
+                    </Form.Group>
                 </div>
             </form>
         )}
