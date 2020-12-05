@@ -11,7 +11,7 @@ import { Namespace } from '../../../models';
 // import {WorkflowLabels} from '../workflow-labels/workflow-labels';
 import {NamespaceService} from '../../../../../services/namespace-service';
 import {Consumer} from '../../../../../../shared/context';
-import { Form } from 'react-bootstrap';
+import { Form, Row, Col } from 'react-bootstrap';
 
 require('./workflow-drawer.scss');
 
@@ -60,52 +60,58 @@ export class WorkflowDrawer extends React.Component<WorkflowDrawerProps, Workflo
                                 </button>
                             </div>
                             <div className='argo-form-row'>
-                                <Form.Group controlId='formBasicName'>
-                                    <Form.Label>Name*</Form.Label>
-                                    <Form.Control type='text' placeholder='Enter namespace name'
-                                    value={ this.state.namespaceProfile.name }/>
+                                <Form.Group as={Row} controlId='formBasicName'>
+                                    <Form.Label column={true} sm={2}>Name*</Form.Label>
+                                    <Col sm={10}>
+                                        <Form.Control type='text' placeholder='Enter namespace name'
+                                            value={ this.state.namespaceProfile.name }/>
+                                    </Col>
                                 </Form.Group>
                             </div>
                             <div className='argo-form-row'>
-                                <Form.Group controlId='formBasicUserId'>
-                                    <Form.Label>Member</Form.Label>
-                                    <Form.Control type='text' placeholder='User id'
-                                    value={ this.state.namespaceProfile.userId } />
+                                <Form.Group as={Row} controlId='formBasicUserId'>
+                                    <Form.Label column={true} sm={2}>Member</Form.Label>
+                                    <Col sm={10}>
+                                        <Form.Control type='text' placeholder='User id'
+                                            value={ this.state.namespaceProfile.userId } />
+                                    </Col>
                                 </Form.Group>
                             </div>
                             <div className='argo-form-row'>
-                                <Form.Group controlId='formBasicRole'>
-                                    <Form.Label>Role</Form.Label>
-                                    <Form.Control type='text' placeholder='Role'
-                                    value={ this.state.namespaceProfile.role } />
+                                <Form.Group as={Row} controlId='formBasicRole'>
+                                    <Form.Label column={true} sm={2}>Role</Form.Label>
+                                    <Col sm={10}>
+                                        <Form.Control type='text' placeholder='Role'
+                                            value={ this.state.namespaceProfile.role } />
+                                    </Col>
                                 </Form.Group>
                             </div>
                             <div className='argo-form-row'>
-                                <Form.Group controlId='formBasicCpu'>
-                                    <Form.Label>CPU</Form.Label>
-                                    <Form.Control type='number' placeholder='CPU'
-                                    value={ this.state.namespaceProfile.quota_cpu } />
+                                <Form.Group as={Row} controlId='formBasicCpu'>
+                                    <Form.Label column={true} sm={2}>CPU</Form.Label>
+                                    <Col sm={10}>
+                                        <Form.Control type='number' placeholder='CPU'
+                                            value={ this.state.namespaceProfile.quota_cpu } />
+                                    </Col>
                                 </Form.Group>
                             </div>
                             <div className='argo-form-row'>
-                                <Form.Group controlId='formBasicMemory'>
-                                    <Form.Label>Memory</Form.Label>
-                                    <Form.Control type='number' placeholder='memory size'
-                                    value={ this.state.namespaceProfile.quota_ram} />
+                                <Form.Group as={Row} controlId='formBasicMemory'>
+                                    <Form.Label column={true} sm={2}>Memory</Form.Label>
+                                    <Col sm={10}>
+                                        <Form.Control type='number' placeholder='memory size'
+                                            value={ this.state.namespaceProfile.quota_ram} />
+                                    </Col>
                                 </Form.Group>
                             </div>
                             <div className='argo-form-row'>
-                                <Form.Group controlId='formBasicEnabled'>
-                                    <Form.Label>Enabled</Form.Label>
-                                    <Form.Control type='boolean' placeholder='Enabled'
-                                    value={ this.state.namespaceProfile.enabled } />
+                                <Form.Group as={Row} controlId='formBasicEnabled'>
+                                    <Form.Label column={true} sm={2}>Enabled</Form.Label>
+                                    <Col sm={2}>
+                                        <Form.Check inline={true} type={'checkbox'}
+                                            value={ this.state.namespaceProfile.enabled } />
+                                    </Col>
                                 </Form.Group>
-                            </div>
-                            
-                            <div className='login__footer'>
-                                <a href='https://argoproj.io' target='_blank'>
-                                    <img className='logo-image' src='assets/images/argologo.svg' alt='argo' />
-                                </a>
                             </div>
                         </form>
                     </div>
