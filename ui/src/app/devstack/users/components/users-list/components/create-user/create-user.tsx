@@ -4,6 +4,7 @@ import { useState } from 'react';
 import {UserService} from '../../../../../services/user-service';
 import {Consumer} from '../../../../../../shared/context';
 import { Select } from 'argo-ui';
+import { Row, Col } from 'react-bootstrap';
 
 interface UserForm {
   username: string;
@@ -20,6 +21,7 @@ export default () => {
   const [description, setDescription] = useState('');
   const [project, setProject] = useState('');
   const [roleName, setRoleName] = useState('');
+  const [enabled, setEnabled] = useState(false);
   // const [user, setUser] = useState();
   const service = new UserService();
   const handleSubmit = async (e: any) => {
@@ -49,43 +51,53 @@ export default () => {
                     </button>
                 </div>
                 <div className='argo-form-row'>
-                    <Form.Group controlId='formBasicUsername'>
-                        <Form.Label>User Name*</Form.Label>
-                        <Form.Control type='text' placeholder='Enter username'
-                        value={ username }
-                        onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setUsername(e.target.value)}/>
-                    </Form.Group>{' '}
-                </div>
-                <div className='argo-form-row'>
-                    <Form.Group controlId='formBasicDescription'>
-                        <Form.Label>Description</Form.Label>
-                        <Form.Control as='textarea' placeholder='Description'
-                        value={ description }
-                        onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setDescription(e.target.value)}/>
+                    <Form.Group as={Row} controlId='formBasicUsername'>
+                        <Form.Label column={true} sm={2}>User Name*</Form.Label>
+                        <Col sm={10}>
+                            <Form.Control type='text' placeholder='Enter username'
+                                value={ username }
+                                onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setUsername(e.target.value)}/>
+                        </Col>
                     </Form.Group>
                 </div>
                 <div className='argo-form-row'>
-                    <Form.Group controlId='formBasicEmail'>
-                        <Form.Label>Email</Form.Label>
-                        <Form.Control type='email' placeholder='Email'
-                        value={ email }
-                        onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setEmail(e.target.value)}/>
+                    <Form.Group as={Row} controlId='formBasicDescription'>
+                        <Form.Label column={true} sm={2}>Description</Form.Label>
+                        <Col sm={10}>
+                            <Form.Control as='textarea' placeholder='Description'
+                                value={ description }
+                                onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setDescription(e.target.value)}/>
+                        </Col>
                     </Form.Group>
                 </div>
                 <div className='argo-form-row'>
-                    <Form.Group controlId='formBasicPassword1'>
-                        <Form.Label>Password</Form.Label>
-                        <Form.Control type='password' placeholder='password'
-                        value={ password }
-                        onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setPassword(e.target.value)}/>
+                    <Form.Group as={Row} controlId='formBasicEmail'>
+                        <Form.Label column={true} sm={2}>Email</Form.Label>
+                        <Col sm={10}>
+                            <Form.Control type='email' placeholder='Email'
+                                value={ email }
+                                onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setEmail(e.target.value)}/>
+                        </Col>
                     </Form.Group>
                 </div>
                 <div className='argo-form-row'>
-                    <Form.Group controlId='formBasicPassword2'>
-                        <Form.Label>Confirm Password</Form.Label>
-                        <Form.Control type='password' placeholder='confirm password'
-                        value={ password2 }
-                        onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setPassword2(e.target.value)}/>
+                    <Form.Group as={Row} controlId='formBasicPassword1'>
+                        <Form.Label column={true} sm={2}>Password</Form.Label>
+                        <Col sm={10}>
+                            <Form.Control type='password' placeholder='password'
+                                value={ password }
+                                onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setPassword(e.target.value)}/>
+                        </Col>
+                    </Form.Group>
+                </div>
+                <div className='argo-form-row'>
+                    <Form.Group as={Row} controlId='formBasicPassword2'>
+                        <Form.Label column={true} sm={2}>Confirm Password</Form.Label>
+                        <Col sm={10}>
+                            <Form.Control type='password' placeholder='confirm password'
+                                value={ password2 }
+                                onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setPassword2(e.target.value)}/>
+                        </Col>
                     </Form.Group>
                 </div>
                 <div className='argo-form-row'>
@@ -107,9 +119,12 @@ export default () => {
                     />
                 </div>
                 <div className='argo-form-row'>
-                    <Form.Group controlId='formBasicEnabled'>
-                        <Form.Label>Enabled</Form.Label>
-                        <Form.Check type='checkbox' defaultValue={false} label='Enabled' />
+                    <Form.Group as={Row} controlId='formBasicEnabled'>
+                        <Form.Label column={true} sm={2}>Enabled</Form.Label>
+                        <Col sm={2}>
+                            <Form.Check inline={true} type={'checkbox'}
+                                onChange={(e: { target: { value: React.SetStateAction<boolean>; }; }) => setEnabled(e.target.value)}/>
+                        </Col>
                     </Form.Group>
                 </div>
             </form>

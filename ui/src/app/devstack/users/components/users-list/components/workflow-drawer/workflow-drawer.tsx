@@ -84,11 +84,6 @@ export class WorkflowDrawer extends React.Component<WorkflowDrawerProps, Workflo
                                     value={ this.state.userProfile.password } />
                                 </Form.Group>
                             </div>
-                            <div className='login__footer'>
-                                <a href='https://argoproj.io' target='_blank'>
-                                    <img className='logo-image' src='assets/images/argologo.svg' alt='argo' />
-                                </a>
-                            </div>
                         </form>
                     </div>
                 )}
