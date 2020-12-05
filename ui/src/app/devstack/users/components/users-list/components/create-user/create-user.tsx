@@ -3,6 +3,7 @@ import {Form} from 'react-bootstrap';
 import { useState } from 'react';
 import {UserService} from '../../../../../services/user-service';
 import {Consumer} from '../../../../../../shared/context';
+import { Select } from 'argo-ui';
 
 interface UserForm {
   username: string;
@@ -17,8 +18,8 @@ export default () => {
   const [password2, setPassword2] = useState('');
   const [email, setEmail] = useState('');
   const [description, setDescription] = useState('');
-  const [project, setProject] = useState('service');
-  const [roleName, setRoleName] = useState('viewer');
+  const [project, setProject] = useState('');
+  const [roleName, setRoleName] = useState('');
   // const [user, setUser] = useState();
   const service = new UserService();
   const handleSubmit = async (e: any) => {
@@ -88,41 +89,28 @@ export default () => {
                     </Form.Group>
                 </div>
                 <div className='argo-form-row'>
-                    <Form.Group controlId='formBasicProject'>
-                        <Form.Label>Primary project</Form.Label>
-                        <Form.Control as='select' defaultValue='Select project'
-                            value={project}
-                            onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setProject(e.target.value)}>
-                            <option>service1</option>
-                            <option>service2</option>
-                            <option>service3</option>
-                            <option>service4</option>
-                        </Form.Control>
-                    </Form.Group>
+                    <Select options={ [{ title: 'service1', value: 'service1'}, { title: 'service2', value: 'service2'}, { title: 'service3', value: 'service3'}, ] }
+                        value={project}
+                        onChange={(option) => setProject(option.value)}
+                        placeholder='Select Service'
+                    />
                 </div>
                 <div className='argo-form-row'>
-                    <Form.Group controlId='formBasicProject'>
-                        <Form.Label>Role</Form.Label>
-                        <Form.Control as='select' defaultValue='viewer'
-                            value={roleName}
-                            onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setRoleName(e.target.value)}>
-                            <option value='admin'>Admin</option>
-                            <option value='tenant_admin'>Tenant Admin</option>
-                            <option value='executor'>Executor</option>
-                            <option value='viewer'>Viewer</option>
-                        </Form.Control>
-                    </Form.Group>
+                    <Select options= { [
+                        {title: 'admin', value: 'admin'},
+                        {title: 'tenant_admin', value: 'tenant_admin'},
+                        {title: 'executor', value: 'executor'},
+                        {title: 'viewer', value: 'viewer'}] }
+                        value={roleName}
+                        onChange={(option) => setRoleName(option.value)}
+                        placeholder='Select Role'
+                    />
                 </div>
                 <div className='argo-form-row'>
                     <Form.Group controlId='formBasicEnabled'>
                         <Form.Label>Enabled</Form.Label>
                         <Form.Check type='checkbox' defaultValue={false} label='Enabled' />
                     </Form.Group>
-                </div>
-                <div className='login__footer'>
-                    <a href='https://argoproj.io' target='_blank'>
-                        <img className='logo-image' src='assets/images/argologo.svg' alt='argo' />
-                    </a>
                 </div>
             </form>
         )}
