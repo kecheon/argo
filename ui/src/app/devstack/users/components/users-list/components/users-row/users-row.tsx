@@ -8,7 +8,7 @@ import {User} from '../../../models';
 // import {PhaseIcon} from '../../../../shared/components/phase-icon';
 // import {Timestamp} from '../../../../shared/components/timestamp';
 // import {wfDuration} from '../../../../shared/duration';
-import {WorkflowDrawer} from '../workflow-drawer/workflow-drawer';
+import {WorkflowDrawer} from '../user-drawer/user-drawer';
 
 interface WorkflowsRowProps {
     // workflow: Workflow;

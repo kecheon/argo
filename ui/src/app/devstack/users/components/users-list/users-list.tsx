@@ -24,7 +24,7 @@ import {PaginationPanel} from '../../../../shared/components/pagination-panel';
 // import {ResourceEditor} from '../../../../shared/components/resource-editor/resource-editor';
 import {Pagination, parseLimit} from '../../../../shared/pagination';
 // import {WorkflowFilters} from '../workflow-filters/workflow-filters';
-import {WorkflowsRow} from './components/workflows-row/workflows-row';
+import {WorkflowsRow} from './components/users-row/users-row';
 import {WorkflowsToolbar} from './components/workflows-toolbar/workflows-toolbar';
 
 import {UserService} from '../../../services/user-service';

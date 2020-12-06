@@ -2,18 +2,22 @@ import { Page } from 'argo-ui';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import {uiUrl} from '../../../shared/base';
+import {UserService} from '../../services/user-service';
 
 export const Logout = () => {
     const [user, setUser] = useState();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleLogout = () => {
+    const handleLogout = async () => {
         console.log(username, password);
         setUser(null);
         setUsername('');
         setPassword('');
+        const userService = new UserService();
+        await userService.logout();
         localStorage.clear();
+
         document.location.href=uiUrl('login');
     };
 
