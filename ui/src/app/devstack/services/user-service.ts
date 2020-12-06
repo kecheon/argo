@@ -14,8 +14,11 @@ export class UserService {
     }
 
     public async logout(): Promise<any> {
-        const response = await axios.post(`${keystoneEndPoint}/account/logout`);
-        return response.data;
+        localStorage.removeItem('user');
+        localStorage.removeItem('accessToken');
+        await axios.get(`${keystoneEndPoint}/account/logout`);
+        // return response.data;
+        return { status: 200};
     }
 
     public async get(): Promise<UserInfo> {

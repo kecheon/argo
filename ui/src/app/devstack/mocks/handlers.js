@@ -1,7 +1,7 @@
 import { rest } from 'msw';
 import usersList from './users';
 
-const keystoneEndPoint = 'http://183.111.177.141:5000/api';
+const keystoneEndPoint = 'http://localhost:3000';
 
 class LocalStorage {
   constructor() {
@@ -22,15 +22,18 @@ class LocalStorage {
 const localStorage = new LocalStorage();
 
 export const handlers = [
-    rest.post(`${keystoneEndPoint}/auth/login`, (req, res, ctx) => {
+    rest.post(`${keystoneEndPoint}/account/login`, (req, res, ctx) => {
+      console.log(req);
         localStorage.setItem('isLoggedIn', true);
         return res(
             ctx.status(200),
             ctx.json({status: 'success'})
         )
     }),
-    rest.post(`${keystoneEndPoint}/auth/logout`, (req, res, ctx) => {
+    rest.get(`${keystoneEndPoint}/account/logout`, (req, res, ctx) => {
         localStorage.setItem('isLoggedIn', false);
+        localStorage.removeItem('user');
+        localStorage.removeItem('accessToken');
         return res(
             ctx.status(200),
             ctx.json({status: 'success'})

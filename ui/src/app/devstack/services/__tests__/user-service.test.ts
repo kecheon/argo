@@ -9,12 +9,12 @@ describe('User service', () => {
 
     const userService = new UserService();
     it('can login with username and password', async () => {
-        const result = await userService.login('admin@devstack.co.kr', 'devstack');
-        expect(result.status).toEqual('success');
+        const result = await userService.login('admin', 'devstack');
+        expect(result.status).toEqual(200);
     });
     it('can logout', async () => {
         const result = await userService.logout();
-        expect(result.status).toEqual('success');
+        expect(result.status).toEqual(200);
     });
     it('get users list without auth returns 403', async () => {
         try {
@@ -24,7 +24,7 @@ describe('User service', () => {
         }
     });
     it('get users list', async () => {
-        await userService.login('admin@devstack.co.kr', 'devstack');
+        await userService.login('admin', 'devstack');
         const result = await userService.getUsers();
         expect(result.status).toEqual('success');
         expect(result.users.users.length > 0).toBeTruthy();
