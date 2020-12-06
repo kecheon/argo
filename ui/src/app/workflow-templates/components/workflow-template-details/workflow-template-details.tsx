@@ -3,6 +3,7 @@ import {SlidingPanel} from 'argo-ui/src/index';
 import * as React from 'react';
 import {RouteComponentProps} from 'react-router';
 import * as models from '../../../../models';
+import { UserState } from '../../../devstack/classes/current-user';
 import {uiUrl} from '../../../shared/base';
 import {BasePage} from '../../../shared/components/base-page';
 import {ErrorNotice} from '../../../shared/components/error-notice';
@@ -60,12 +61,14 @@ export class WorkflowTemplateDetails extends BasePage<RouteComponentProps<any>, 
                                     {
                                         title: 'Submit',
                                         iconClassName: 'fa fa-plus',
-                                        action: () => (this.sidePanel = 'new')
+                                        action: () => (this.sidePanel = 'new'),
+                                        disabled: ctx.currentUser.role.level >= 3
                                     },
                                     {
                                         title: 'Delete',
                                         iconClassName: 'fa fa-trash',
-                                        action: () => this.deleteWorkflowTemplate()
+                                        action: () => this.deleteWorkflowTemplate(),
+                                        disabled: ctx.currentUser.role.level >= 3
                                     }
                                 ]
                             },
@@ -78,7 +81,7 @@ export class WorkflowTemplateDetails extends BasePage<RouteComponentProps<any>, 
                             ]
                         }}>
                         <div className='argo-container'>
-                            <div className='workflow-details__content'>{this.renderWorkflowTemplate()}</div>
+                            <div className='workflow-details__content'>{this.renderWorkflowTemplate(ctx.currentUser)}</div>
                         </div>
                         {this.state.template && (
                             <SlidingPanel isShown={this.sidePanel !== null} onClose={() => (this.sidePanel = null)}>
@@ -98,14 +101,14 @@ export class WorkflowTemplateDetails extends BasePage<RouteComponentProps<any>, 
         );
     }
 
-    private renderWorkflowTemplate() {
+    private renderWorkflowTemplate(currentUser: UserState) {
         if (this.state.error) {
             return <ErrorNotice error={this.state.error} />;
         }
         if (!this.state.template) {
             return <Loading />;
         }
-        return <WorkflowTemplateSummaryPanel template={this.state.template} onChange={template => this.setState({template})} />;
+        return <WorkflowTemplateSummaryPanel template={this.state.template} onChange={template => this.setState({template})} currentUser={currentUser} />;
     }
 
     private deleteWorkflowTemplate() {

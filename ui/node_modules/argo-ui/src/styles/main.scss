@@ -1,0 +1,42 @@
+@import './config';
+@import './argo-icon';
+
+@import 'node_modules/foundation-sites/scss/foundation';
+@import 'node_modules/@fortawesome/fontawesome-free/scss/fontawesome';
+@import 'node_modules/@fortawesome/fontawesome-free/scss/solid';
+@import 'node_modules/@fortawesome/fontawesome-free/scss/brands';
+
+@include foundation-global-styles;
+@include foundation-flex-classes;
+@include foundation-flex-grid;
+@include foundation-dropdown;
+@include foundation-typography;
+@include foundation-visibility-classes;
+
+body {
+    margin: 0;
+    font-family: $body-font-family;
+    font-weight: normal;
+    font-size: 16px;
+    font-style: normal;
+    color: $argo-color-gray-7;
+    background: $argo-color-gray-3;
+
+    button, a, span, input {
+        outline: none !important
+    }
+}
+
+a, a:hover {
+    color: $argo-color-teal-6;
+}
+
+h1, h2 {
+    color: $argo-color-teal-6;
+}
+
+@import './elements/buttons';
+@import './elements/containers';
+@import './elements/table-list';
+@import './elements/form-controls';
+@import './elements/utils';

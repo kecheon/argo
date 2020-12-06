@@ -4,7 +4,7 @@
     ],
     "jsRules": {},
     "rules": {
-        "prettier": true,
+        "prettier": false,
         "quotemark": [true, "single"],
         "no-var-requires": false,
         "interface-name": false,
@@ -14,7 +14,8 @@
         "max-line-length": [true, 180],
         "jsx-no-lambda": false,
         "array-type": false,
-        "max-classes-per-file": false
+        "max-classes-per-file": false,
+        "ordered-imports": false
     },
     "rulesDirectory": []
 }

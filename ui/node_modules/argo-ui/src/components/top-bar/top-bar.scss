@@ -1,0 +1,85 @@
+@import '../../styles/config';
+@import 'node_modules/foundation-sites/scss/util/util';
+
+.top-bar {
+    line-height: $top-bar-height;
+    background: $white-color;
+    transition: right .5s;
+    border-bottom: 1px solid $argo-color-gray-2;
+
+    &__left-side {
+        padding-left: 20px;
+        white-space: nowrap;
+    }
+
+    &__right-side {
+        padding-right: 20px;
+        text-align: right;
+    }
+
+    &__title {
+        float: left;
+        font-weight: 500;
+        font-size: .925em;
+        color: $argo-color-teal-7;
+        text-transform: uppercase;
+    }
+
+    &__filter-item a {
+        color: $argo-color-gray-6;
+        font-size: 1em;
+    }
+
+    &__filter {
+        position: relative;
+        &--selected {
+            &::before {
+                position: absolute;
+                top: 15px;
+                right: 10px;
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                background-color: #009BFF;
+                content: '';
+            }
+        }
+    }
+
+    &__breadcrumbs {
+        float: left;
+        margin-left: -4px;
+        height: $top-bar-height;
+        font-weight: 500;
+        font-size: .8em;
+        color: $argo-color-gray-8;
+
+        a {
+            display: inline-block;
+            padding: 4px;
+            line-height: 1.23;
+            font-weight: 400;
+            color: $argo-color-teal-6;
+            border-radius: 3px;
+
+            &:hover {
+                background-color: $argo-color-gray-2;
+            }
+        }
+
+        &-last-item {
+            display: inline-block;
+            padding: 0 4px;
+        }
+    }
+
+    &__sep {
+        display: inline-block;
+        vertical-align: middle;
+        margin: 0 8px;
+        width: 0;
+        height: 24px;
+        border-left: 1px solid $argo-color-gray-4;
+        transform: rotate(24deg);
+    }
+}

@@ -1,3 +1,3 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Login component renders the component 1`] = `ShallowWrapper {}`;
+exports[`Login component renders the component 1`] = `ReactWrapper {}`;

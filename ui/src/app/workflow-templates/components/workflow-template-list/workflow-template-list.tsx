@@ -62,7 +62,8 @@ export class WorkflowTemplateList extends BasePage<RouteComponentProps<any>, Sta
                                     {
                                         title: 'Create New Workflow Template',
                                         iconClassName: 'fa fa-plus',
-                                        action: () => (this.sidePanel = 'new')
+                                        action: () => (this.sidePanel = 'new'),
+                                        disabled: ctx.currentUser.role.level >= 3
                                     }
                                 ]
                             },

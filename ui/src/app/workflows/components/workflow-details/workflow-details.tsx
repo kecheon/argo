@@ -107,7 +107,7 @@ export class WorkflowDetails extends React.Component<RouteComponentProps<any>, W
                                 {title: this.props.match.params.namespace + '/' + this.props.match.params.name}
                             ],
                             actionMenu: {
-                                items: this.getItems(workflowPhase, ctx)
+                                items: ctx.currentUser.role.level < 3 ? this.getItems(workflowPhase, ctx) : []
                             },
                             tools: (
                                 <div className='workflow-details__topbar-buttons'>

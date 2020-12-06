@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  argo-ui:
+    container_name: argo-ui
+    build: 
+      context: ./
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - '8080:8080'
+    volumes: 
+      - ../api:/usr/argo/api
+      - node_modules:/usr/argo/ui/node_modules
+      - ./src:/usr/argo/ui/src
+volumes:
+  node_modules: {}

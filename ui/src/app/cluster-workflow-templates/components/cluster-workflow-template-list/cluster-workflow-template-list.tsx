@@ -51,7 +51,8 @@ export class ClusterWorkflowTemplateList extends BasePage<RouteComponentProps<an
                                     {
                                         title: 'Create New Cluster Workflow Template',
                                         iconClassName: 'fa fa-plus',
-                                        action: () => (this.sidePanel = 'new')
+                                        action: () => (this.sidePanel = 'new'),
+                                        disabled: ctx.currentUser.role.level > 0
                                     }
                                 ]
                             }
