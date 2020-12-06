@@ -67,6 +67,6 @@ export const WorkflowOperationsMap: WorkflowOperations = {
         title: 'DELETE',
         iconClassName: 'fa fa-trash',
         disabled: () => false,
-        action: (wf: Workflow) => service.delete('user id')
+        action: (wf: Workflow) => service.deleteUser('user id')
     }
 };

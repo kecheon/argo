@@ -27,13 +27,32 @@ export class UserService {
         return response.data;
     }
     public async getUsers(): Promise<any> {
-        // const response = await axios.get(`${keystoneEndPoint}/users/list`)
-        return { status: 'success', users: listOfUsers };
+        // const response = await axios.get(`${keystoneEndPoint}/users/list`);
+        // return response.data;
+        const users = await getAsyncData(listOfUsers);
+        return { status: 'success', users };
     }
-    public async getProfile(link: string): Promise<any> {
-        return userProfile;
+    public async getUserProfile(link: string): Promise<any> {
+        // const response = await axios.get(`${keystoneEndPoint}/users/link`)
+        // return response.data;
+        return getAsyncData(userProfile);
     }
-    public async delete(link: string): Promise<any> {
+    public async updateUser(link: string): Promise<any> {
+        // const response = await axios.put(`${keystoneEndPoint}/users/link`)
+        // return response.data;
+        return getAsyncData(userProfile);
+    }
+    public async deleteUser(link: string): Promise<any> {
+        // const response = await axios.delete(`${keystoneEndPoint}/users/link`)
+        // return response.data;
         return { status: 'success', message: 'user deleted' }
     }
+}
+
+function sleep(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+async function getAsyncData(data: any) {
+    await sleep(1000);
+    return data;
 }

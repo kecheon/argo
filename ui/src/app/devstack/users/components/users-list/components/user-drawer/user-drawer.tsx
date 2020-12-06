@@ -22,7 +22,7 @@ interface WorkflowDrawerProps {
     id: string;
     domain_id: string;
     links?: {self: string};
-    onChange: (key: string) => void;
+    onChange?: (key: string) => void;
 }
 
 interface WorkflowDrawerState {
@@ -31,13 +31,13 @@ interface WorkflowDrawerState {
 }
 
 export class WorkflowDrawer extends React.Component<WorkflowDrawerProps, WorkflowDrawerState> {
-    constructor(props: Readonly<WorkflowDrawerProps>) {
+    constructor(props: WorkflowDrawerProps) {
         super(props);
         this.state = {};
     }
 
     public componentDidMount() {
-        userService.getProfile(this.props.id).then(userProfile => {
+        userService.getUserProfile(this.props.id).then(userProfile => {
             this.setState({userProfile});
         });
     }
