@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {UserInfo} from '../../shared/models';
-import userProfile from './__mocks__/user-profile';
-import listOfUsers from './__mocks__/users';
+// import userProfile from '../mocks/user-profile';
+// import listOfUsers from './__mocks__/users';
 // import { UsersList } from '../users/components/users-list/users-list';
 // const keystoneEndPoint = 'http://183.111.177.141:5000/api';
 // const keystoneEndPoint = 'http://183.111.177.141/identity/v3';
@@ -16,9 +16,8 @@ export class UserService {
     public async logout(): Promise<any> {
         localStorage.removeItem('user');
         localStorage.removeItem('accessToken');
-        await axios.get(`${keystoneEndPoint}/account/logout`);
-        // return response.data;
-        return { status: 200};
+        const response = await axios.get(`${keystoneEndPoint}/account/logout`);
+        return response;
     }
 
     public async get(): Promise<UserInfo> {
@@ -26,29 +25,27 @@ export class UserService {
         return response.data as UserInfo;
     }
     public async register(userProfileData: object): Promise<any> {
-        const response = await axios.post(`${keystoneEndPoint}/user`, userProfileData);
+        const response = await axios.post(`${keystoneEndPoint}/users`, userProfileData);
         return response.data;
     }
     public async getUsers(): Promise<any> {
-        // const response = await axios.get(`${keystoneEndPoint}/users/list`);
-        // return response.data;
-        const users = await getAsyncData(listOfUsers);
-        return { status: 'success', users };
+        const response = await axios.get(`${keystoneEndPoint}/users`);
+        return response.data;
     }
     public async getUserProfile(link: string): Promise<any> {
-        // const response = await axios.get(`${keystoneEndPoint}/users/link`)
-        // return response.data;
-        return getAsyncData(userProfile);
+        const response = await axios.get(`${keystoneEndPoint}/users/link`)
+        return response.data;
+        // return getAsyncData(userProfile);
     }
     public async updateUser(link: string): Promise<any> {
-        // const response = await axios.put(`${keystoneEndPoint}/users/link`)
-        // return response.data;
-        return getAsyncData(userProfile);
+        const response = await axios.put(`${keystoneEndPoint}/users/link`)
+        return response.data;
+        // return getAsyncData(userProfile);
     }
     public async deleteUser(link: string): Promise<any> {
-        // const response = await axios.delete(`${keystoneEndPoint}/users/link`)
-        // return response.data;
-        return { status: 'success', message: 'user deleted' }
+        const response = await axios.delete(`${keystoneEndPoint}/users/link`)
+        return response.data;
+        // return { status: 'success', message: 'user deleted' }
     }
 }
 

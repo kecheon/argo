@@ -39,7 +39,7 @@ export const handlers = [
             ctx.json({status: 'success'})
         )
     }),
-    rest.get(`${keystoneEndPoint}/user`, () => {
+    rest.get(`${keystoneEndPoint}/users/link`, () => {
       const isLoggedIn = localStorage.getItem('isLoggedIn');
       if (!isLoggedIn) {
         return res(
@@ -56,8 +56,7 @@ export const handlers = [
         })
       )
     }),
-    rest.get(`${keystoneEndPoint}/users/list`, (req, res, ctx) => {
-        console.log(req)
+    rest.get(`${keystoneEndPoint}/users`, (req, res, ctx) => {
         const isLoggedIn = localStorage.getItem('isLoggedIn');
         if (!isLoggedIn) {
           return res(

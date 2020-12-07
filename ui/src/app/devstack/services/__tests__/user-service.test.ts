@@ -3,6 +3,7 @@ import {server} from '../../mocks/server';
 import usersList from '../../mocks/users';
 
 describe('User service', () => {
+    // comment out following 3 lines when you test with real server
     beforeAll(() => server.listen());
     afterAll(() => server.close())
     afterEach(() => server.resetHandlers());
@@ -13,6 +14,10 @@ describe('User service', () => {
         expect(result.status).toEqual(200);
     });
     it('can logout', async () => {
+        // fake test
+        jest.spyOn(userService, 'logout').mockImplementation(() => {
+            return Promise.resolve({ status: 200 });
+        })
         const result = await userService.logout();
         expect(result.status).toEqual(200);
     });
@@ -27,12 +32,9 @@ describe('User service', () => {
         await userService.login('admin', 'devstack');
         const result = await userService.getUsers();
         expect(result.status).toEqual('success');
-        expect(result.users.users.length > 0).toBeTruthy();
+        expect(result.users.length > 0).toBeTruthy();
     });
     it('testing with jest spy get users list', async () => {
-        jest.spyOn(userService, 'getUsers').mockImplementation(() => {
-            return Promise.resolve({ users: usersList.users, status: 'success' });
-        })
         const result = await userService.getUsers();
         expect(result.status).toEqual('success');
         expect(result.users.length > 0).toBeTruthy();
