@@ -60,7 +60,7 @@ describe('Keystone API access', () => {
           'Content-Type': 'application/json'
         }
         const prjTokenResponse = await axios.post(prjScopedTokenEndPoint, authData, {headers: authHeaders});
-        const prjToken = prjTokenResponse.data.token;
+        const prjToken = prjTokenResponse.headers['x-subject-token'];
         expect(prjToken).not.toBeNull();
         console.log(prjToken);
 
