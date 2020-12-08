@@ -19,8 +19,12 @@ export const Logout = () => {
         localStorage.removeItem('accessToken');
         const endpoint = 'http://localhost:3000';
         try {
-          await axios.get(`${endpoint}/account/logout`);
-          document.location.href = uiUrl('login');
+          const response = await axios.get(`${endpoint}/account/logout`);
+          if (response.data.status === 'success') {
+            document.location.href = uiUrl('login');
+          } else {
+            window.alert('logout failure');
+          }
         } catch(err) {
           console.log(err);
         }

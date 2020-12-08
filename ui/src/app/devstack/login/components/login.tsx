@@ -3,8 +3,6 @@ import { useState } from 'react';
 import {Form} from 'react-bootstrap';
 import {uiUrl} from '../../../shared/base';
 import { UserState } from '../../classes/current-user';
-// import { UserState, UserStateAction, UserStateActionTypes } from '../../classes/current-user';
-// import withUserState from '../../classes/user-service-consumer';
 import {UserService} from '../../services/user-service';
 import axios from 'axios';
 
@@ -13,11 +11,13 @@ require('./login.scss');
 export interface LoginForm {
     username: string;
     password: string;
+    domainId: string;
 }
 
 export default () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [domainId, setDomainId] = useState('default');
     const [user, setUser] = useState(null);
     const service = new UserService();
     const handleSubmit = async (e: any) => {
@@ -25,51 +25,35 @@ export default () => {
         const endpoint = 'http://localhost:3000';
         const credential = {
             username,
-            domainId: 'default',
+            domainId,
             password
         }
-        await axios.post(`${endpoint}/account/login`, credential);
-        document.location.href = uiUrl('workflows');
+        const res = await axios.post(`${endpoint}/account/login`, credential);
+        if (res.data.status === 'success') {
+            // TODO
+            // set role of this user
+            const { roles }= res.data.user;
 
-        // const result = await service.login(username, password);
-        // if (result.status === 'success') {
-        //     // update current user and redirect to workflows
-        //     console.log(user);
-        //     // store the user in localStorage
-        const currentUser: UserState = {
-            isLoggedIn: true,
-            username: 'admin',
-            role: {name: 'wf-admin', level: 0},
-            accessToken: 'jwtToken_if_exists'
-        }
-        localStorage.setItem('user', JSON.stringify(currentUser));
-        localStorage.setItem('accessToken', currentUser.accessToken);
-        setUser(currentUser);
-        if (currentUser.role.level <= 0) {
-            document.location.href = uiUrl('overview');
+            const currentUser: UserState = {
+                isLoggedIn: true,
+                username: 'admin',
+                role: {name: roles[0], level: 0},
+                accessToken: 'jwtToken_if_exists'
+            }
+            localStorage.setItem('user', JSON.stringify(currentUser));
+            localStorage.setItem('accessToken', currentUser.accessToken);
+            setUser(currentUser);
+            if (currentUser.role.level <= 0) {
+                document.location.href = uiUrl('overview');
+            } else {
+                document.location.href = uiUrl('workflows');
+            }
+
         } else {
-            document.location.href = uiUrl('workflows');
+            alert(`login Error ${username} ${password}`);
         }
-        // } else {
-        //     alert(`login Error ${username} ${password}`);
-        // }
     }
-    // logout the user
-    // const handleLogout = () => {
-    //     setUser(null);
-    //     setUsername('');
-    //     setPassword('');
-    //     localStorage.clear();
-    // };
-
-    // if (user) {
-    //     return (
-    //       <div>
-    //         You are already loggged in
-    //         <button onClick={handleLogout}>logout</button>
-    //       </div>
-    //     );
-    // }
+   
     return (
         <div className='login'>
             <div className='login__box'>
@@ -84,6 +68,15 @@ export default () => {
                                 value={ username }
                                 name='username'
                                 onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setUsername(e.target.value)}/>
+                        </Form.Group>
+                    </div>
+                    <div className='argo-form-row'>
+                        <Form.Group controlId='formBasicDomainId'>
+                            <Form.Label>Domain ID*</Form.Label>
+                            <Form.Control type='text' placeholder='Enter domain id'
+                                value={ domainId }
+                                name='domainId'
+                                onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setDomainId(e.target.value)}/>
                         </Form.Group>
                     </div>
                     <div className='argo-form-row'>
@@ -118,5 +111,3 @@ export default () => {
         </div>
     );
 };
-
-// export default withUserState(Login);
