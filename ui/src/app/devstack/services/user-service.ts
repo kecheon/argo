@@ -23,30 +23,30 @@ export class UserService {
         await axios.get(`${gatewayEndpoint}/account/logout`);
     }
 
-    public async get(): Promise<UserInfo> {
-        const response = await axios.get('/api/v1/auth/userinfo', {params: {token: 'token_string'}});
-        return response.data as UserInfo;
-    }
+    // public async get(): Promise<UserInfo> {
+    //     const response = await axios.get('/api/v1/auth/userinfo');
+    //     return response.data as UserInfo;
+    // }
     public async register(userProfileData: object): Promise<any> {
-        const response = await axios.post(`${gatewayEndpoint}/users`, userProfileData);
+        const response = await axios.post(`${gatewayEndpoint}/user`, userProfileData);
         return response.data;
     }
     public async getUsers(): Promise<any> {
-        const response = await axios.get(`${gatewayEndpoint}/users`);
+        const response = await axios.get(`${gatewayEndpoint}/user`);
         return response.data;
     }
-    public async getUserProfile(link: string): Promise<any> {
-        const response = await axios.get(`${gatewayEndpoint}/users/link`)
-        return response.data;
+    public async getUserProfile(id: string): Promise<any> {
+        const response = await axios.get(`${gatewayEndpoint}/user/id`)
+        return response.data as UserInfo;
         // return getAsyncData(userProfile);
     }
-    public async updateUser(link: string): Promise<any> {
-        const response = await axios.put(`${gatewayEndpoint}/users/link`)
-        return response.data;
+    public async updateUser(id: string, data: UserInfo): Promise<any> {
+        const response = await axios.patch(`${gatewayEndpoint}/user/id`, data)
+        return response.data as UserInfo;
         // return getAsyncData(userProfile);
     }
-    public async deleteUser(link: string): Promise<any> {
-        const response = await axios.delete(`${gatewayEndpoint}/users/link`)
+    public async deleteUser(id: string): Promise<any> {
+        const response = await axios.delete(`${gatewayEndpoint}/user/id`)
         return response.data;
         // return { status: 'success', message: 'user deleted' }
     }
