@@ -2,6 +2,7 @@
  // current testing env is node on jest.config so that need to set this test's env to jsdom
  * @jest-environment jsdom
 */
+import axios from 'axios';
 
 import '@testing-library/jest-dom/extend-expect';
 // import {render} from '@testing-library/react';
@@ -55,3 +56,19 @@ describe('Login component', () => {
         expect(mock).toHaveBeenCalled();
     });
 });
+
+
+describe('Login api of Gateway', () => {
+    const endpoint = 'http://localhost:3000';
+    test('responses something precious', async () => {
+        const credential = {
+            username: 'admin',
+            domainId: 'default',
+            password: 'devstack'
+        }
+        const res = await axios.post(`${endpoint}/account/login`, credential);
+        expect(res.status).toEqual(200);
+        console.log(res);
+
+    })
+})

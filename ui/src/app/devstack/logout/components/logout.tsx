@@ -3,6 +3,7 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import {uiUrl} from '../../../shared/base';
 import {UserService} from '../../services/user-service';
+import axios from 'axios';
 
 export const Logout = () => {
     const [user, setUser] = useState();
@@ -14,11 +15,15 @@ export const Logout = () => {
         setUser(null);
         setUsername('');
         setPassword('');
-        const userService = new UserService();
-        await userService.logout();
-        localStorage.clear();
-
-        document.location.href=uiUrl('login');
+        localStorage.removeItem('user');
+        localStorage.removeItem('accessToken');
+        const endpoint = 'http://localhost:3000';
+        try {
+          await axios.get(`${endpoint}/account/logout`);
+          document.location.href = uiUrl('login');
+        } catch(err) {
+          console.log(err);
+        }
     };
 
     if (user) {

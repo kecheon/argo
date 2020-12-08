@@ -10,14 +10,17 @@ const gatewayEndpoint = 'http://localhost:3000';
 export class UserService {
     public async login(username: string, password: string): Promise<any> {
         const response = await axios.post(`${gatewayEndpoint}/account/login`, { username, domainId: 'default', password });
-        return response;
+        if (response.status === 302) {
+            return { status: 'success' };
+        } else {
+            return { status: 'failure' };
+        }
     }
 
     public async logout(): Promise<any> {
         localStorage.removeItem('user');
         localStorage.removeItem('accessToken');
-        const response = await axios.get(`${gatewayEndpoint}/account/logout`);
-        return response;
+        await axios.get(`${gatewayEndpoint}/account/logout`);
     }
 
     public async get(): Promise<UserInfo> {

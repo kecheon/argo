@@ -6,6 +6,7 @@ import { UserState } from '../../classes/current-user';
 // import { UserState, UserStateAction, UserStateActionTypes } from '../../classes/current-user';
 // import withUserState from '../../classes/user-service-consumer';
 import {UserService} from '../../services/user-service';
+import axios from 'axios';
 
 require('./login.scss');
 
@@ -21,28 +22,37 @@ export default () => {
     const service = new UserService();
     const handleSubmit = async (e: any) => {
         e.preventDefault();
-        const result = await service.login(username, password);
-        if (result.status === 200) {
-            // update current user and redirect to workflows
-            console.log(user);
-            // store the user in localStorage
-            const currentUser: UserState = {
-                isLoggedIn: true,
-                username: result.data.name,
-                role: {name: result.data.roles[0], level: 0},
-                accessToken: result.data.jwtToken
-            }
-            localStorage.setItem('user', JSON.stringify(currentUser));
-            localStorage.setItem('accessToken', currentUser.accessToken);
-            setUser(currentUser);
-            if (currentUser.role.level <= 0) {
-                document.location.href = uiUrl('overview');
-            } else {
-                document.location.href = uiUrl('workflows');
-            }
-        } else {
-            alert(`login Error ${username} ${password}`);
+        const endpoint = 'http://localhost:3000';
+        const credential = {
+            username,
+            domainId: 'default',
+            password
         }
+        await axios.post(`${endpoint}/account/login`, credential);
+        document.location.href = uiUrl('workflows');
+
+        // const result = await service.login(username, password);
+        // if (result.status === 'success') {
+        //     // update current user and redirect to workflows
+        //     console.log(user);
+        //     // store the user in localStorage
+        const currentUser: UserState = {
+            isLoggedIn: true,
+            username: 'admin',
+            role: {name: 'wf-admin', level: 0},
+            accessToken: 'jwtToken_if_exists'
+        }
+        localStorage.setItem('user', JSON.stringify(currentUser));
+        localStorage.setItem('accessToken', currentUser.accessToken);
+        setUser(currentUser);
+        if (currentUser.role.level <= 0) {
+            document.location.href = uiUrl('overview');
+        } else {
+            document.location.href = uiUrl('workflows');
+        }
+        // } else {
+        //     alert(`login Error ${username} ${password}`);
+        // }
     }
     // logout the user
     // const handleLogout = () => {
