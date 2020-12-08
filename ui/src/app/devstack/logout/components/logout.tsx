@@ -6,15 +6,8 @@ import {UserService} from '../../services/user-service';
 import axios from 'axios';
 
 export const Logout = () => {
-    const [user, setUser] = useState();
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
 
     const handleLogout = async () => {
-        console.log(username, password);
-        setUser(null);
-        setUsername('');
-        setPassword('');
         localStorage.removeItem('user');
         localStorage.removeItem('accessToken');
         const endpoint = 'http://localhost:3000';
@@ -30,14 +23,6 @@ export const Logout = () => {
         }
     };
 
-    if (user) {
-        return (
-          <div>
-            You are already loggged in
-            <button onClick={handleLogout}>logout</button>
-          </div>
-        );
-    }
     useEffect(() => {
         handleLogout();
     })
