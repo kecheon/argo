@@ -93,14 +93,14 @@ export default () => {
                             Sign In
                         </button>
                     </div>
-                    <div className='login__form-row'>
+                    {/* <div className='login__form-row'>
                         <button className='argo-button argo-button--base argo-button--full-width argo-button--xlg' 
                             type='button'
                             onClick={() => document.location.href=uiUrl('register')}
                         >
                             Sign Up
                         </button>
-                    </div>
+                    </div> */}
                     <div className='login__footer'>
                         <a href='https://argoproj.io' target='_blank'>
                             <img className='logo-image' src='assets/images/argologo.svg' alt='argo' />
