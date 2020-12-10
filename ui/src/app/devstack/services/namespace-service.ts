@@ -1,30 +1,30 @@
 import axios from 'axios';
 import namespacesList from './__mocks__/namespaces';
 // import { UsersList } from '../users/components/users-list/users-list';
-const gatewayEndpoint = 'http://localhost:5000';
+const gatewayEndpoint = 'http://localhost:3000';
 // const keystoneEndPoint = 'http://183.111.177.141/identity/v3';
 import {NamespaceForm} from '../users/components/namespaces/components/create-namespace/create-namespace';
 
 export class NamespaceService {
     public async get(): Promise<any> {
         // get projects list if wf-admin
-        const response = await axios.get(`${gatewayEndpoint}/api/v1/namespace`);
+        const response = await axios.get(`${gatewayEndpoint}/namespace`);
         return response.data;
     }
     public async delete(id: string): Promise<any> {
-        const response = await axios.delete(`${gatewayEndpoint}/api/v1/namespace/${id}`);
+        const response = await axios.delete(`${gatewayEndpoint}/namespace/${id}`);
         return { status: 'success', message: 'namespace deleted' }
     }
     public async create(data: NamespaceForm): Promise<any> {
-        const response = await axios.post(`${gatewayEndpoint}/api/v1/namespace`, data);
+        const response = await axios.post(`${gatewayEndpoint}/namespace`, data);
         return { status: 'success', message: 'namespace created' }
     }
     public async update(data: NamespaceForm): Promise<any> {
-        const response = await axios.put(`${gatewayEndpoint}/api/v1/namespace`, data);
+        const response = await axios.put(`${gatewayEndpoint}/namespace`, data);
         return { status: 'success', message: 'namespace created' }
     }
     public async getProfile(id: string): Promise<any> {
-        const response = await axios.get(`${gatewayEndpoint}/api/v1/namespace/${id}`);
+        const response = await axios.get(`${gatewayEndpoint}/namespace/${id}`);
         return {
             'is_wf': true,
             'wf': {

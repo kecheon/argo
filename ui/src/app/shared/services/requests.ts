@@ -2,13 +2,17 @@ import {Observable, Observer} from 'rxjs';
 import * as _superagent from 'superagent';
 import {SuperAgentRequest} from 'superagent';
 import {apiUrl, uiUrl} from '../base';
+import * as Cookies from 'js-cookie';
+
 // import {argoToken} from '../../devstack/classes/constants';
 const superagentPromise = require('superagent-promise');
 
 const auth = (req: SuperAgentRequest) => {
+    const cookie = Cookies.get('argo_cookie');
     // const accessToken = localStorage.getItem('accessToken');
     // req.set('Authorization', `Bearer ${accessToken}`);
     // req.set('Authorization', argoToken);
+    // req.set('Cookie', `argo_cookie=${cookie}`);
     return req.on('error', handle);
 };
 

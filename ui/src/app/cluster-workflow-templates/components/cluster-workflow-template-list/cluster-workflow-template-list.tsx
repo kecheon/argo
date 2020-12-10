@@ -79,8 +79,14 @@ export class ClusterWorkflowTemplateList extends BasePage<RouteComponentProps<an
     private fetchClusterWorkflowTemplates(): void {
         services.clusterWorkflowTemplate
             .list()
-            .then(templates => this.setState({error: null, templates}))
-            .catch(error => this.setState({error}));
+            .then(templates => {
+                console.log('cluster-workflow templates: ', templates);
+                return this.setState({error: null, templates})
+            })
+            .catch(error => {
+                console.log(error);
+                return this.setState({error})
+            });
     }
 
     private renderTemplates() {

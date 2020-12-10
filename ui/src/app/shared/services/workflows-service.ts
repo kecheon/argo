@@ -49,7 +49,10 @@ export class WorkflowsService {
     }
 
     public get(namespace: string, name: string) {
-        return requests.get(`api/v1/workflows/${namespace}/${name}`).then(res => res.body as Workflow);
+        return requests.get(`api/v1/workflows/${namespace}/${name}`).then(res => {
+            console.log(res.body);
+            return res.body as Workflow;
+        });
     }
 
     public watch(filter: {

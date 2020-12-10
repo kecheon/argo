@@ -102,7 +102,10 @@ export class CronWorkflowList extends BasePage<RouteComponentProps<any>, State> 
     private fetchCronWorkflows(namespace: string): void {
         services.cronWorkflows
             .list(namespace)
-            .then(cronWorkflows => this.setState({error: null, namespace, cronWorkflows}, this.saveHistory))
+            .then(cronWorkflows => {
+                console.log('cronWorkflows: ', cronWorkflows);
+                this.setState({error: null, namespace, cronWorkflows}, this.saveHistory)
+            })
             .catch(error => this.setState({error}));
     }
 
