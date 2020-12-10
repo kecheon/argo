@@ -8,9 +8,9 @@ import * as Cookies from 'js-cookie';
 const superagentPromise = require('superagent-promise');
 
 const auth = (req: SuperAgentRequest) => {
-    const cookie = Cookies.get('argo_cookie');
-    // const accessToken = localStorage.getItem('accessToken');
-    // req.set('Authorization', `Bearer ${accessToken}`);
+    // const cookie = Cookies.get('argo_cookie');
+    const accessToken = localStorage.getItem('accessToken');
+    req.set('Authorization', `Bearer ${accessToken}`);
     // req.set('Authorization', argoToken);
     // req.set('Cookie', `argo_cookie=${cookie}`);
     return req.on('error', handle);

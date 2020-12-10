@@ -33,7 +33,9 @@ export class UserService {
     }
     public async getUsers(): Promise<any> {
         const response = await axios.get(`${gatewayEndpoint}/user`);
-        return response.data;
+        console.log('=========================');
+        console.log(response);
+        return response;
     }
     public async getUserProfile(id: string): Promise<any> {
         const response = await axios.get(`${gatewayEndpoint}/user/id`)

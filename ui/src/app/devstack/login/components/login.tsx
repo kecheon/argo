@@ -29,16 +29,15 @@ export default () => {
             password
         }
         const res = await axios.post(`${endpoint}/account/login`, credential);
-        if (res.data.status === 'success') {
-            // TODO
-            // set role of this user
-            const { roles }= res.data.user;
+        if (res.status === 200) {
+            console.log(res.data);
+            const { name, jwtToken, roles }= res.data;
 
             const currentUser: UserState = {
                 isLoggedIn: true,
-                username: 'admin',
+                username: name,
                 role: {name: roles[0], level: 0},
-                accessToken: 'jwtToken_if_exists'
+                accessToken: jwtToken
             }
             localStorage.setItem('user', JSON.stringify(currentUser));
             localStorage.setItem('accessToken', currentUser.accessToken);
@@ -52,6 +51,29 @@ export default () => {
         } else {
             alert(`login Error ${username} ${password}`);
         }
+        // if (res.data.status === 'success') {
+        //     // TODO
+        //     // set role of this user
+        //     const { roles }= res.data.user;
+
+        //     const currentUser: UserState = {
+        //         isLoggedIn: true,
+        //         username: 'admin',
+        //         role: {name: roles[0], level: 0},
+        //         accessToken: 'jwtToken_if_exists'
+        //     }
+        //     localStorage.setItem('user', JSON.stringify(currentUser));
+        //     localStorage.setItem('accessToken', currentUser.accessToken);
+        //     setUser(currentUser);
+        //     if (currentUser.role.level <= 0) {
+        //         document.location.href = uiUrl('overview');
+        //     } else {
+        //         document.location.href = uiUrl('workflows');
+        //     }
+
+        // } else {
+        //     alert(`login Error ${username} ${password}`);
+        // }
     }
    
     return (

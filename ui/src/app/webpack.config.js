@@ -20,7 +20,7 @@ const config = {
   },
   output: {
     filename: "[name].[chunkhash].js",
-    path: __dirname + "/../../dist/app"
+    path: __dirname + "/../../../../argo-gateway/dist/app"
   },
 
   devtool: "source-map",

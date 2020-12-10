@@ -209,11 +209,12 @@ export class UsersList extends BasePage<RouteComponentProps<any>, State> {
         userService
             .getUsers()
             .then(usersList => {
+                console.log(usersList);
                 this.setState(
                     {
                         error: null,
                         namespace,
-                        users: usersList.users.users || [],
+                        users: usersList || [],
                         pagination: {offset: pagination.offset, limit: pagination.limit, nextOffset: 'wfList.metadata.continue'},
                         selectedPhases,
                         selectedLabels,
@@ -221,7 +222,7 @@ export class UsersList extends BasePage<RouteComponentProps<any>, State> {
                     },
                     this.saveHistory
                 );
-                return usersList.users;
+                return usersList;
             })
             .then(_ => this.setState({error: null}))
             .catch(error => this.setState({error}));
