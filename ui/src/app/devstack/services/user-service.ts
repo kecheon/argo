@@ -36,17 +36,17 @@ export class UserService {
         return response.data;
     }
     public async getUserProfile(id: string): Promise<any> {
-        const response = await axios.get(`${gatewayEndpoint}/user/id`)
+        const response = await axios.get(`${gatewayEndpoint}/user/${id}`)
         return response.data as UserInfo;
         // return getAsyncData(userProfile);
     }
     public async updateUser(id: string, data: UserInfo): Promise<any> {
-        const response = await axios.patch(`${gatewayEndpoint}/user/id`, data)
+        const response = await axios.patch(`${gatewayEndpoint}/user/${id}`, data)
         return response.data as UserInfo;
         // return getAsyncData(userProfile);
     }
     public async deleteUser(id: string): Promise<any> {
-        const response = await axios.delete(`${gatewayEndpoint}/user/id`)
+        const response = await axios.delete(`${gatewayEndpoint}/user/${id}`)
         return response.data;
         // return { status: 'success', message: 'user deleted' }
     }
