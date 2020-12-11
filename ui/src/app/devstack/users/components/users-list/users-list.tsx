@@ -24,7 +24,7 @@ import {PaginationPanel} from '../../../../shared/components/pagination-panel';
 // import {ResourceEditor} from '../../../../shared/components/resource-editor/resource-editor';
 import {Pagination, parseLimit} from '../../../../shared/pagination';
 // import {WorkflowFilters} from '../workflow-filters/workflow-filters';
-import {WorkflowsRow} from './components/users-row/users-row';
+import {UsersRow} from './components/users-row/users-row';
 import {WorkflowsToolbar} from './components/workflows-toolbar/workflows-toolbar';
 
 import {UserService} from '../../../services/user-service';
@@ -131,7 +131,7 @@ export class UsersList extends BasePage<RouteComponentProps<any>, State> {
 
     public componentDidMount(): void {
         this.setState({selectedWorkflows: new Map<string, User>()}, () => {
-            this.reloadWorkflows();
+            this.reloadUserList();
         });
     }
 
@@ -198,7 +198,7 @@ export class UsersList extends BasePage<RouteComponentProps<any>, State> {
         );
     }
 
-    private reloadWorkflows() {
+    private reloadUserList() {
         this.fetchUsers(this.state.namespace, this.state.selectedPhases, this.state.selectedLabels, this.state.pagination);
     }
 
@@ -209,12 +209,11 @@ export class UsersList extends BasePage<RouteComponentProps<any>, State> {
         userService
             .getUsers()
             .then(usersList => {
-                console.log(usersList);
                 this.setState(
                     {
                         error: null,
                         namespace,
-                        users: usersList || [],
+                        users: usersList.users || [],
                         pagination: {offset: pagination.offset, limit: pagination.limit, nextOffset: 'wfList.metadata.continue'},
                         selectedPhases,
                         selectedLabels,
@@ -253,7 +252,7 @@ export class UsersList extends BasePage<RouteComponentProps<any>, State> {
 
     private renderUsers() {
         if (this.state.error) {
-            return <ErrorNotice error={this.state.error} onReload={() => this.reloadWorkflows()} reloadAfterSeconds={10} />;
+            return <ErrorNotice error={this.state.error} onReload={() => this.reloadUserList()} reloadAfterSeconds={10} />;
         }
         if (!this.state.users) {
             return <Loading />;
@@ -265,6 +264,7 @@ export class UsersList extends BasePage<RouteComponentProps<any>, State> {
                 </ZeroState>
             );
         }
+        console.log(this.state.users);
 
         const counts = this.countsByCompleted();
 
@@ -290,8 +290,9 @@ export class UsersList extends BasePage<RouteComponentProps<any>, State> {
                     </div>
                     {this.state.users.map(user => {
                         return (
-                            ((user.is_wf) &&
-                                <WorkflowsRow
+                            // ((user.is_wf) &&
+                            ( true &&
+                                <UsersRow
                                     user={user}
                                     key={user.id}
                                     checked={this.state.selectedWorkflows.has(user.id)}

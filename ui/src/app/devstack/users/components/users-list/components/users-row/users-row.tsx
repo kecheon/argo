@@ -10,7 +10,7 @@ import {User} from '../../../models';
 // import {wfDuration} from '../../../../shared/duration';
 import {WorkflowDrawer} from '../user-drawer/user-drawer';
 
-interface WorkflowsRowProps {
+interface UsersRowProps {
     // workflow: Workflow;
     user: User;
     onChange: (key: string) => void;
@@ -18,12 +18,12 @@ interface WorkflowsRowProps {
     checked: boolean;
 }
 
-interface WorkflowRowState {
+interface UserRowState {
     hideDrawer: boolean;
 }
 
-export class WorkflowsRow extends React.Component<WorkflowsRowProps, WorkflowRowState> {
-    constructor(props: WorkflowsRowProps) {
+export class UsersRow extends React.Component<UsersRowProps, UserRowState> {
+    constructor(props: UsersRowProps) {
         super(props);
         this.state = {
             hideDrawer: true

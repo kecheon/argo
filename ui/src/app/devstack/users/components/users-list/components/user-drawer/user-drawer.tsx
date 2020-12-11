@@ -49,6 +49,8 @@ export class WorkflowDrawer extends React.Component<WorkflowDrawerProps, Workflo
         if (!this.state.userProfile) {
             return <Loading />;
         }
+        // const {user} = this.state.userProile
+        console.log(this.state.userProfile);
         return (
             <Consumer>
                 {ctx => (
@@ -64,7 +66,7 @@ export class WorkflowDrawer extends React.Component<WorkflowDrawerProps, Workflo
                                     <Form.Label column={true} sm={2}>User Name*</Form.Label>
                                     <Col sm={10}>
                                         <Form.Control type='text' placeholder='Enter username'
-                                            value={ this.state.userProfile.name } 
+                                            value={ this.state.userProfile.user.name } 
                                             onChange={this.changeHandler}
                                         />
                                     </Col>
@@ -75,7 +77,7 @@ export class WorkflowDrawer extends React.Component<WorkflowDrawerProps, Workflo
                                     <Form.Label column={true} sm={2}>Description</Form.Label>
                                     <Col sm={10}>
                                         <Form.Control as='textarea' placeholder='Description'
-                                        value={ this.state.userProfile.description } 
+                                        value={ this.state.userProfile.user } 
                                         onChange={this.changeHandler} />
                                     </Col>
                                 </Form.Group>
@@ -86,7 +88,7 @@ export class WorkflowDrawer extends React.Component<WorkflowDrawerProps, Workflo
                                     <Col sm={10}>
                                         <Form.Control type='email' placeholder='Email'
                                             onChange={this.changeHandler}
-                                            value={ this.state.userProfile.email } />
+                                            value={ this.state.userProfile.user.email } />
                                     </Col>
                                 </Form.Group>
                             </div>
@@ -96,7 +98,7 @@ export class WorkflowDrawer extends React.Component<WorkflowDrawerProps, Workflo
                                     <Col sm={10}>
                                         <Form.Control type='password' placeholder='password'
                                             onChange={this.changeHandler}
-                                            value={ this.state.userProfile.password } />
+                                            value={ this.state.userProfile } />
                                     </Col>
                                 </Form.Group>
                             </div>
