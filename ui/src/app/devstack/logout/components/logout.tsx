@@ -13,7 +13,7 @@ export const Logout = () => {
         const endpoint = 'http://localhost:3000';
         try {
           const response = await axios.get(`${endpoint}/account/logout`);
-          if (response.data.status === 'success') {
+          if (response.status === 200) {
             document.location.href = uiUrl('login');
           } else {
             window.alert('logout failure');
