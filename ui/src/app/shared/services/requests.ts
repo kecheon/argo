@@ -19,9 +19,9 @@ const auth = (req: SuperAgentRequest) => {
 const handle = (err: any) => {
     // check URL to prevent redirect loop
     console.log(err);
-    // if (err.status === 401 && !document.location.href.endsWith('login')) {
-    //     document.location.href = uiUrl('login');
-    // }
+    if (err.status === 401 && !document.location.href.endsWith('login')) {
+        document.location.href = uiUrl('login');
+    }
 };
 
 const superagent: _superagent.SuperAgentStatic = superagentPromise(_superagent, global.Promise);
