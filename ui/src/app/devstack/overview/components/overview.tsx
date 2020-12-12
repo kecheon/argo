@@ -1,11 +1,41 @@
-import { Page } from 'argo-ui';
+import { Page, Select } from 'argo-ui';
 import * as React from 'react';
+import { useState, useEffect } from 'react';
 import {uiUrl} from '../../../shared/base';
 require('./overview.scss');
 
+import { NamespaceService } from '../../services/namespace-service';
+const service = new NamespaceService();
+// tslint:disable-next-line:no-shadowed-variable
+// const namespaces = service.get().then(namespaces => {
+//   return namespaces.namespaces;
+// })
+
 export default () => {
+  const [namespace, setNamespace] = useState('');
+  const [options, setOptions] = useState([]);
+  useEffect(() => {
+    service.get().then(ns => {
+      setOptions(ns.namespaces.map((item: {name: string; }) => item.name));
+    })
+  }, [])
+
   return (
     <Page title='Overview'>
+        <div className='row'>
+          <div className='columns small-3' />
+          <div className='columns small-6'>
+
+          <form>
+            <div className='argo-form-row'>
+                <Select options={options}
+                  placeholder='Select Namespace'
+                  value={namespace}
+                  onChange={(option) => setNamespace(option.value)} />
+            </div>
+          </form>
+          </div>
+        </div>
         <div className='argo-table-list'>
           <div className='row argo-table-list__head'>
               <div className='row small-12'>
