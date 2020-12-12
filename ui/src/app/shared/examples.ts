@@ -33,9 +33,11 @@ export const exampleWorkflow = (): Workflow => {
     return {
         metadata: {
             name: randomSillyName(),
+            namespace: 'default',
             labels
         },
         spec: {
+            nodeSelector: { clusterName: 'default' },
             arguments: argumentz,
             entrypoint,
             templates,
