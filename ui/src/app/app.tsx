@@ -106,17 +106,18 @@ export class App extends React.Component<{}, {version?: Version; popupProps: Pop
 
     public componentDidMount() {
         this.popupManager.popupProps.subscribe(popupProps => this.setState({popupProps}));
-        services.info
-            .getVersion()
-            .then(version => this.setState({version}))
-            .then(() => services.info.getInfo())
-            .then(info => this.setState({namespace: info.managedNamespace || Utils.getCurrentNamespace() || ''}))
-            .catch(error => {
-                this.notificationsManager.show({
-                    content: 'Failed to load ' + error,
-                    type: NotificationType.Error
-                });
-            });
+        // Disabled by request from CEO
+        // services.info
+        //     .getVersion()
+        //     .then(version => this.setState({version}))
+        //     .then(() => services.info.getInfo())
+        //     .then(info => this.setState({namespace: info.managedNamespace || Utils.getCurrentNamespace() || ''}))
+        //     .catch(error => {
+        //         this.notificationsManager.show({
+        //             content: 'Failed to load ' + error,
+        //             type: NotificationType.Error
+        //         });
+        //     });
         const loggedInUser = localStorage.getItem('user');
 
         if (loggedInUser) {
