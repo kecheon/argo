@@ -5,33 +5,51 @@ import {uiUrl} from '../../../shared/base';
 require('./overview.scss');
 
 import { NamespaceService } from '../../services/namespace-service';
+import { OverviewService } from '../../services/overview-service';
+import { ClusterService } from '../../services/cluster-service';
 const service = new NamespaceService();
-// tslint:disable-next-line:no-shadowed-variable
-// const namespaces = service.get().then(namespaces => {
-//   return namespaces.namespaces;
-// })
+const overviewService = new OverviewService();
+const clusterService = new ClusterService();
+
 
 export default () => {
   const [namespace, setNamespace] = useState('');
   const [options, setOptions] = useState([]);
+  const [clusterOptions, setClusterOptions] = useState([]);
   useEffect(() => {
     service.get().then(ns => {
       setOptions(ns.namespaces.map((item: {name: string; }) => item.name));
     })
+    clusterService.get().then(clusters => {
+      setClusterOptions(clusters.map((item: { name: string }) => item.name));
+    })
   }, [])
+
+  const changeHandler = (value: string) => {
+    setNamespace(value);
+    overviewService.get(value).then((res: any) => {
+      console.log(res);
+    });
+  }
+
+  const changeHandler2 = (value: string) => {
+    setNamespace(value);
+    // clusterService.get(value).then((res: any) => {
+    //   console.log(res);
+    // });
+  }
 
   return (
     <Page title='Overview'>
         <div className='row'>
           <div className='columns small-3' />
           <div className='columns small-6'>
-
           <form>
             <div className='argo-form-row'>
                 <Select options={options}
                   placeholder='Select Namespace'
                   value={namespace}
-                  onChange={(option) => setNamespace(option.value)} />
+                  onChange={(option) => changeHandler(option.value) } />
             </div>
           </form>
           </div>
@@ -66,6 +84,20 @@ export default () => {
                       </div>
                   </div>
               </div>
+          </div>
+        </div>
+
+        <div className='row'>
+          <div className='columns small-3' />
+          <div className='columns small-6'>
+          <form>
+            <div className='argo-form-row'>
+                <Select options={clusterOptions}
+                  placeholder='Select Cluster'
+                  value={namespace}
+                  onChange={(option) => changeHandler2(option.value) } />
+            </div>
+          </form>
           </div>
         </div>
     </Page>

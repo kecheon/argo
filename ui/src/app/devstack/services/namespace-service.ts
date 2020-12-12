@@ -13,7 +13,6 @@ export class NamespaceService {
         // get projects list if wf-admin
 
         const response = await axios.get(`${gatewayEndpoint}/namespace`, { headers });
-        console.log(response);
         return response.data;
     }
     public async delete(id: string): Promise<any> {
