@@ -5,6 +5,7 @@ import {NamespaceFilter} from '../../../shared/components/namespace-filter';
 import {TagsInput} from '../../../shared/components/tags-input/tags-input';
 
 require('./workflow-filters.scss');
+import NamespaceSelect from '../../../devstack/components/namespace-select';
 
 interface WorkflowFilterProps {
     workflows: models.Workflow[];
