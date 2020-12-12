@@ -4,11 +4,16 @@ import namespacesList from './__mocks__/namespaces';
 const gatewayEndpoint = 'http://localhost:3000';
 // const keystoneEndPoint = 'http://183.111.177.141/identity/v3';
 import {NamespaceForm} from '../users/components/namespaces/components/create-namespace/create-namespace';
-
+const accessToken = localStorage.getItem('accessToken');
+const headers = {
+   Authorization: `Bearer ${accessToken}` 
+}
 export class NamespaceService {
     public async get(): Promise<any> {
         // get projects list if wf-admin
-        const response = await axios.get(`${gatewayEndpoint}/namespace`);
+
+        const response = await axios.get(`${gatewayEndpoint}/namespace`, { headers });
+        console.log(response);
         return response.data;
     }
     public async delete(id: string): Promise<any> {

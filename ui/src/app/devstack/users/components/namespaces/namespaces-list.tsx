@@ -216,7 +216,7 @@ export class UsersNamespaces extends BasePage<RouteComponentProps<any>, State> {
                 this.setState(
                     {
                         error: null,
-                        namespaces: namespacesList || [],
+                        namespaces: namespacesList.namespaces || [],
                         // pagination: {offset: pagination.offset, limit: pagination.limit, nextOffset: 'wfList.metadata.continue'},
                         selectedPhases,
                         selectedLabels,
@@ -224,7 +224,7 @@ export class UsersNamespaces extends BasePage<RouteComponentProps<any>, State> {
                     },
                     this.saveHistory
                 );
-                return namespacesList;
+                return namespacesList.namespaces;
             })
             .then(_ => this.setState({error: null}))
             .catch(error => this.setState({error}));
