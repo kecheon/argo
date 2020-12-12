@@ -147,7 +147,7 @@ export class App extends React.Component<{}, {version?: Version; popupProps: Pop
             <Provider value={providerContext}>
                 {this.state.popupProps && <Popup {...this.state.popupProps} />}
                     <Router history={history}>
-                        <Layout navItems={this.navItems} version={() => <>{this.state.version ? this.state.version.version : 'unknown'}</>}>
+                        <Layout navItems={this.navItems} version={() => <>{this.state.version ? this.state.version.version : 'DevStack'}</>}>
                             <Notifications notifications={this.notificationsManager.notifications} />
                             <ErrorBoundary>
                                 <Switch>
