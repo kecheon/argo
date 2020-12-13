@@ -18,6 +18,16 @@ const menu = [
       title: 'Manage Roles',
       description: 'View Roles',
       path: 'roles'
+  },
+  {
+      title: 'Manage Cluster',
+      description: 'Manage clusters',
+      path: 'cluster'
+  },
+  {
+      title: 'Manage Tenant',
+      description: 'Manage tenants',
+      path: 'tenants'
   }
 ]
 

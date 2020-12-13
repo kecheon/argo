@@ -34,6 +34,8 @@ import users from './devstack/users';
 import {UsersList} from './devstack/users/components/users-list/users-list';
 import {UsersNamespaces} from './devstack/users/components/namespaces/namespaces-list';
 import {UsersRoles} from './devstack/users/components/roles/roles-list';
+import {ClustersList} from './devstack/users/components/clusters/clusters-list';
+import {TenantsList} from './devstack/users/components/tenants/tenants-list';
 import overview from './devstack/overview';
 import metric from './devstack/metric';
 
@@ -54,6 +56,8 @@ const usersUrl = uiUrl('users');
 const usersListUrl = uiUrl('users/list');
 const usersNamespacesUrl = uiUrl('users/namespaces');
 const usersRolesUrl = uiUrl('users/roles');
+const usersClusterUrl = uiUrl('users/cluster');
+const usersTenantUrl = uiUrl('users/tenants');
 const overviewUrl = uiUrl('overview')
 const metricUrl = uiUrl('metric')
 
@@ -197,6 +201,8 @@ export class App extends React.Component<{}, {version?: Version; popupProps: Pop
                                     <Route exact={true} strict={true} path={usersNamespacesUrl} component={UsersNamespaces} />
                                     <Route exact={true} strict={true} path={usersListUrl} component={UsersList} />
                                     <Route exact={true} strict={true} path={usersRolesUrl} component={UsersRoles} />
+                                    <Route exact={true} strict={true} path={usersClusterUrl} component={ClustersList} />
+                                    <Route exact={true} strict={true} path={usersTenantUrl} component={TenantsList} />
                                     <Route exact={true} strict={true} path={usersUrl} component={users.component} />
                                     <Route exact={true} strict={true} path={overviewUrl} component={overview.component} />
                                     <Route exact={true} strict={true} path={metricUrl} component={metric.component} />
