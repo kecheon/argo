@@ -70,6 +70,7 @@ export class CronWorkflowList extends BasePage<RouteComponentProps<any>, State> 
                             },
                             tools: [<NamespaceFilter key='namespace-filter' value={this.namespace} onChange={namespace => (this.namespace = namespace)} />]
                         }}>
+                        <br /><br /><br />
                         <div className='row'>
                             <div className='columns small-12'>{this.renderCronWorkflows(ctx.currentUser)}</div>
                         </div>

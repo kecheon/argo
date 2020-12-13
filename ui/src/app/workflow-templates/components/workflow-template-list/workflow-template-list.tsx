@@ -69,6 +69,8 @@ export class WorkflowTemplateList extends BasePage<RouteComponentProps<any>, Sta
                             },
                             tools: [<NamespaceFilter key='namespace-filter' value={this.namespace} onChange={namespace => (this.namespace = namespace)} />]
                         }}>
+                            {/* select box takes 3 lines when expended */}
+                        <br /> <br /> <br />
                         {this.renderTemplates()}
                         <SlidingPanel isShown={this.sidePanel !== null} onClose={() => (this.sidePanel = null)}>
                             <ResourceEditor

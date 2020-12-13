@@ -48,6 +48,7 @@ export default {
     },
 
     loadEventSource(url: string): Observable<string> {
+
         return Observable.create((observer: Observer<any>) => {
             const eventSource = new EventSource(url);
             eventSource.onmessage = x => observer.next(x.data);
