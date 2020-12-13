@@ -5,7 +5,7 @@ import {uiUrl} from '../../../../shared/base';
 
 const menu = [
   {
-      title: 'Manage Users',
+      title: 'Manage User',
       description: 'Create/update/delete User',
       path: 'list'
   },
@@ -15,18 +15,18 @@ const menu = [
       path: 'namespaces'
   },
   {
-      title: 'Manage Roles',
+      title: 'Manage Role',
       description: 'View Roles',
       path: 'roles'
   },
   {
       title: 'Manage Cluster',
-      description: 'Manage clusters',
+      description: 'View clusters',
       path: 'cluster'
   },
   {
       title: 'Manage Tenant',
-      description: 'Manage tenants',
+      description: 'Create/update/delete Tenant',
       path: 'tenants'
   }
 ]
