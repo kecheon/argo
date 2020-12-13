@@ -6,16 +6,16 @@ import {Loading} from '../../../../../../shared/components/loading';
 // import {ConditionsPanel} from '../../../../shared/conditions-panel';
 // import {formatDuration} from '../../../../shared/duration';
 // import {services} from '../../../../shared/services';
-import { User } from '../../../models';
+import { Cluster } from '../../../models';
 // import {WorkflowFrom} from '../workflow-from';
 // import {WorkflowLabels} from '../workflow-labels/workflow-labels';
-import {UserService} from '../../../../../services/user-service';
+import {ClusterService} from '../../../../../services/cluster-service';
 import { Form, Col, Row } from 'react-bootstrap';
 import {Consumer} from '../../../../../../shared/context';
 
 require('./workflow-drawer.scss');
 
-const userService = new UserService();
+const service = new ClusterService();
 
 interface WorkflowDrawerProps {
     name: string;
@@ -26,18 +26,18 @@ interface WorkflowDrawerProps {
 }
 
 interface WorkflowDrawerState {
-    workflow?: User;
+    workflow?: Cluster;
     userProfile?: any;
 }
 
-export class WorkflowDrawer extends React.Component<WorkflowDrawerProps, WorkflowDrawerState> {
+export class ClusterDrawer extends React.Component<WorkflowDrawerProps, WorkflowDrawerState> {
     constructor(props: WorkflowDrawerProps) {
         super(props);
         this.state = {};
     }
 
     public componentDidMount() {
-        userService.getUserProfile(this.props.id).then(userProfile => {
+        service.getDetail(this.props.id).then(userProfile => {
             this.setState({userProfile});
         });
     }
@@ -62,11 +62,33 @@ export class WorkflowDrawer extends React.Component<WorkflowDrawerProps, Workflo
                                 </button>
                             </div>
                             <div className='argo-form-row'>
-                                <Form.Group as={Row} controlId='formBasicUsername'>
-                                    <Form.Label column={true} sm={2}>User Name*</Form.Label>
+                                <Form.Group as={Row} controlId='formBasicId'>
+                                    <Form.Label column={true} sm={2}>Cluster ID*</Form.Label>
                                     <Col sm={10}>
                                         <Form.Control type='text' placeholder='Enter username'
-                                            value={ this.state.userProfile.user.name } 
+                                            value={ this.state.userProfile.id } 
+                                            onChange={this.changeHandler}
+                                        />
+                                    </Col>
+                                </Form.Group>
+                            </div>
+                            <div className='argo-form-row'>
+                                <Form.Group as={Row} controlId='formBasicUsername'>
+                                    <Form.Label column={true} sm={2}>Cluster Name*</Form.Label>
+                                    <Col sm={10}>
+                                        <Form.Control type='text' placeholder='Enter username'
+                                            value={ this.state.userProfile.name } 
+                                            onChange={this.changeHandler}
+                                        />
+                                    </Col>
+                                </Form.Group>
+                            </div>
+                            <div className='argo-form-row'>
+                                <Form.Group as={Row} controlId='formBasicUsername'>
+                                    <Form.Label column={true} sm={2}>Domain Id</Form.Label>
+                                    <Col sm={10}>
+                                        <Form.Control type='text' placeholder='Enter username'
+                                            value={ this.state.userProfile.domain_id } 
                                             onChange={this.changeHandler}
                                         />
                                     </Col>
@@ -77,28 +99,27 @@ export class WorkflowDrawer extends React.Component<WorkflowDrawerProps, Workflo
                                     <Form.Label column={true} sm={2}>Description</Form.Label>
                                     <Col sm={10}>
                                         <Form.Control as='textarea' placeholder='Description'
-                                        value={ this.state.userProfile.user } 
+                                        value={ this.state.userProfile.description } 
                                         onChange={this.changeHandler} />
                                     </Col>
                                 </Form.Group>
                             </div>
                             <div className='argo-form-row'>
                                 <Form.Group as={Row} controlId='formBasicEmail'>
-                                    <Form.Label column={true} sm={2}>Email</Form.Label>
+                                    <Form.Label column={true} sm={2}>Parent ID</Form.Label>
                                     <Col sm={10}>
-                                        <Form.Control type='email' placeholder='Email'
+                                        <Form.Control type='email' placeholder='Parent ID'
                                             onChange={this.changeHandler}
-                                            value={ this.state.userProfile.user.email } />
+                                            value={ this.state.userProfile.parent_id } />
                                     </Col>
                                 </Form.Group>
                             </div>
                             <div className='argo-form-row'>
-                                <Form.Group as={Row} controlId='formBasicPassword1'>
-                                    <Form.Label column={true} sm={2}>Password</Form.Label>
-                                    <Col sm={10}>
-                                        <Form.Control type='password' placeholder='password'
-                                            onChange={this.changeHandler}
-                                            value={ this.state.userProfile } />
+                                <Form.Group as={Row} controlId='formBasicEnabled'>
+                                    <Form.Label column={true} sm={2}>Enabled</Form.Label>
+                                    <Col sm={2}>
+                                        <Form.Check inline={true} type={'checkbox'}
+                                            onChange={this.changeHandler}/>
                                     </Col>
                                 </Form.Group>
                             </div>

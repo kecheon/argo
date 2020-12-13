@@ -8,10 +8,16 @@ export class ClusterService {
     public async get(): Promise<any> {
         try {
             const response = await axios.get(`${endpoint}/cluster`, { headers });
-            console.log(response);
             return response.data;
         } catch(err) {
-            console.log(err);
+            return []
+        }
+    }
+    public async getDetail(id: string): Promise<any> {
+        try {
+            const response = await axios.get(`${endpoint}/cluster/${id}`, { headers });
+            return response.data;
+        } catch(err) {
             return []
         }
     }

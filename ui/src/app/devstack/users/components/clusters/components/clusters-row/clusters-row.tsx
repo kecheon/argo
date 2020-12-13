@@ -8,7 +8,7 @@ import {Cluster} from '../../../models';
 // import {PhaseIcon} from '../../../../shared/components/phase-icon';
 // import {Timestamp} from '../../../../shared/components/timestamp';
 // import {wfDuration} from '../../../../shared/duration';
-import {WorkflowDrawer} from '../user-drawer/user-drawer';
+import {ClusterDrawer} from '../user-drawer/cluster-drawer';
 
 interface UsersRowProps {
     // workflow: Workflow;
@@ -81,11 +81,11 @@ export class ClustersRow extends React.Component<UsersRowProps, UserRowState> {
                     {this.state.hideDrawer ? (
                         <span />
                     ) : (
-                        <WorkflowDrawer
+                        <ClusterDrawer
                             name={wf.name}
                             id={wf.id}
                             domain_id={wf.domain_id}
-                            onChange={key => {
+                            onChange={(key: string) => {
                                 this.props.onChange(key);
                             }}
                         />
