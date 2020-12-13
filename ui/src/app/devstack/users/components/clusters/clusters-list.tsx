@@ -29,7 +29,7 @@ import {WorkflowsToolbar} from './components/workflows-toolbar/workflows-toolbar
 
 import {ClusterService} from '../../../services/cluster-service';
 import {Cluster} from '../models';
-import CreateUser from './components/create-user/create-user';
+import CreateUser from './components/create-cluster/create-cluster';
 
 require('./workflows-list.scss');
 
@@ -142,12 +142,12 @@ export class ClustersList extends BasePage<RouteComponentProps<any>, State> {
                             breadcrumbs: [{title: 'Clusters list', path: uiUrl('users/cluster')}],
                             actionMenu: {
                                 items: [
-                                    // {
-                                    //     title: 'Create New Cluster',
-                                    //     iconClassName: 'fa fa-plus',
-                                    //     disabled: ctx.currentUser.role.level > 1,
-                                    //     action: () => ctx.navigation.goto('.', {new: '{}'})
-                                    // }
+                                    {
+                                        title: 'Create New Cluster',
+                                        iconClassName: 'fa fa-plus',
+                                        disabled: ctx.currentUser.role.level > 1,
+                                        action: () => ctx.navigation.goto('.', {new: '{}'})
+                                    }
                                 ]
                             },
                             tools: []

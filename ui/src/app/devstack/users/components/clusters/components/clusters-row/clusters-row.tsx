@@ -8,7 +8,7 @@ import {Cluster} from '../../../models';
 // import {PhaseIcon} from '../../../../shared/components/phase-icon';
 // import {Timestamp} from '../../../../shared/components/timestamp';
 // import {wfDuration} from '../../../../shared/duration';
-import {ClusterDrawer} from '../user-drawer/cluster-drawer';
+import {ClusterDrawer} from '../cluster-drawer/cluster-drawer';
 
 interface UsersRowProps {
     // workflow: Workflow;
