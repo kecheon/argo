@@ -119,6 +119,13 @@ export class ClusterDrawer extends React.Component<WorkflowDrawerProps, Workflow
                                     <Form.Label column={true} sm={2}>Enabled</Form.Label>
                                     <Col sm={2}>
                                         <Form.Check inline={true} type={'checkbox'}
+                                            value={this.state.userProfile.enabled}
+                                            onChange={this.changeHandler}/>
+                                    </Col>
+                                    <Form.Label column={true} sm={2}>Is Domain</Form.Label>
+                                    <Col sm={2}>
+                                        <Form.Check inline={true} type={'checkbox'}
+                                            value={this.state.userProfile.is_domain}
                                             onChange={this.changeHandler}/>
                                     </Col>
                                 </Form.Group>
