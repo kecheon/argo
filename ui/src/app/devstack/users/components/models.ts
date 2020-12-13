@@ -41,3 +41,13 @@ export interface Role {
     self: string;
   }
 }
+
+export interface Cluster {
+  id: string;
+  name: string;
+  domain_id: string;
+  description?: string;
+  enabled: boolean;
+  parent_id: string;
+  is_domain: boolean;
+}
