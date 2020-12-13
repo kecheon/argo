@@ -5,6 +5,7 @@ import {uiUrl} from '../../../shared/base';
 import { UserState } from '../../classes/current-user';
 import {UserService} from '../../services/user-service';
 import axios from 'axios';
+import {endpoint} from '../../../devstack/classes/constants';
 
 require('./login.scss');
 
@@ -21,7 +22,6 @@ export default () => {
     const service = new UserService();
     const handleSubmit = async (e: any) => {
         e.preventDefault();
-        const endpoint = 'http://localhost:3000';
         const credential = {
             username,
             domainId: 'default',

@@ -4,13 +4,13 @@ import { useEffect, useState } from 'react';
 import {uiUrl} from '../../../shared/base';
 import {UserService} from '../../services/user-service';
 import axios from 'axios';
+import {endpoint} from '../../../devstack/classes/constants';
 
 export const Logout = () => {
 
     const handleLogout = async () => {
         localStorage.removeItem('user');
         localStorage.removeItem('accessToken');
-        const endpoint = 'http://localhost:3000';
         try {
           const response = await axios.get(`${endpoint}/account/logout`);
           if (response.status === 200) {

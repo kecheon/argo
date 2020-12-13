@@ -1,11 +1,11 @@
 import axios from 'axios';
 // import { Role } from '../users/components/models';
-const gatewayEndpoint = 'http://localhost:5000';
+import {endpoint} from '../../devstack/classes/constants';
 // const keystoneEndPoint = 'http://183.111.177.141/identity/v3';
 
 export class RolesService {
     public async get(): Promise<any> {
-      const response = axios.get(`${gatewayEndpoint}/api/v1/role`)
+      const response = axios.get(`${endpoint}/api/v1/role`)
       const roles = { 'roles': [
         {
           'is_wf': true,

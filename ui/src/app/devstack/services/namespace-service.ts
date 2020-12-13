@@ -1,7 +1,7 @@
 import axios from 'axios';
 import namespacesList from './__mocks__/namespaces';
 // import { UsersList } from '../users/components/users-list/users-list';
-const gatewayEndpoint = 'http://localhost:3000';
+import {endpoint} from '../../devstack/classes/constants';
 // const keystoneEndPoint = 'http://183.111.177.141/identity/v3';
 import {NamespaceForm} from '../users/components/namespaces/components/create-namespace/create-namespace';
 const accessToken = localStorage.getItem('accessToken');
@@ -12,23 +12,23 @@ export class NamespaceService {
     public async get(): Promise<any> {
         // get projects list if wf-admin
 
-        const response = await axios.get(`${gatewayEndpoint}/namespace`, { headers });
+        const response = await axios.get(`${endpoint}/namespace`, { headers });
         return response.data;
     }
     public async delete(id: string): Promise<any> {
-        const response = await axios.delete(`${gatewayEndpoint}/namespace/${id}`, { headers });
+        const response = await axios.delete(`${endpoint}/namespace/${id}`, { headers });
         return { status: 'success', message: 'namespace deleted' }
     }
     public async create(data: NamespaceForm): Promise<any> {
-        const response = await axios.post(`${gatewayEndpoint}/namespace`, data, { headers });
+        const response = await axios.post(`${endpoint}/namespace`, data, { headers });
         return { status: 'success', message: 'namespace created' }
     }
     public async update(data: NamespaceForm): Promise<any> {
-        const response = await axios.put(`${gatewayEndpoint}/namespace`, data, { headers });
+        const response = await axios.put(`${endpoint}/namespace`, data, { headers });
         return { status: 'success', message: 'namespace created' }
     }
     public async getProfile(id: string): Promise<any> {
-        const response = await axios.get(`${gatewayEndpoint}/namespace/${id}`, { headers });
+        const response = await axios.get(`${endpoint}/namespace/${id}`, { headers });
         // return {
         //     'is_wf': true,
         //     'wf': {
