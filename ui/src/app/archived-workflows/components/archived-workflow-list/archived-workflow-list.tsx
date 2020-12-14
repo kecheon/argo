@@ -21,6 +21,7 @@ import {ArchivedWorkflowFilters} from '../archived-workflow-filters/archived-wor
 interface State {
     pagination: Pagination;
     namespace: string;
+    cluster: string;
     selectedPhases: string[];
     selectedLabels: string[];
     minStartedAt?: Date;
@@ -37,6 +38,7 @@ export class ArchivedWorkflowList extends BasePage<RouteComponentProps<any>, Sta
         this.state = {
             pagination: {offset: this.queryParam('offset'), limit: parseLimit(this.queryParam('limit')) || defaultPaginationLimit},
             namespace: this.props.match.params.namespace || '',
+            cluster: this.props.match.params.cluster || '',
             selectedPhases: this.queryParams('phase'),
             selectedLabels: this.queryParams('label'),
             minStartedAt: this.parseTime(this.queryParam('minStartedAt')) || this.lastMonth(),
@@ -68,6 +70,7 @@ export class ArchivedWorkflowList extends BasePage<RouteComponentProps<any>, Sta
                             <ArchivedWorkflowFilters
                                 workflows={this.state.workflows || []}
                                 namespace={this.state.namespace}
+                                cluster={this.state.cluster}
                                 phaseItems={Object.values([models.NODE_PHASE.SUCCEEDED, models.NODE_PHASE.FAILED, models.NODE_PHASE.ERROR])}
                                 selectedPhases={this.state.selectedPhases}
                                 selectedLabels={this.state.selectedLabels}

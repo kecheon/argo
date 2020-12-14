@@ -3,6 +3,7 @@ import DatePicker from 'react-datepicker';
 import * as models from '../../../../models';
 import {CheckboxFilter} from '../../../shared/components/checkbox-filter/checkbox-filter';
 import {NamespaceFilter} from '../../../shared/components/namespace-filter';
+import {ClusterFilter} from '../../../shared/components/cluster-filter';
 import {TagsInput} from '../../../shared/components/tags-input/tags-input';
 
 import 'react-datepicker/dist/react-datepicker.css';
@@ -12,6 +13,7 @@ require('./archived-workflow-filters.scss');
 interface ArchivedWorkflowFilterProps {
     workflows: models.Workflow[];
     namespace: string;
+    cluster: string;
     phaseItems: string[];
     selectedPhases: string[];
     selectedLabels: string[];
@@ -31,6 +33,12 @@ export class ArchivedWorkflowFilters extends React.Component<ArchivedWorkflowFil
                             value={this.props.namespace}
                             onChange={ns => {
                                 this.props.onChange(ns, this.props.selectedPhases, this.props.selectedLabels, this.props.minStartedAt, this.props.maxStartedAt);
+                            }}
+                        />
+                        <ClusterFilter
+                            value={this.props.cluster}
+                            onChange={cls => {
+                                this.props.onChange(cls, this.props.selectedPhases, this.props.selectedLabels, this.props.minStartedAt, this.props.maxStartedAt);
                             }}
                         />
                     </div>

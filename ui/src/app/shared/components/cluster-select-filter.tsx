@@ -9,7 +9,7 @@ interface InputProps {
     placeholder?: string;
     name: string;
     onChange: (input: string) => void;
-    changeCluster: (input: string) => void;
+    changeCluster?: (input: string) => void;
 }
 
 interface InputState {
@@ -45,7 +45,8 @@ export class ClusterSelectFilter extends React.Component<InputProps, InputState>
     public changeHandler = (e: any) => {
         this.setState({value: e.value});
         this.props.onChange(e.value);
-        this.props.changeCluster(e.value);
+        // tslint:disable-next-line:no-unused-expression
+        (this.props.changeCluster && this.props.changeCluster(e.value));
     }
     public render() {
         return (
