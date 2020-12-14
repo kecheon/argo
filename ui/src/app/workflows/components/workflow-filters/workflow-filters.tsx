@@ -16,6 +16,7 @@ interface WorkflowFilterProps {
     selectedPhases: string[];
     selectedLabels: string[];
     onChange: (namespace: string, selectedPhases: string[], labels: string[]) => void;
+    changeCluster?: (cluster: string) => void;
 }
 
 export class WorkflowFilters extends React.Component<WorkflowFilterProps, {}> {
@@ -33,6 +34,7 @@ export class WorkflowFilters extends React.Component<WorkflowFilterProps, {}> {
                         />
                         <p className='wf-filters-container__title'>Cluster</p>
                         <ClusterFilter
+                            changeCluster={this.props.changeCluster}
                             value={this.props.cluster}
                             onChange={cls => {
                                 this.props.onChange(cls, this.props.selectedPhases, this.props.selectedLabels);

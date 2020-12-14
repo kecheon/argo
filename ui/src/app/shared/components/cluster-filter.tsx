@@ -3,6 +3,14 @@ import * as React from 'react';
 import { ClusterSelectFilter } from './cluster-select-filter';
 
 
-export const ClusterFilter = (props: {value: string; onChange: (cluster: string) => void}) => 
-  <ClusterSelectFilter value={props.value} name='cls'
-    onChange={cls => props.onChange(cls)} />;
+export const ClusterFilter = (props: 
+  { value: string;
+    onChange: (cluster: string) => void;
+    changeCluster?: (cluster: string) => void;
+  }) => 
+  <ClusterSelectFilter 
+    value={props.value}
+    name='cls'
+    onChange={cls => props.onChange(cls)}
+    changeCluster={props.changeCluster}
+  />;

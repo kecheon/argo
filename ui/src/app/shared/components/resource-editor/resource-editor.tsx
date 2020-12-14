@@ -13,6 +13,7 @@ interface Props<T> {
     kind: string;
     upload?: boolean;
     namespace?: string;
+    cluster?: string;
     title?: string;
     value: T;
     readonly?: boolean;

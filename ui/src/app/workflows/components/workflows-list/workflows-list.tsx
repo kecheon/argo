@@ -127,6 +127,10 @@ export class WorkflowsList extends BasePage<RouteComponentProps<any>, State> {
         });
     }
 
+    public changeCluster = (cluster: string) => {
+        this.setState({ cluster })
+    }
+
     public componentWillUnmount(): void {
         this.setState({selectedWorkflows: new Map<string, models.Workflow>()});
         if (this.subscription) {
@@ -168,6 +172,7 @@ export class WorkflowsList extends BasePage<RouteComponentProps<any>, State> {
                                 <div>{this.renderQuery(ctx)}</div>
                                 <div>
                                     <WorkflowFilters
+                                        changeCluster={this.changeCluster}
                                         workflows={this.state.workflows || []}
                                         namespace={this.state.namespace}
                                         cluster={this.state.cluster}
@@ -189,7 +194,8 @@ export class WorkflowsList extends BasePage<RouteComponentProps<any>, State> {
                                 upload={true}
                                 editing={true}
                                 namespace={this.state.namespace || 'default'}
-                                value={exampleWorkflow(ctx.currentUser.username, this.state.namespace, 'default')}
+                                cluster={this.state.cluster || 'default'}
+                                value={exampleWorkflow(ctx.currentUser.username, this.state.namespace, this.state.cluster)}
                                 onSubmit={wfValue =>
                                     services.workflows
                                         .create(wfValue, wfValue.metadata.namespace || this.state.namespace)
