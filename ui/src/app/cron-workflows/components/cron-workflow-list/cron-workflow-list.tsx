@@ -92,7 +92,7 @@ export class CronWorkflowList extends BasePage<RouteComponentProps<any>, State> 
                             <ResourceEditor
                                 title={'New Cron Workflow'}
                                 namespace={this.namespace}
-                                value={exampleCronWorkflow(ctx.currentUser.username, 'default_cluster')}
+                                value={exampleCronWorkflow(ctx.currentUser.username)}
                                 onSubmit={cronWf =>
                                     services.cronWorkflows
                                         .create(cronWf, cronWf.metadata.namespace || this.namespace)
