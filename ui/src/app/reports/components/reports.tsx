@@ -10,6 +10,7 @@ import {BasePage} from '../../shared/components/base-page';
 import {ErrorNotice} from '../../shared/components/error-notice';
 import {InputFilter} from '../../shared/components/input-filter';
 import {NamespaceFilter} from '../../shared/components/namespace-filter';
+import {ClusterFilter} from '../../shared/components/cluster-filter';
 import {TagsInput} from '../../shared/components/tags-input/tags-input';
 import {ZeroState} from '../../shared/components/zero-state';
 import {Consumer, ContextApis} from '../../shared/context';
@@ -25,6 +26,7 @@ interface Chart {
 interface State {
     archivedWorkflows: boolean;
     namespace: string;
+    cluster?: string;
     labels: string[];
     error?: Error;
     charts?: Chart[];
@@ -65,6 +67,7 @@ export class Reports extends BasePage<RouteComponentProps<any>, State> {
         this.state = {
             archivedWorkflows: !!this.queryParam('archivedWorkflows'),
             namespace: this.props.match.params.namespace || '',
+            cluster: this.props.match.params.cluster || '',
             labels: (this.queryParam('labels') || '').split(',').filter(v => v !== '')
         };
     }
@@ -261,6 +264,10 @@ export class Reports extends BasePage<RouteComponentProps<any>, State> {
                         <NamespaceFilter 
                             value={this.state.namespace}
                             onChange={namespace => this.fetchReport(namespace, this.state.labels, this.state.archivedWorkflows)}
+                        />
+                        <ClusterFilter 
+                            value={this.state.cluster}
+                            onChange={cluster => this.fetchReport(cluster, this.state.labels, this.state.archivedWorkflows)}
                         />
                         {/* <InputFilter
                             name='namespace'
