@@ -293,9 +293,9 @@ export class WorkflowsList extends BasePage<RouteComponentProps<any>, State> {
     }
 
     private renderWorkflows(role: any) {
-        // if (this.state.error) {
-        //     return <ErrorNotice error={this.state.error} onReload={() => this.reloadWorkflows()} reloadAfterSeconds={10} />;
-        // }
+        if (this.state.error) {
+            return <ErrorNotice error={this.state.error} onReload={() => this.reloadWorkflows()} reloadAfterSeconds={10} />;
+        }
         if (!this.state.workflows) {
             return <Loading />;
         }

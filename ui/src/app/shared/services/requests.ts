@@ -3,13 +3,14 @@ import * as _superagent from 'superagent';
 import {SuperAgentRequest} from 'superagent';
 import {apiUrl, uiUrl} from '../base';
 import * as Cookies from 'js-cookie';
+import * as EventSource from 'eventsource';
+const accessToken = localStorage.getItem('accessToken');
 
 // import {argoToken} from '../../devstack/classes/constants';
 const superagentPromise = require('superagent-promise');
 
 const auth = (req: SuperAgentRequest) => {
     // const cookie = Cookies.get('argo_cookie');
-    const accessToken = localStorage.getItem('accessToken');
     req.set('Authorization', `Bearer ${accessToken}`);
     // req.set('Authorization', argoToken);
     // req.set('Cookie', `argo_cookie=${cookie}`);
@@ -18,7 +19,6 @@ const auth = (req: SuperAgentRequest) => {
 
 const handle = (err: any) => {
     // check URL to prevent redirect loop
-    console.log(err);
     if (err.status === 401 && !document.location.href.endsWith('login')) {
         document.location.href = uiUrl('login');
     }
@@ -48,9 +48,9 @@ export default {
     },
 
     loadEventSource(url: string): Observable<string> {
-
         return Observable.create((observer: Observer<any>) => {
-            const eventSource = new EventSource(url);
+            const header = { headers: {'Authorization': `Bearer ${accessToken}`}};
+            const eventSource = new EventSource(url, header);
             eventSource.onmessage = x => observer.next(x.data);
             eventSource.onerror = x => observer.error(x);
             return () => {
@@ -58,4 +58,5 @@ export default {
             };
         });
     }
+   
 };
