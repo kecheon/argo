@@ -30,6 +30,7 @@ require('./workflows-list.scss');
 
 interface State {
     namespace: string;
+    cluster?: string;
     pagination: Pagination;
     selectedPhases: string[];
     selectedLabels: string[];
@@ -112,6 +113,7 @@ export class WorkflowsList extends BasePage<RouteComponentProps<any>, State> {
                 limit: parseLimit(this.queryParam('limit')) || savedOptions.paginationLimit
             },
             namespace: this.props.match.params.namespace || '',
+            cluster: this.props.match.params.cluster || '',
             selectedPhases: this.queryParams('phase').length > 0 ? this.queryParams('phase') : savedOptions.selectedPhases,
             selectedLabels: this.queryParams('label'),
             selectedWorkflows: new Map<string, models.Workflow>(),
@@ -168,6 +170,7 @@ export class WorkflowsList extends BasePage<RouteComponentProps<any>, State> {
                                     <WorkflowFilters
                                         workflows={this.state.workflows || []}
                                         namespace={this.state.namespace}
+                                        cluster={this.state.cluster}
                                         phaseItems={Object.values(models.NODE_PHASE)}
                                         selectedPhases={this.state.selectedPhases}
                                         selectedLabels={this.state.selectedLabels}

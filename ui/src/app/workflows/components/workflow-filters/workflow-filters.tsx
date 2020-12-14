@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as models from '../../../../models';
 import {CheckboxFilter} from '../../../shared/components/checkbox-filter/checkbox-filter';
 import {NamespaceFilter} from '../../../shared/components/namespace-filter';
+import {ClusterFilter} from '../../../shared/components/cluster-filter';
 import {TagsInput} from '../../../shared/components/tags-input/tags-input';
 
 require('./workflow-filters.scss');
@@ -10,6 +11,7 @@ import NamespaceSelect from '../../../devstack/components/namespace-select';
 interface WorkflowFilterProps {
     workflows: models.Workflow[];
     namespace: string;
+    cluster: string;
     phaseItems: string[];
     selectedPhases: string[];
     selectedLabels: string[];
@@ -27,6 +29,13 @@ export class WorkflowFilters extends React.Component<WorkflowFilterProps, {}> {
                             value={this.props.namespace}
                             onChange={ns => {
                                 this.props.onChange(ns, this.props.selectedPhases, this.props.selectedLabels);
+                            }}
+                        />
+                        <p className='wf-filters-container__title'>Cluster</p>
+                        <ClusterFilter
+                            value={this.props.cluster}
+                            onChange={cls => {
+                                this.props.onChange(cls, this.props.selectedPhases, this.props.selectedLabels);
                             }}
                         />
                     </div>
