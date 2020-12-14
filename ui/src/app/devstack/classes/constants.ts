@@ -12,6 +12,7 @@ const logoutUrl = uiUrl('logout');
 const reportsUrl = uiUrl('reports');
 const overviewUrl = uiUrl('overview');
 const metricUrl = uiUrl('metric');
+const monitorUrl = uiUrl('monitor');
 
 export const defaultToken = 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IlAxdWFIREZHdVlBLTRsdXFwc0NGQW5tTXpfSGNzSjBxRm43Vk41ekJWak0ifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJhcmdvIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZWNyZXQubmFtZSI6ImRlZmF1bHQtdG9rZW4tcTJuNWciLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoiZGVmYXVsdCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50LnVpZCI6ImY2YzA0ZmU0LTY2YjYtNDNhOS04Y2JmLWE0OGNhMmRlZGVkMiIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDphcmdvOmRlZmF1bHQifQ.NwkuwwnnGhuqKCRa0exxogi5yqyj1eJDJ25bGNG_NjnFXZ-e2ySqWdJYrgGdsSNEkvFYkNt6O5R03lZEarR2hJxauwzkK4YxzjtkybjKYpRkw5nonuotpU4jD-badsqXTQYgv4j5xXCmZ-MtJp_M1UW5tSfVPRa86vGOrtTULLF8DBh86KcQYNkH2ry4VK6ZL-smrtEl1iwO576uFKQF3TWaZD6p5jLRldVJzCCSVk187U1VifbJSzt-BK5U3z3IrVGgJKzpY2tqZYf208m4wGu3-lne_ZoX72-NkV-0rgb_Tg-xOhhX_mWeHRAUz0B7BnvR34d8cQG4NJIxPAv0bA';
 
@@ -62,11 +63,15 @@ export const navItems = {
           path: cronWorkflowsUrl,
           iconClassName: 'fa fa-clock'
       },
-      
       {
           title: 'Reports',
           path: reportsUrl,
           iconClassName: 'fa fa-chart-bar'
+      },
+      {
+          title: 'Monitor',
+          path: monitorUrl,
+          iconClassName: 'fa fa-tachometer-alt'
       }
   ],
   tadmin: [
