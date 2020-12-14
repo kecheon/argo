@@ -46,10 +46,10 @@ export const exampleWorkflow = (workflowCreator: string, namespace: string='defa
         }
     };
 };
-export const exampleClusterWorkflowTemplate = (clusterName: string=''): ClusterWorkflowTemplate => ({
+export const exampleClusterWorkflowTemplate = (workflowCreator: string, clusterName: string=''): ClusterWorkflowTemplate => ({
     metadata: {
         name: randomSillyName(),
-        labels
+        labels: { ...labels, workflowCreator }
     },
     spec: {
         nodeSelector: { clusterName },
