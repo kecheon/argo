@@ -1,4 +1,6 @@
 export interface User {
+  default_project_id?: string;
+  description?: any;
   id: string;
   name: string;
   domain_id: string;

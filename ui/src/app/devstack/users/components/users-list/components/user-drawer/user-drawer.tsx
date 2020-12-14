@@ -10,7 +10,7 @@ import { User } from '../../../models';
 // import {WorkflowFrom} from '../workflow-from';
 // import {WorkflowLabels} from '../workflow-labels/workflow-labels';
 import {UserService} from '../../../../../services/user-service';
-import { Form, Col, Row } from 'react-bootstrap';
+import { ListGroup, Form, Col, Row } from 'react-bootstrap';
 import {Consumer} from '../../../../../../shared/context';
 
 require('./workflow-drawer.scss');
@@ -26,35 +26,80 @@ interface WorkflowDrawerProps {
 }
 
 interface WorkflowDrawerState {
-    workflow?: User;
-    userProfile?: any;
+    user?: User;
 }
 
 export class WorkflowDrawer extends React.Component<WorkflowDrawerProps, WorkflowDrawerState> {
     constructor(props: WorkflowDrawerProps) {
         super(props);
-        this.state = {};
+        this.state = {
+            user: {
+                id: '',
+                name: '',
+                domain_id: ''
+            }
+        };
     }
-
+    
     public componentDidMount() {
         userService.getUserProfile(this.props.id).then(userProfile => {
-            this.setState({userProfile});
+            console.log(userProfile);
+            this.setState({user: userProfile.user});
         });
     }
-    public changeHandler = (e: any) => {
-        console.log(e);
-    }
 
+    public changeHandler = (key: string) => (e: any) => {
+        this.setState({
+            user: {
+                ...this.state.user,
+                [key]: e.target.value
+            }
+        })
+    }
+    
     public render() {
-        if (!this.state.userProfile) {
+        if (!this.state.user) {
             return <Loading />;
         }
         // const {user} = this.state.userProile
-        console.log(this.state.userProfile);
+        console.log(this.state.user);
         return (
             <Consumer>
                 {ctx => (
                     <div className='workflow-drawer'>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td>User Name</td>
+                                    <td>{this.state.user.name}</td>
+                                </tr>
+                                <tr>
+                                    <td>Description</td>
+                                    <td>{this.state.user.description}</td>
+                                </tr>
+                                <tr>
+                                    <td>ID</td>
+                                    <td>{this.state.user.id}</td>
+                                </tr>
+                                <tr>
+                                    <td>Email</td>
+                                    <td>{this.state.user.email}</td>
+                                </tr>
+                                <tr>
+                                    <td>Enabled</td>
+                                    <td>{this.state.user.enabled}</td>
+                                </tr>
+                                <tr>
+                                    <td>Primary Namespace ID</td>
+                                    <td>{this.state.user.default_project_id}</td>
+                                </tr>
+                                <tr>
+                                    <td>Primary Namespace Name</td>
+                                    <td>?</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
                         <form>
                             <div className='login__form-row'>
                                 <button className='argo-button argo-button--base' type='submit'>
@@ -66,19 +111,10 @@ export class WorkflowDrawer extends React.Component<WorkflowDrawerProps, Workflo
                                     <Form.Label column={true} sm={2}>User Name*</Form.Label>
                                     <Col sm={10}>
                                         <Form.Control type='text' placeholder='Enter username'
-                                            value={ this.state.userProfile.user.name } 
-                                            onChange={this.changeHandler}
+                                            value={ this.state.user.name } 
+                                            // value={ this.props.name }
+                                            onChange={this.changeHandler('name')}
                                         />
-                                    </Col>
-                                </Form.Group>
-                            </div>
-                            <div className='argo-form-row'>
-                                <Form.Group as={Row} controlId='formBasicDescription'>
-                                    <Form.Label column={true} sm={2}>Description</Form.Label>
-                                    <Col sm={10}>
-                                        <Form.Control as='textarea' placeholder='Description'
-                                        value={ this.state.userProfile.user } 
-                                        onChange={this.changeHandler} />
                                     </Col>
                                 </Form.Group>
                             </div>
@@ -87,18 +123,32 @@ export class WorkflowDrawer extends React.Component<WorkflowDrawerProps, Workflo
                                     <Form.Label column={true} sm={2}>Email</Form.Label>
                                     <Col sm={10}>
                                         <Form.Control type='email' placeholder='Email'
-                                            onChange={this.changeHandler}
-                                            value={ this.state.userProfile.user.email } />
+                                            onChange={this.changeHandler('email')}
+                                            value={ this.state.user.email } />
                                     </Col>
                                 </Form.Group>
                             </div>
                             <div className='argo-form-row'>
-                                <Form.Group as={Row} controlId='formBasicPassword1'>
-                                    <Form.Label column={true} sm={2}>Password</Form.Label>
+                                <Form.Group as={Row} controlId='formBasicDescription'>
+                                    <Form.Label column={true} sm={2}>Description</Form.Label>
                                     <Col sm={10}>
-                                        <Form.Control type='password' placeholder='password'
-                                            onChange={this.changeHandler}
-                                            value={ this.state.userProfile } />
+                                        <Form.Control as='textarea' placeholder='Description'
+                                        value={ this.state.user.description } 
+                                        onChange={this.changeHandler('description')} />
+                                    </Col>
+                                </Form.Group>
+                            </div>
+                            <div className='argo-form-row'>
+                                <Form.Group as={Row} controlId='formBasicProject'>
+                                    <Form.Label column={true} sm={2}>Primary Project(Namespace)</Form.Label>
+                                    <Col sm={10}>
+                                    <Form.Control as="select">
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                    </Form.Control>
                                     </Col>
                                 </Form.Group>
                             </div>
