@@ -63,32 +63,32 @@ export class WorkflowDrawer extends React.Component<WorkflowDrawerProps, Workflo
                         <table>
                             <tbody>
                                 <tr>
-                                    <td>User Name</td>
+                                    <th>User Name</th>
                                     <td>{this.state.user.name}</td>
                                 </tr>
                                 <tr>
-                                    <td>Description</td>
+                                    <th>Description</th>
                                     <td>{this.state.user.description}</td>
                                 </tr>
                                 <tr>
-                                    <td>ID</td>
+                                    <th>ID</th>
                                     <td>{this.state.user.id}</td>
                                 </tr>
                                 <tr>
-                                    <td>Email</td>
+                                    <th>Email</th>
                                     <td>{this.state.user.email}</td>
                                 </tr>
                                 <tr>
-                                    <td>Enabled</td>
+                                    <th>Enabled</th>
                                     <td>{this.state.user.enabled}</td>
                                 </tr>
                                 <tr>
-                                    <td>Primary Namespace ID</td>
+                                    <th>Primary Namespace ID</th>
                                     <td>{this.state.user.default_project_id}</td>
                                 </tr>
                                 <tr>
-                                    <td>Primary Namespace Name</td>
-                                    <td>?</td>
+                                    <th>Primary Namespace Name</th>
+                                    <td> no data available</td>
                                 </tr>
                             </tbody>
                         </table>
