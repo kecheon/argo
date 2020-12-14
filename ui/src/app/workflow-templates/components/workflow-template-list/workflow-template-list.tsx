@@ -78,7 +78,7 @@ export class WorkflowTemplateList extends BasePage<RouteComponentProps<any>, Sta
                                 kind='WorkflowTemplate'
                                 upload={true}
                                 namespace={this.namespace || 'default'}
-                                value={exampleWorkflowTemplate()}
+                                value={exampleWorkflowTemplate(ctx.currentUser.username)}
                                 onSubmit={wfTmpl =>
                                     services.workflowTemplate
                                         .create(wfTmpl, wfTmpl.metadata.namespace)
