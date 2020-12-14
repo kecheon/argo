@@ -13,7 +13,7 @@ function isString(value: any): value is string {
 export class WorkflowsService {
     public create(workflow: Workflow, namespace: string) {
         return requests
-            .post(`api/v1/workflows/${namespace}`)
+            .post(`argo/workflows/${namespace}`)
             .send({workflow})
             .then(res => res.body as Workflow);
     }
@@ -45,11 +45,11 @@ export class WorkflowsService {
             params.push(`listOptions.limit=${pagination.limit}`);
         }
         params.push(`fields=${fields.join(',')}`);
-        return requests.get(`api/v1/workflows/${namespace}?${params.join('&')}`).then(res => res.body as WorkflowList);
+        return requests.get(`argo/workflows/${namespace}?${params.join('&')}`).then(res => res.body as WorkflowList);
     }
 
     public get(namespace: string, name: string) {
-        return requests.get(`api/v1/workflows/${namespace}/${name}`).then(res => {
+        return requests.get(`argo/workflows/${namespace}/${name}`).then(res => {
             console.log(res.body);
             return res.body as Workflow;
         });
@@ -62,12 +62,12 @@ export class WorkflowsService {
         labels?: Array<string>;
         resourceVersion?: string;
     }): Observable<models.kubernetes.WatchEvent<Workflow>> {
-        const url = `api/v1/workflow-events/${filter.namespace || ''}?${this.queryParams(filter).join('&')}`;
+        const url = `argo/workflow-events/${filter.namespace || ''}?${this.queryParams(filter).join('&')}`;
         return requests.loadEventSource(url).map(data => JSON.parse(data).result as models.kubernetes.WatchEvent<Workflow>);
     }
 
     public watchEvents(namespace: string, fieldSelector: string): Observable<Event> {
-        return requests.loadEventSource(`api/v1/stream/events/${namespace}?listOptions.fieldSelector=${fieldSelector}`).map(data => JSON.parse(data).result as Event);
+        return requests.loadEventSource(`argo/stream/events/${namespace}?listOptions.fieldSelector=${fieldSelector}`).map(data => JSON.parse(data).result as Event);
     }
 
     public watchFields(filter: {
@@ -93,47 +93,47 @@ export class WorkflowsService {
             'result.object.spec.suspend'
         ];
         params.push(`fields=${fields.join(',')}`);
-        const url = `api/v1/workflow-events/${filter.namespace || ''}?${params.join('&')}`;
+        const url = `argo/workflow-events/${filter.namespace || ''}?${params.join('&')}`;
         return requests.loadEventSource(url).map(data => JSON.parse(data).result as models.kubernetes.WatchEvent<Workflow>);
     }
 
     public retry(name: string, namespace: string) {
-        return requests.put(`api/v1/workflows/${namespace}/${name}/retry`).then(res => res.body as Workflow);
+        return requests.put(`argo/workflows/${namespace}/${name}/retry`).then(res => res.body as Workflow);
     }
 
     public resubmit(name: string, namespace: string) {
-        return requests.put(`api/v1/workflows/${namespace}/${name}/resubmit`).then(res => res.body as Workflow);
+        return requests.put(`argo/workflows/${namespace}/${name}/resubmit`).then(res => res.body as Workflow);
     }
 
     public suspend(name: string, namespace: string) {
-        return requests.put(`api/v1/workflows/${namespace}/${name}/suspend`).then(res => res.body as Workflow);
+        return requests.put(`argo/workflows/${namespace}/${name}/suspend`).then(res => res.body as Workflow);
     }
 
     public resume(name: string, namespace: string) {
-        return requests.put(`api/v1/workflows/${namespace}/${name}/resume`).then(res => res.body as Workflow);
+        return requests.put(`argo/workflows/${namespace}/${name}/resume`).then(res => res.body as Workflow);
     }
 
     public stop(name: string, namespace: string) {
-        return requests.put(`api/v1/workflows/${namespace}/${name}/stop`).then(res => res.body as Workflow);
+        return requests.put(`argo/workflows/${namespace}/${name}/stop`).then(res => res.body as Workflow);
     }
 
     public terminate(name: string, namespace: string) {
-        return requests.put(`api/v1/workflows/${namespace}/${name}/terminate`).then(res => res.body as Workflow);
+        return requests.put(`argo/workflows/${namespace}/${name}/terminate`).then(res => res.body as Workflow);
     }
 
     public delete(name: string, namespace: string): Promise<WorkflowDeleteResponse> {
-        return requests.delete(`api/v1/workflows/${namespace}/${name}`).then(res => res.body as WorkflowDeleteResponse);
+        return requests.delete(`argo/workflows/${namespace}/${name}`).then(res => res.body as WorkflowDeleteResponse);
     }
 
     public submit(kind: string, name: string, namespace: string, submitOptions?: SubmitOpts) {
         return requests
-            .post(`api/v1/workflows/${namespace}/submit`)
+            .post(`argo/workflows/${namespace}/submit`)
             .send({namespace, resourceKind: kind, resourceName: name, submitOptions})
             .then(res => res.body as Workflow);
     }
 
     public getContainerLogsFromCluster(workflow: Workflow, nodeId: string, container: string): Observable<string> {
-        const podLogsURL = `api/v1/workflows/${workflow.metadata.namespace}/${workflow.metadata.name}/${nodeId}/log?logOptions.container=${container}&logOptions.follow=true`;
+        const podLogsURL = `argo/workflows/${workflow.metadata.namespace}/${workflow.metadata.name}/${nodeId}/log?logOptions.container=${container}&logOptions.follow=true`;
         return requests
             .loadEventSource(podLogsURL)
             .map(line => JSON.parse(line).result.content)

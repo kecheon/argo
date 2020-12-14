@@ -5,16 +5,16 @@ import requests from './requests';
 export class ArchivedWorkflowsService {
     public list(namespace: string, phases: string[], labels: string[], minStartedAt: Date, maxStartedAt: Date, pagination: Pagination) {
         return requests
-            .get(`api/v1/archived-workflows?${this.queryParams({namespace, phases, labels, minStartedAt, maxStartedAt, pagination}).join('&')}`)
+            .get(`argo/archived-workflows?${this.queryParams({namespace, phases, labels, minStartedAt, maxStartedAt, pagination}).join('&')}`)
             .then(res => res.body as models.WorkflowList);
     }
 
     public get(uid: string) {
-        return requests.get(`api/v1/archived-workflows/${uid}`).then(res => res.body as models.Workflow);
+        return requests.get(`argo/archived-workflows/${uid}`).then(res => res.body as models.Workflow);
     }
 
     public delete(uid: string) {
-        return requests.delete(`api/v1/archived-workflows/${uid}`);
+        return requests.delete(`argo/archived-workflows/${uid}`);
     }
 
     private queryParams(filter: {namespace?: string; phases?: Array<string>; labels?: Array<string>; minStartedAt?: Date; maxStartedAt?: Date; pagination: Pagination}) {

@@ -79,7 +79,20 @@ const config = {
       disableDotRule: true
     },
     proxy: {
+      // "/api/v1": {
+      //   "target": isProd ? '' : END_POINT + '/argo',
+      //   "secure": false,
+      //   "pathRewrite": {
+      //     "^/api/v1": ""
+      //   },
+      //   "changeOrigin": true,
+      //   "logLevel": "debug"
+      // },
       "/api": {
+        "target": isProd ? '' : END_POINT,
+        "secure": false
+      },
+      "/argo": {
         "target": isProd ? '' : END_POINT,
         "secure": false
       },

@@ -27,7 +27,7 @@ export class UserService {
     }
 
     // public async get(): Promise<UserInfo> {
-    //     const response = await axios.get('/api/v1/auth/userinfo');
+    //     const response = await axios.get('/argo/auth/userinfo');
     //     return response.data as UserInfo;
     // }
     public async register(userProfileData: object): Promise<any> {
