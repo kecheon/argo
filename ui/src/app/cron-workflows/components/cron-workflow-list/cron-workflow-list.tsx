@@ -53,7 +53,7 @@ export class CronWorkflowList extends BasePage<RouteComponentProps<any>, State> 
 
     constructor(props: any) {
         super(props);
-        this.state = {namespace: this.props.match.params.namespace || ''};
+        this.state = {namespace: this.props.match.params.namespace || '', cluster: this.props.match.params.cluster || '' };
     }
 
     public componentDidMount(): void {
