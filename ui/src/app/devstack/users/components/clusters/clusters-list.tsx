@@ -241,9 +241,9 @@ export class ClustersList extends BasePage<RouteComponentProps<any>, State> {
     }
 
     private renderUsers() {
-        // if (this.state.error) {
-        //     return <ErrorNotice error={this.state.error} onReload={() => this.reloadUserList()} reloadAfterSeconds={10} />;
-        // }
+        if (this.state.error) {
+            return <ErrorNotice error={this.state.error} onReload={() => this.reloadUserList()} reloadAfterSeconds={10} />;
+        }
         if (!this.state.users) {
             return <Loading />;
         }
