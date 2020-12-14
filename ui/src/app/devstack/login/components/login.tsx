@@ -9,6 +9,20 @@ import {endpoint} from '../../../devstack/classes/constants';
 
 require('./login.scss');
 
+const setRole = (roles: string[]) => {
+    if (roles.includes('wf-app-admin')) {
+        return { name: 'app-admin', level: 0 };
+    } else if (roles.includes('wf-tenant-admin')) {
+        return { name: 'tenant-admin', level: 1};
+    } else if (roles.includes('wf-executor')) {
+        return { name: 'executor', level: 2};
+    } else if (roles.includes('wf-viewer')) {
+        return { name: 'viewer', level: 3};
+    } else {
+        return { name: 'anonymous', level: 4}
+    }
+}
+
 export interface LoginForm {
     username: string;
     password: string;
@@ -31,11 +45,13 @@ export default () => {
         if (res.status === 200) {
             console.log(res.data);
             const { name, jwtToken, roles }= res.data;
+            const role = setRole(roles);
 
             const currentUser: UserState = {
                 isLoggedIn: true,
                 username: name,
-                role: {name: roles[0], level: 0},
+                role,
+                // : {name: roles[0], level: 0},
                 accessToken: jwtToken
             }
             localStorage.setItem('user', JSON.stringify(currentUser));
