@@ -39,6 +39,7 @@ import {TenantsList} from './devstack/users/components/tenants/tenants-list';
 import overview from './devstack/overview';
 import metric from './devstack/metric';
 import monitor from './devstack/monitor';
+import metering from './devstack/metering';
 
 const workflowsUrl = uiUrl('workflows');
 const workflowTemplatesUrl = uiUrl('workflow-templates');
@@ -62,6 +63,7 @@ const usersTenantUrl = uiUrl('users/tenants');
 const overviewUrl = uiUrl('overview')
 const metricUrl = uiUrl('metric')
 const monitorUrl = uiUrl('monitor')
+const meteringUrl = uiUrl('metering')
 
 export const history = createBrowserHistory();
 
@@ -209,6 +211,7 @@ export class App extends React.Component<{}, {version?: Version; popupProps: Pop
                                     <Route exact={true} strict={true} path={overviewUrl} component={overview.component} />
                                     <Route exact={true} strict={true} path={metricUrl} component={metric.component} />
                                     <Route exact={true} strict={true} path={monitorUrl} component={monitor.component} />
+                                    <Route exact={true} strict={true} path={meteringUrl} component={metering.component} />
                                 </Switch>
                             </ErrorBoundary>
                         </Layout>
