@@ -29,15 +29,15 @@ const templates: Template[] = [
     }
 ];
 
-export const exampleWorkflow = (): Workflow => {
+export const exampleWorkflow = (workflowCreator: string, namespace: string='default', clusterName: string='default'): Workflow => {
     return {
         metadata: {
             name: randomSillyName(),
-            namespace: 'default',
-            labels
+            namespace,
+            labels: {...labels, workflowCreator}
         },
         spec: {
-            nodeSelector: { clusterName: 'default' },
+            nodeSelector: { clusterName },
             arguments: argumentz,
             entrypoint,
             templates,
@@ -46,12 +46,13 @@ export const exampleWorkflow = (): Workflow => {
         }
     };
 };
-export const exampleClusterWorkflowTemplate = (): ClusterWorkflowTemplate => ({
+export const exampleClusterWorkflowTemplate = (clusterName: string='default'): ClusterWorkflowTemplate => ({
     metadata: {
         name: randomSillyName(),
         labels
     },
     spec: {
+        nodeSelector: { clusterName },
         workflowMetadata: {labels},
         entrypoint,
         arguments: argumentz,
@@ -76,12 +77,13 @@ export const exampleWorkflowTemplate = (): WorkflowTemplate => ({
     }
 });
 
-export const exampleCronWorkflow = (): CronWorkflow => ({
+export const exampleCronWorkflow = (workflowCreator: string, clusterName: string): CronWorkflow => ({
     metadata: {
         name: randomSillyName(),
-        labels
+        labels: { ...labels, workflowCreator }
     },
     spec: {
+        nodeSelector: { clusterName },
         workflowMetadata: {labels},
         schedule: '* * * * *',
         workflowSpec: {

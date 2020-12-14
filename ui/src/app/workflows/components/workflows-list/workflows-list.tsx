@@ -186,7 +186,7 @@ export class WorkflowsList extends BasePage<RouteComponentProps<any>, State> {
                                 upload={true}
                                 editing={true}
                                 namespace={this.state.namespace || 'default'}
-                                value={exampleWorkflow()}
+                                value={exampleWorkflow(ctx.currentUser.username, this.state.namespace, 'default')}
                                 onSubmit={wfValue =>
                                     services.workflows
                                         .create(wfValue, wfValue.metadata.namespace || this.state.namespace)

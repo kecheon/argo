@@ -8,12 +8,14 @@ import {BasePage} from '../../../shared/components/base-page';
 import {ErrorNotice} from '../../../shared/components/error-notice';
 import {Loading} from '../../../shared/components/loading';
 import {NamespaceFilter} from '../../../shared/components/namespace-filter';
+import {ClusterFilter} from '../../../shared/components/cluster-filter';
 import {ResourceEditor} from '../../../shared/components/resource-editor/resource-editor';
 import {Timestamp} from '../../../shared/components/timestamp';
 import {ZeroState} from '../../../shared/components/zero-state';
 import {Consumer} from '../../../shared/context';
 import {exampleCronWorkflow} from '../../../shared/examples';
 import {services} from '../../../shared/services';
+import {ClusterService} from '../../../devstack/services/cluster-service';
 import {Utils} from '../../../shared/utils';
 
 require('./cron-workflow-list.scss');
@@ -22,15 +24,23 @@ interface State {
     namespace: string;
     cronWorkflows?: models.CronWorkflow[];
     error?: Error;
+    cluster?: string;
 }
 
 export class CronWorkflowList extends BasePage<RouteComponentProps<any>, State> {
     private get namespace() {
         return this.state.namespace;
     }
-
     private set namespace(namespace: string) {
         this.fetchCronWorkflows(namespace);
+    }
+
+    private get cluster() {
+        return this.state.cluster;
+    }
+
+    private set cluster(clusterId: string) {
+        this.fetchClusters(clusterId);
     }
 
     private get sidePanel() {
@@ -68,7 +78,10 @@ export class CronWorkflowList extends BasePage<RouteComponentProps<any>, State> 
                                     }
                                 ]
                             },
-                            tools: [<NamespaceFilter key='namespace-filter' value={this.namespace} onChange={namespace => (this.namespace = namespace)} />]
+                            tools: [
+                                <NamespaceFilter key='namespace-filter' value={this.namespace} onChange={namespace => (this.namespace = namespace)} />,
+                                <ClusterFilter key='cluster-filter' value={this.cluster} onChange={cluster => (this.cluster = cluster)} />
+                            ]
                         }}>
                         <br /><br /><br />
                         <div className='row'>
@@ -78,7 +91,7 @@ export class CronWorkflowList extends BasePage<RouteComponentProps<any>, State> 
                             <ResourceEditor
                                 title={'New Cron Workflow'}
                                 namespace={this.namespace}
-                                value={exampleCronWorkflow()}
+                                value={exampleCronWorkflow(ctx.currentUser.username, 'default_cluster')}
                                 onSubmit={cronWf =>
                                     services.cronWorkflows
                                         .create(cronWf, cronWf.metadata.namespace || this.namespace)
@@ -104,10 +117,16 @@ export class CronWorkflowList extends BasePage<RouteComponentProps<any>, State> 
         services.cronWorkflows
             .list(namespace)
             .then(cronWorkflows => {
-                console.log('cronWorkflows: ', cronWorkflows);
                 this.setState({error: null, namespace, cronWorkflows}, this.saveHistory)
             })
             .catch(error => this.setState({error}));
+    }
+    private fetchClusters(id: string): void {
+        const clusterService = new ClusterService();
+        clusterService.getDetail(id).then(cluster => {
+            this.setState({error: null, cluster}, this.saveHistory);
+        })
+        .catch(error => this.setState({error}));
     }
 
     private renderCronWorkflows(currentUser: UserState) {

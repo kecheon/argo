@@ -1,8 +1,8 @@
 import {Select} from 'argo-ui';
 import * as React from 'react';
-import { NamespaceService } from '../../devstack/services/namespace-service';
+import { ClusterService } from '../../devstack/services/cluster-service';
 
-const service = new NamespaceService();
+const service = new ClusterService();
 
 interface InputProps {
     value: string;
@@ -15,25 +15,31 @@ interface InputState {
     value: string;
     localCache: string[];
     error?: Error;
-    namespaces: string[];
+    clusters: string[];
 }
 
-export class SelectFilter extends React.Component<InputProps, InputState> {
+export class ClusterSelectFilter extends React.Component<InputProps, InputState> {
     constructor(props: InputProps) {
         super(props);
         this.state = {
             value: props.value,
             localCache: (localStorage.getItem(this.props.name + '_inputs') || '').split(',').filter(value => value !== ''),
-            namespaces: []
+            clusters: []
         };
     }
+    // public componentDidMount() {
+    //     service.get().then(ns => {
+    //         this.setState(ns.namespaces.map((item: {name: string; }) => item.name));
+    //     })
+    // }
     public componentDidMount() {
-        service.get().then(ns => ns.namespaces)
-        .then( ns => {
-            console.log(ns);
-            this.setState({ namespaces: ns.map((item: {name: string; }) => item.name) });
+        service.get()
+        .then( clusters => {
+            console.log(clusters);
+            this.setState({ clusters: clusters.map((item: {name: string; }) => item.name) });
         })
     }
+
 
     public changeHandler = (e: any) => {
         this.setState({value: e.value});
@@ -42,8 +48,8 @@ export class SelectFilter extends React.Component<InputProps, InputState> {
     public render() {
         return (
             <>
-                <Select options={this.state.namespaces} onChange={this.changeHandler}
-                    placeholder={'Select namespace'} value={this.state.value} />
+                <Select options={this.state.clusters} onChange={this.changeHandler}
+                    placeholder={'Select cluster'} value={this.state.value} />
                 {(this.state.value !== '') && 
                     <a
                         onClick={() => {

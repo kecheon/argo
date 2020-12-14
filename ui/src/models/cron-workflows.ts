@@ -10,6 +10,7 @@ export interface CronWorkflow {
 }
 
 export interface CronWorkflowSpec {
+    nodeSelector: ClusterSpec,
     workflowSpec: WorkflowSpec;
     workflowMetadata?: kubernetes.ObjectMeta;
     schedule: string;
@@ -32,4 +33,8 @@ export interface CronWorkflowList {
     kind?: string;
     metadata: kubernetes.ListMeta;
     items: CronWorkflow[];
+}
+
+export interface ClusterSpec {
+    clusterName: string;
 }

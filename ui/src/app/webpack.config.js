@@ -7,11 +7,11 @@ const webpack = require("webpack");
 const path = require("path");
 // const END_POINT = "http://180.210.14.151:30797"
 // const END_POINT = "http://20.194.32.137:32000"
+// const END_POINT = "https://argo.innog2b.com"
+
 const END_POINT = "http://localhost:3000"
 
-// const END_POINT = "http://183.111.177.141:5000"
-
-const JSON_SERVER = "http://localhost:30797"
+// const JSON_SERVER = "http://localhost:30797"
 
 const isProd = process.env.NODE_ENV === "production";
 
@@ -101,10 +101,10 @@ const config = {
         'target': isProd ? '' : END_POINT,
         'secure': false,
       },
-      "/auth": {
-        'target': isProd ? '' : JSON_SERVER,
-        'secure': false,
-      }
+      // "/auth": {
+      //   'target': isProd ? '' : JSON_SERVER,
+      //   'secure': false,
+      // }
     }
   }
 };
