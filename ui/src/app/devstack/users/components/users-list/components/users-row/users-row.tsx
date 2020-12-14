@@ -85,6 +85,7 @@ export class UsersRow extends React.Component<UsersRowProps, UserRowState> {
                             id={wf.id}
                             domain_id={wf.domain_id}
                             links={wf.links}
+                            enabled={wf.enabled}
                             onChange={key => {
                                 this.props.onChange(key);
                             }}

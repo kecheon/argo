@@ -22,6 +22,7 @@ interface WorkflowDrawerProps {
     id: string;
     domain_id: string;
     links?: {self: string};
+    enabled: boolean;
     onChange?: (key: string) => void;
 }
 
@@ -32,18 +33,11 @@ interface WorkflowDrawerState {
 export class WorkflowDrawer extends React.Component<WorkflowDrawerProps, WorkflowDrawerState> {
     constructor(props: WorkflowDrawerProps) {
         super(props);
-        this.state = {
-            user: {
-                id: '',
-                name: '',
-                domain_id: ''
-            }
-        };
+        this.state = {};
     }
     
     public componentDidMount() {
         userService.getUserProfile(this.props.id).then(userProfile => {
-            console.log(userProfile);
             this.setState({user: userProfile.user});
         });
     }
@@ -62,7 +56,6 @@ export class WorkflowDrawer extends React.Component<WorkflowDrawerProps, Workflo
             return <Loading />;
         }
         // const {user} = this.state.userProile
-        console.log(this.state.user);
         return (
             <Consumer>
                 {ctx => (
@@ -143,12 +136,19 @@ export class WorkflowDrawer extends React.Component<WorkflowDrawerProps, Workflo
                                     <Form.Label column={true} sm={2}>Primary Project(Namespace)</Form.Label>
                                     <Col sm={10}>
                                     <Form.Control as="select">
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                        <option>5</option>
+                                        <option>Service 1</option>
+                                        <option>Service 2</option>
+                                        <option>Service 3</option>
                                     </Form.Control>
+                                    </Col>
+                                </Form.Group>
+                            </div>
+                            <div className='argo-form-row'>
+                                <Form.Group as={Row} controlId='formBasicEnabled'>
+                                    <Form.Label column={true} sm={2}>Enabled</Form.Label>
+                                    <Col sm={2}>
+                                        <Form.Check inline={true} type={'checkbox'}
+                                            onChange={this.changeHandler('enabled')}/>
                                     </Col>
                                 </Form.Group>
                             </div>
