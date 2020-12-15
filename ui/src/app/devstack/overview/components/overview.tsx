@@ -17,15 +17,15 @@ interface Overview {
   clusterWorkflowTemplatesNum: number;
   cronWorkflowsNum: number;
 }
-interface WorkflowsOverview {
+export interface WorkflowsOverview {
   totalNodeDuration: number;
   totalEstimatedDuration: number;
   totalResourceDurationCPU: number;
   totalResourceDurationMem: number;
-  workflows: Workflow[];
+  workflows: IWorkflow[];
 }
 
-interface Workflow {
+export interface IWorkflow {
   uid: string;
   namespace: string;
   name: string;
@@ -40,6 +40,7 @@ interface Workflow {
   clusterName: string;
   resourceDurationCPU: number;
   resourceDurationMem: number;
+  price?: number;
 }
 
 
