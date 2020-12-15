@@ -33,7 +33,11 @@ export class UserService {
     public async getUsers(): Promise<any> {
         const response = await axios.get(`${endpoint}/user`, { headers });
         console.log(response);
-        return response.data;
+        if (response.status === 201) {
+            return { status: 'success', data: response};
+        } else {
+            return { status: 'fail', data: response }
+        }
     }
     public async getUserProfile(id: string): Promise<any> {
         const response = await axios.get(`${endpoint}/user/${id}`, { headers })
@@ -42,8 +46,11 @@ export class UserService {
     }
     public async updateUser(id: string, data: User): Promise<any> {
         const response = await axios.patch(`${endpoint}/user/${id}`, data, { headers })
-        return response.data as User;
-        // return getAsyncData(userProfile);
+        if (response.status !== 500) {
+            return { status: 'success', data: response };
+        } else {
+            return { status: 'fail', data: response }
+        }
     }
     public async deleteUser(id: string): Promise<any> {
         const response = await axios.delete(`${endpoint}/user/${id}`, { headers })

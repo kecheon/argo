@@ -47,10 +47,10 @@ export class UserDrawer extends React.Component<UserDrawerProps, UserDrawerState
         e.preventDefault();
         console.log(this.state.user);
         const res = await userService.updateUser(this.state.user.id, this.state.user);
-        if (res.status !== 500) {
-            window.alert('User profile update succeeded');
+        if (res.status === 'success') {
+            alert('User profile update succeeded');
         } else {
-            window.alert('User profile update failed');
+            alert('User profile update failed');
         }
     }
     

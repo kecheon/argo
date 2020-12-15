@@ -5,7 +5,7 @@ import {endpoint} from '../../devstack/classes/constants';
 
 export class RolesService {
     public async get(): Promise<any> {
-      const response = axios.get(`${endpoint}/argo/role`)
+      const response = axios.get(`${endpoint}/role`)
       const roles = { 'roles': [
         {
           'is_wf': true,

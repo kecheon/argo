@@ -1,20 +1,26 @@
 import * as React from 'react';
 import {Form} from 'react-bootstrap';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {UserService} from '../../../../../services/user-service';
+import {NamespaceService} from '../../../../../services/namespace-service';
+import {RolesService} from '../../../../../services/roles-service';
 import {Consumer} from '../../../../../../shared/context';
 import { Select } from 'argo-ui';
 import { Row, Col } from 'react-bootstrap';
+// import { User } from '../../../../components/models';
 
 interface UserForm {
-  username: string;
-  email: string;
+  name: string;
+  email?: string;
   password: string;
+  description?: string;
+  default_project_id: string;
+  role: string;
+  enabled?: boolean;
 }
 
-
 export default () => {
-  const [username, setUsername] = useState('');
+  const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [password2, setPassword2] = useState('');
   const [email, setEmail] = useState('');
@@ -22,20 +28,40 @@ export default () => {
   const [project, setProject] = useState('');
   const [roleName, setRoleName] = useState('');
   const [enabled, setEnabled] = useState(false);
+  const [options, setOptions] = useState([]);
+  const [roleOptions, setRoleOptions] = useState([]);
   // const [user, setUser] = useState();
   const service = new UserService();
+  const nsService = new NamespaceService();
+  const roleService = new RolesService();
+  useEffect(() => {
+      nsService.get().then(ns => {
+        setOptions(ns.namespaces.map((item: any) => { 
+            return {title: item.name, value: item.id };
+        }));
+      })
+      roleService.get().then(r => {
+          console.log(r);
+        setRoleOptions(r.roles.map((item: {name: string;}) => item.name));
+      })
+  }, [])
   const handleSubmit = async (e: any) => {
       e.preventDefault();
-      const newUser:UserForm = {
-          username,
+      const newUser: UserForm = {
+          name,
           email,
           password,
+          description,
+          default_project_id: project,
+          role: roleName,
+          enabled
       }
+      console.log(newUser);
       const result = await service.register(newUser);
       if (result.status === 'success') {
           // post new user to backend
       } else {
-          alert(`login Error ${username} ${password}`);
+          alert(`User Create Error ${name} ${password}`);
       }
   }
   return (
@@ -55,8 +81,8 @@ export default () => {
                         <Form.Label column={true} sm={2}>User Name*</Form.Label>
                         <Col sm={10}>
                             <Form.Control type='text' placeholder='Enter username'
-                                value={ username }
-                                onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setUsername(e.target.value)}/>
+                                value={ name }
+                                onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setName(e.target.value)}/>
                         </Col>
                     </Form.Group>
                 </div>
@@ -101,28 +127,31 @@ export default () => {
                     </Form.Group>
                 </div>
                 <div className='argo-form-row'>
-                    <Select options={ [{ title: 'service1', value: 'service1'}, { title: 'service2', value: 'service2'}, { title: 'service3', value: 'service3'}, ] }
-                        value={project}
-                        onChange={(option) => setProject(option.value)}
-                        placeholder='Select Service'
-                    />
-                </div>
-                <div className='argo-form-row'>
-                    <Select options= { [
-                        {title: 'admin', value: 'admin'},
-                        {title: 'tenant_admin', value: 'tenant_admin'},
-                        {title: 'executor', value: 'executor'},
-                        {title: 'viewer', value: 'viewer'}] }
-                        value={roleName}
-                        onChange={(option) => setRoleName(option.value)}
-                        placeholder='Select Role'
-                    />
+                    <Form.Group as={Row} controlId='formBasicEnabled'>
+                        <Form.Label column={true} sm={2}>Primary Project</Form.Label>
+                        <Col sm={4}>
+                            <Select options={options}
+                                value={project}
+                                onChange={(option) => setProject(option.value)}
+                                placeholder='Select Service'
+                            />
+                        </Col>
+                        <Form.Label column={true} sm={2}>Role</Form.Label>
+                        <Col sm={4}>
+                            <Select options= {roleOptions}
+                                value={roleName}
+                                onChange={(option) => setRoleName(option.value)}
+                                placeholder='Select Role'
+                            />
+                        </Col>
+                    </Form.Group>
                 </div>
                 <div className='argo-form-row'>
                     <Form.Group as={Row} controlId='formBasicEnabled'>
                         <Form.Label column={true} sm={2}>Enabled</Form.Label>
                         <Col sm={2}>
                             <Form.Check inline={true} type={'checkbox'}
+                                value={enabled}
                                 onChange={(e: { target: { value: React.SetStateAction<boolean>; }; }) => setEnabled(e.target.value)}/>
                         </Col>
                     </Form.Group>
