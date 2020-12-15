@@ -11,24 +11,73 @@ const service = new NamespaceService();
 const overviewService = new OverviewService();
 const clusterService = new ClusterService();
 
+interface Overview {
+  workflowsNum: number;
+  clusterWorkflowTemplatesNum: number;
+  cronWorkflowsNum: number;
+}
+interface WorkflowsOverview {
+  totalNodeDuration: number;
+  totalEstimatedDuration: number;
+  totalResourceDurationCPU: number;
+  totalResourceDurationMem: number;
+  workflows: Workflow[];
+}
+
+interface Workflow {
+  uid: string;
+  namespace: string;
+  name: string;
+  phase: string;
+  finishedAt: string;
+  startedAt: string;
+  progress: string;
+  nodeDuration: number;
+  nodeDurationFormatted: string;
+  estimatedDuration: number;
+  estimatedDurationFormatted: string;
+  clusterName: string;
+  resourceDurationCPU: number;
+  resourceDurationMem: number;
+}
+
 
 export default () => {
   const [namespace, setNamespace] = useState('');
   const [options, setOptions] = useState([]);
   const [clusterOptions, setClusterOptions] = useState([]);
+  const [overview, setOverview] = useState({
+    workflowsNum: 0,
+    clusterWorkflowTemplatesNum: 0,
+    cronWorkflowsNum: 0
+  });
+  const [workflowsOverview, setWorkflowsOverview] = useState({
+    totalNodeDuration: 0,
+    totalEstimatedDuration: 0,
+    totalResourceDurationCPU: 0,
+    totalResourceDurationMem: 0,
+    workflows: []
+  })
   useEffect(() => {
     service.get().then(ns => {
       setOptions(ns.namespaces.map((item: {name: string; }) => item.name));
-    })
+    });
     clusterService.get().then(clusters => {
       setClusterOptions(clusters.map((item: { name: string }) => item.name));
+    });
+    overviewService.get().then((overviewData: Overview) => {
+      setOverview({...overviewData});
+    });
+    overviewService.getWorkflows().then((workflowsData: WorkflowsOverview) => {
+      setWorkflowsOverview({...workflowsData});
     })
+
   }, [])
 
   const changeHandler = (value: string) => {
     setNamespace(value);
-    overviewService.get(value).then((res: any) => {
-      console.log(res);
+    overviewService.getByNamespace(value).then((overviewData: Overview) => {
+      setOverview({...overviewData})
     });
   }
 
@@ -68,7 +117,7 @@ export default () => {
                   <div className='row small-12'>
                       <div className='columns small-3 pointer' onClick={() => document.location.href=uiUrl('workflows')}>
                         <i className='fa fa-stream fa-5x' />
-                        <br/>Workflow 4
+                        <br/>Workflows { overview.workflowsNum }
                       </div>
                       <div className='columns small-3 pointer' onClick={() => document.location.href=uiUrl('workflow-templates')}>
                         <i className='fa fa-window-maximize fa-5x' />
@@ -76,11 +125,11 @@ export default () => {
                       </div>
                       <div className='columns small-3 pointer' onClick={() => document.location.href=uiUrl('cluster-workflow-templates')}>
                         <i className='fa fa-window-restore fa-5x' />
-                        <br/>Cluster Workflow Template 2
+                        <br/>Cluster Workflow Template { overview.clusterWorkflowTemplatesNum }
                       </div>
                       <div className='columns small-3 pointer' onClick={() => document.location.href=uiUrl('cron-workflows')}>
                         <i className='fa fa-clock fa-5x' />
-                        <br/>Cron Workflow Template 2
+                        <br/>Cron Workflow Template { overview.cronWorkflowsNum }
                       </div>
                   </div>
               </div>
@@ -100,6 +149,46 @@ export default () => {
           </form>
           </div>
         </div>
+        <div className='argo-table-list'>
+          <div className='row argo-table-list__head'>
+              <div className='row small-12'>
+                  <div className='columns small-2'/>
+                  <div className='columns small-1'>NAME</div>
+                  <div className='columns small-1'>Phase</div>
+                  <div className='columns small-1'>Started At</div>
+                  <div className='columns small-1'>Finished At</div>
+                  <div className='columns small-1'>Node Duration</div>
+                  <div className='columns small-1'>CPU</div>
+                  <div className='columns small-1'>Memory</div>
+                  <div className='columns small-2'/>
+              </div>
+          </div>
+          <div className='workflows-list__row-container'>
+                  {workflowsOverview.workflows.map(workflow => {
+                      return (
+                        // tslint:disable-next-line:jsx-key
+                        <div className='row argo-table-list__row'>
+                          <div className='row small-12'>
+                          <div className='columns small-2'/>
+                          { Object.entries(workflow).filter(([key1, value1]) => {
+                            const include = ['name', 'phase', 'startedAt', 'finishedAt', 'nodeDurationFormatted', 'resourceDurationCPU', 'resourceDurationMem'];
+                            return include.includes(key1)
+                          }).map(([key, value]) => {
+                              return (
+                                // tslint:disable-next-line:jsx-key
+                                <div className='columns small-1'>
+                                  { value }
+                                </div>
+                              )
+                            })
+                          }
+                          <div className='columns small-2'/>
+                          </div>
+                        </div>
+                      );
+                    })}
+          </div> 
+        </div> 
     </Page>
   )
 }
