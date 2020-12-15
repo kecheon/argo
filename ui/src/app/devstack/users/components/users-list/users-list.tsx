@@ -264,8 +264,6 @@ export class UsersList extends BasePage<RouteComponentProps<any>, State> {
                 </ZeroState>
             );
         }
-        console.log(this.state.users);
-
         const counts = this.countsByCompleted();
 
         return (

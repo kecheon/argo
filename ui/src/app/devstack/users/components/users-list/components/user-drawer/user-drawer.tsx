@@ -30,6 +30,7 @@ export class UserDrawer extends React.Component<UserDrawerProps, UserDrawerState
     
     public componentDidMount() {
         userService.getUserProfile(this.props.id).then(userProfile => {
+            console.log(userProfile.user);
             this.setState({user: userProfile.user});
         });
     }
@@ -41,6 +42,16 @@ export class UserDrawer extends React.Component<UserDrawerProps, UserDrawerState
                 [key]: e.target.value
             }
         })
+    }
+    public submitHandler = async (e: any) => {
+        e.preventDefault();
+        console.log(this.state.user);
+        const res = await userService.updateUser(this.state.user.id, this.state.user);
+        if (res.status !== 500) {
+            window.alert('User profile update succeeded');
+        } else {
+            window.alert('User profile update failed');
+        }
     }
     
     public render() {
@@ -85,7 +96,7 @@ export class UserDrawer extends React.Component<UserDrawerProps, UserDrawerState
                             </tbody>
                         </table>
 
-                        <form>
+                        <form onSubmit={this.submitHandler}>
                             <div className='login__form-row'>
                                 <button className='argo-button argo-button--base' type='submit'>
                                     <i className='fa fa-plus-circle' /> Submit
@@ -142,7 +153,9 @@ export class UserDrawer extends React.Component<UserDrawerProps, UserDrawerState
                                         <Form.Check inline={true} type={'checkbox'}
                                             defaultChecked={this.state.user.enabled}
                                             value={ this.state.user.enabled } 
-                                            onChange={this.changeHandler('enabled')}/>
+                                            onChange={() => this.setState({ 
+                                                user: {...this.state.user, enabled: !this.state.user.enabled }
+                                            })} />
                                     </Col>
                                 </Form.Group>
                             </div>

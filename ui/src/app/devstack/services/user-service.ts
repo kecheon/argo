@@ -1,10 +1,6 @@
 import axios from 'axios';
 import {UserInfo} from '../../shared/models';
-// import userProfile from '../mocks/user-profile';
-// import listOfUsers from './__mocks__/users';
-// import { UsersList } from '../users/components/users-list/users-list';
-// const keystoneEndPoint = 'http://183.111.177.141:5000/api';
-// const keystoneEndPoint = 'http://183.111.177.141/identity/v3';
+import {User} from '../../devstack/users/components/models';
 import {endpoint} from '../../devstack/classes/constants';
 const accessToken = localStorage.getItem('accessToken');
 const headers = {
@@ -44,9 +40,9 @@ export class UserService {
         return response.data as UserInfo;
         // return getAsyncData(userProfile);
     }
-    public async updateUser(id: string, data: UserInfo): Promise<any> {
+    public async updateUser(id: string, data: User): Promise<any> {
         const response = await axios.patch(`${endpoint}/user/${id}`, data, { headers })
-        return response.data as UserInfo;
+        return response.data as User;
         // return getAsyncData(userProfile);
     }
     public async deleteUser(id: string): Promise<any> {
