@@ -27,6 +27,8 @@ export interface Namespace {
   links?: {
     self: string;
   }
+  quota_cpu?: number;
+  quota_ram?: number;
 }
 
 export interface Role {

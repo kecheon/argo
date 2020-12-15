@@ -8,7 +8,7 @@ import {Namespace} from '../../../models';
 // import {PhaseIcon} from '../../../../shared/components/phase-icon';
 // import {Timestamp} from '../../../../shared/components/timestamp';
 // import {wfDuration} from '../../../../shared/duration';
-import {WorkflowDrawer} from '../workflow-drawer/workflow-drawer';
+import {NamespaceDrawer} from '../workflow-drawer/namespace-drawer';
 
 interface WorkflowsRowProps {
     // workflow: Workflow;
@@ -79,11 +79,10 @@ export class WorkflowsRow extends React.Component<WorkflowsRowProps, WorkflowRow
                     {this.state.hideDrawer ? (
                         <span />
                     ) : (
-                        <WorkflowDrawer
+                        <NamespaceDrawer
                             name={wf.name}
                             id={wf.id}
                             domain_id={wf.domain_id}
-                            links={wf.links}
                             onChange={key => {
                                 this.props.onChange(key);
                             }}

@@ -148,6 +148,8 @@ export class WorkflowDrawer extends React.Component<WorkflowDrawerProps, Workflo
                                     <Form.Label column={true} sm={2}>Enabled</Form.Label>
                                     <Col sm={2}>
                                         <Form.Check inline={true} type={'checkbox'}
+                                            defaultChecked={this.state.user.enabled}
+                                            value={ this.state.user.enabled } 
                                             onChange={this.changeHandler('enabled')}/>
                                     </Col>
                                 </Form.Group>
