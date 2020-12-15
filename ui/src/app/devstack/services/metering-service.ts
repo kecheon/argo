@@ -5,16 +5,17 @@ const headers = {
    Authorization: `Bearer ${accessToken}` 
 }
 export class MeteringService {
-    public async get(start: any, end: any): Promise<any> {
+    public async get(minStartedAt: any, maxStartedAt: any): Promise<any> {
         // const start = startDate.toString();
         // const end = endDate.toString();
-        const params = { start, end };
+        const params = { minStartedAt, maxStartedAt };
         const response = await axios.get(`${endpoint}/argo/metering`, { params, headers });
         console.log(response);
         return response.data;
     }
-    public async getByNamespace(namespace: string): Promise<any> {
-        const response = await axios.get(`${endpoint}/argo/overview-data/${namespace}`, { headers });
+    public async getByNamespace(namespace: string, minStartedAt: any, maxStartedAt: any): Promise<any> {
+        const params = { minStartedAt, maxStartedAt };
+        const response = await axios.get(`${endpoint}/argo/metering/${namespace}`, { params, headers });
         return response.data;
     }
     public async getWorkflows(): Promise<any> {
