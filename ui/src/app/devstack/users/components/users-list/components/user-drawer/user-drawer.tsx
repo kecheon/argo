@@ -1,14 +1,6 @@
 import * as React from 'react';
-// import {Workflow} from '../../../../../models';
-
-// import {InlineTable} from '../../../../shared/components/inline-table/inline-table';
 import {Loading} from '../../../../../../shared/components/loading';
-// import {ConditionsPanel} from '../../../../shared/conditions-panel';
-// import {formatDuration} from '../../../../shared/duration';
-// import {services} from '../../../../shared/services';
 import { User } from '../../../models';
-// import {WorkflowFrom} from '../workflow-from';
-// import {WorkflowLabels} from '../workflow-labels/workflow-labels';
 import {UserService} from '../../../../../services/user-service';
 import { ListGroup, Form, Col, Row } from 'react-bootstrap';
 import {Consumer} from '../../../../../../shared/context';
@@ -17,7 +9,7 @@ require('./workflow-drawer.scss');
 
 const userService = new UserService();
 
-interface WorkflowDrawerProps {
+interface UserDrawerProps {
     name: string;
     id: string;
     domain_id: string;
@@ -26,12 +18,12 @@ interface WorkflowDrawerProps {
     onChange?: (key: string) => void;
 }
 
-interface WorkflowDrawerState {
+interface UserDrawerState {
     user?: User;
 }
 
-export class WorkflowDrawer extends React.Component<WorkflowDrawerProps, WorkflowDrawerState> {
-    constructor(props: WorkflowDrawerProps) {
+export class UserDrawer extends React.Component<UserDrawerProps, UserDrawerState> {
+    constructor(props: UserDrawerProps) {
         super(props);
         this.state = {};
     }

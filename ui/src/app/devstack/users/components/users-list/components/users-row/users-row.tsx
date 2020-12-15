@@ -1,17 +1,8 @@
-// import {Ticker} from 'argo-ui/src/index';
 import * as React from 'react';
-// import {Link} from 'react-router-dom';
-// import {Workflow} from '../../../../../models';
 import {User} from '../../../models';
-// import {uiUrl} from '../../../../shared/base';
-// import {DurationPanel} from '../../../../shared/components/duration-panel';
-// import {PhaseIcon} from '../../../../shared/components/phase-icon';
-// import {Timestamp} from '../../../../shared/components/timestamp';
-// import {wfDuration} from '../../../../shared/duration';
-import {WorkflowDrawer} from '../user-drawer/user-drawer';
+import {UserDrawer} from '../user-drawer/user-drawer';
 
 interface UsersRowProps {
-    // workflow: Workflow;
     user: User;
     onChange: (key: string) => void;
     select: (wf: User) => void;
@@ -80,7 +71,7 @@ export class UsersRow extends React.Component<UsersRowProps, UserRowState> {
                     {this.state.hideDrawer ? (
                         <span />
                     ) : (
-                        <WorkflowDrawer
+                        <UserDrawer
                             name={wf.name}
                             id={wf.id}
                             domain_id={wf.domain_id}
