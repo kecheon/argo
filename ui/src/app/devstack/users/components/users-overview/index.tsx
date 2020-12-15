@@ -24,11 +24,11 @@ const menu = [
       description: 'View clusters',
       path: 'cluster'
   },
-  {
-      title: 'Manage Tenant',
-      description: 'Create/update/delete Tenant',
-      path: 'tenants'
-  }
+  // {
+  //     title: 'Manage Tenant',
+  //     description: 'Create/update/delete Tenant',
+  //     path: 'tenants'
+  // }
 ]
 
 export const UsersOverview = () => {
