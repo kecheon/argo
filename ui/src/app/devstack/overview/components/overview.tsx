@@ -2,6 +2,7 @@ import { Page, Select } from 'argo-ui';
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import {uiUrl} from '../../../shared/base';
+import { Table } from 'react-bootstrap';
 require('./overview.scss');
 
 import { NamespaceService } from '../../services/namespace-service';
@@ -149,46 +150,41 @@ export default () => {
           </form>
           </div>
         </div>
-        <div className='argo-table-list'>
-          <div className='row argo-table-list__head'>
-              <div className='row small-12'>
-                  <div className='columns small-2'/>
-                  <div className='columns small-1'>NAME</div>
-                  <div className='columns small-1'>Phase</div>
-                  <div className='columns small-1'>Started At</div>
-                  <div className='columns small-1'>Finished At</div>
-                  <div className='columns small-1'>Node Duration</div>
-                  <div className='columns small-1'>CPU</div>
-                  <div className='columns small-1'>Memory</div>
-                  <div className='columns small-2'/>
-              </div>
-          </div>
-          <div className='workflows-list__row-container'>
-                  {workflowsOverview.workflows.map(workflow => {
-                      return (
-                        // tslint:disable-next-line:jsx-key
-                        <div className='row argo-table-list__row'>
-                          <div className='row small-12'>
-                          <div className='columns small-2'/>
-                          { Object.entries(workflow).filter(([key1, value1]) => {
-                            const include = ['name', 'phase', 'startedAt', 'finishedAt', 'nodeDurationFormatted', 'resourceDurationCPU', 'resourceDurationMem'];
-                            return include.includes(key1)
-                          }).map(([key, value]) => {
-                              return (
-                                // tslint:disable-next-line:jsx-key
-                                <div className='columns small-1'>
-                                  { value }
-                                </div>
-                              )
-                            })
-                          }
-                          <div className='columns small-2'/>
-                          </div>
-                        </div>
-                      );
-                    })}
-          </div> 
-        </div> 
+        <Table striped={true} bordered={true} hover={true} size={'sm'}>
+          <thead>
+            <tr>
+                  <th className='columns small-2'>NAME</th>
+                  <th className='columns small-1'>Phase</th>
+                  <th className='columns small-2'>Started At</th>
+                  <th className='columns small-2'>Finished At</th>
+                  <th className='columns small-2'>Node Duration</th>
+                  <th className='columns small-1'>CPU</th>
+                  <th className='columns small-1'>Memory</th>
+            </tr>
+          </thead>
+          <tbody>
+              {workflowsOverview.workflows.map(workflow => {
+                return (
+                  // tslint:disable-next-line:jsx-key
+                  <tr>
+                    { Object.entries(workflow).filter(([key1, value1]) => {
+                      const include = ['name', 'phase', 'startedAt', 'finishedAt', 'nodeDurationFormatted', 
+                      'resourceDurationCPU', 'resourceDurationMem'];
+                      return include.includes(key1)
+                    }).map(([key, value]) => {
+                        return (
+                          // tslint:disable-next-line:jsx-key
+                          <td>
+                            { value }
+                          </td>
+                        )
+                      })
+                    }
+                  </tr>
+                );
+              })}
+          </tbody>
+        </Table>
     </Page>
   )
 }
