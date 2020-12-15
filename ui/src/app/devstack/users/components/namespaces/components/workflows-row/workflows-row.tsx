@@ -8,7 +8,7 @@ import {Namespace} from '../../../models';
 // import {PhaseIcon} from '../../../../shared/components/phase-icon';
 // import {Timestamp} from '../../../../shared/components/timestamp';
 // import {wfDuration} from '../../../../shared/duration';
-import {NamespaceDrawer} from '../workflow-drawer/namespace-drawer';
+import {NamespaceDrawer} from '../namespace-drawer/namespace-drawer';
 
 interface WorkflowsRowProps {
     // workflow: Workflow;

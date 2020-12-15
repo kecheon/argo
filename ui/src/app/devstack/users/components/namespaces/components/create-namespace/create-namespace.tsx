@@ -46,15 +46,15 @@ export default () => {
           alert(`Namespace create Error ${name}`);
       }
   }
-  const options: any = [
-      {title: 'swift', value: 'admin'},
-      {title: 'glance', value: 'executor'},
-      {title: 'ydcho', value: 'viewer'},
-  ];
-  const options2: any = [
-    {title: 'testuser', value: 'admin'},
-    {title: 'example2', value: 'viewer'}
-  ];
+//   const options: any = [
+//       {title: 'dummy user1', value: 'admin'},
+//       {title: 'dummy user2', value: 'executor'},
+//       {title: 'dummy user3', value: 'viewer'},
+//   ];
+//   const options2: any = [
+//     {title: 'testuser', value: 'admin'},
+//     {title: 'example2', value: 'viewer'}
+//   ];
   return (
     <Consumer>
         {ctx => (
@@ -77,7 +77,7 @@ export default () => {
                         </Col>
                     </Form.Group>
                 </div>
-                <div className='argo-form-row'>
+                {/* <div className='argo-form-row'>
                     <Form.Group as={Row} controlId='formBasicMember'>
                         <Form.Label column={true} sm={2}>Member</Form.Label>
                         <Col sm={10}>
@@ -93,7 +93,7 @@ export default () => {
                         </Form.Row>
                         </Col>
                     </Form.Group>
-                </div>
+                </div> */}
                 <div className='argo-form-row'>
                     <Form.Group as={Row} controlId='formBasicQuota'>
                         <Form.Label column={true} sm={2}>Quota</Form.Label>

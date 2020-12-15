@@ -137,9 +137,9 @@ export class NamespaceDrawer extends React.Component<NamespaceDrawerProps, Names
                                     <Form.Label column={true} sm={2}>Member</Form.Label>
                                     <Col sm={10}>
                                         <Form.Control as="select">
-                                            <option>Service 1</option>
-                                            <option>Service 2</option>
-                                            <option>Service 3</option>
+                                            <option>dummy user 1</option>
+                                            <option>dummy user 2</option>
+                                            <option>dummy user 3</option>
                                         </Form.Control>
                                     </Col>
                                 </Form.Group>
@@ -149,9 +149,9 @@ export class NamespaceDrawer extends React.Component<NamespaceDrawerProps, Names
                                     <Form.Label column={true} sm={2}>Role</Form.Label>
                                     <Col sm={10}>
                                         <Form.Control as="select">
-                                            <option>Service 1</option>
-                                            <option>Service 2</option>
-                                            <option>Service 3</option>
+                                            <option>App admin</option>
+                                            <option>Executor</option>
+                                            <option>Viewer</option>
                                         </Form.Control>
                                     </Col>
                                 </Form.Group>
