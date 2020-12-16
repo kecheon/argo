@@ -41,7 +41,6 @@ export default () => {
         }));
       })
       roleService.get().then(r => {
-          console.log(r);
         setRoleOptions(r.roles.map((item: {name: string;}) => item.name));
       })
   }, [])
@@ -151,8 +150,13 @@ export default () => {
                         <Form.Label column={true} sm={2}>Enabled</Form.Label>
                         <Col sm={2}>
                             <Form.Check inline={true} type={'checkbox'}
+                                defaultChecked={enabled}
                                 value={enabled}
-                                onChange={(e: { target: { value: React.SetStateAction<boolean>; }; }) => setEnabled(e.target.value)}/>
+                                onChange={(e: { target: { value: React.SetStateAction<boolean>, checked: any }; }) => 
+                                    {
+                                        setEnabled(e.target.checked)
+                                    }
+                                }/>
                         </Col>
                     </Form.Group>
                 </div>
