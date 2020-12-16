@@ -17,4 +17,8 @@ export class OverviewService {
         const response = await axios.get(`${endpoint}/argo/overview-workflows`, { headers });
         return response.data;
     }
+    public async getWorkflowsByNamespace(namespace: string): Promise<any> {
+        const response = await axios.get(`${endpoint}/argo/overview-workflows/${namespace}`, { headers });
+        return response.data;
+    }
 }

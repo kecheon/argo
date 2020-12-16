@@ -46,6 +46,7 @@ export interface IWorkflow {
 
 export default () => {
   const [namespace, setNamespace] = useState('');
+  const [cluster, setCluster] = useState('');
   const [options, setOptions] = useState([]);
   const [clusterOptions, setClusterOptions] = useState([]);
   const [overview, setOverview] = useState({
@@ -60,6 +61,27 @@ export default () => {
     totalResourceDurationMem: 0,
     workflows: []
   })
+
+  const getWorkflows = () => {
+    overviewService.getWorkflows()
+    .then((workflowsData: WorkflowsOverview) => {
+      setWorkflowsOverview({...workflowsData});
+    });
+  }
+  const getWorkFlowsByNamespace = (ns: string) => {
+    overviewService.getWorkflowsByNamespace(ns)
+    .then((workflowsData: WorkflowsOverview) => {
+      setWorkflowsOverview({...workflowsData});
+    });
+  }
+
+  const getOverviewByNamespace = (ns: string) => {
+    overviewService.getByNamespace(ns)
+    .then((overviewData: Overview) => {
+      setOverview({...overviewData});
+    });
+  }
+
   useEffect(() => {
     service.get().then(ns => {
       setOptions(ns.namespaces.map((item: {name: string; }) => item.name));
@@ -70,24 +92,23 @@ export default () => {
     overviewService.get().then((overviewData: Overview) => {
       setOverview({...overviewData});
     });
-    overviewService.getWorkflows().then((workflowsData: WorkflowsOverview) => {
-      setWorkflowsOverview({...workflowsData});
-    })
-
+    getWorkflows();
   }, [])
 
   const changeHandler = (value: string) => {
     setNamespace(value);
-    overviewService.getByNamespace(value).then((overviewData: Overview) => {
-      setOverview({...overviewData})
-    });
+    getOverviewByNamespace(value);
+    getWorkFlowsByNamespace(value);
   }
 
-  const changeHandler2 = (value: string) => {
-    setNamespace(value);
-    // clusterService.get(value).then((res: any) => {
-    //   console.log(res);
-    // });
+  const clusterChangeHandler = (value: string) => {
+    setCluster(value);
+    const wfs = workflowsOverview.workflows;
+    const filtered = wfs.filter((wf) => {
+      return wf.clusterName === value;
+    })
+    workflowsOverview.workflows = filtered;
+    setWorkflowsOverview({...workflowsOverview});
   }
 
   return (
@@ -146,7 +167,7 @@ export default () => {
                 <Select options={clusterOptions}
                   placeholder='Select Cluster'
                   value={namespace}
-                  onChange={(option) => changeHandler2(option.value) } />
+                  onChange={(option) => clusterChangeHandler(option.value) } />
             </div>
           </form>
           </div>
@@ -167,7 +188,7 @@ export default () => {
               {workflowsOverview.workflows.map(workflow => {
                 return (
                   // tslint:disable-next-line:jsx-key
-                  <tr>
+                  <tr key={workflow.id}>
                     { Object.entries(workflow).filter(([key1, value1]) => {
                       const include = ['name', 'phase', 'startedAt', 'finishedAt', 'nodeDurationFormatted', 
                       'resourceDurationCPU', 'resourceDurationMem'];
@@ -175,7 +196,7 @@ export default () => {
                     }).map(([key, value]) => {
                         return (
                           // tslint:disable-next-line:jsx-key
-                          <td>
+                          <td key={key}>
                             { value }
                           </td>
                         )
