@@ -15,7 +15,7 @@ interface WorkflowFilterProps {
     phaseItems: string[];
     selectedPhases: string[];
     selectedLabels: string[];
-    onChange: (namespace: string, selectedPhases: string[], labels: string[]) => void;
+    onChange: (namespace: string, cluster: string, selectedPhases: string[], labels: string[]) => void;
     changeCluster?: (cluster: string) => void;
 }
 
@@ -29,7 +29,7 @@ export class WorkflowFilters extends React.Component<WorkflowFilterProps, {}> {
                         <NamespaceFilter
                             value={this.props.namespace}
                             onChange={ns => {
-                                this.props.onChange(ns, this.props.selectedPhases, this.props.selectedLabels);
+                                this.props.onChange(ns, this.props.cluster, this.props.selectedPhases, this.props.selectedLabels);
                             }}
                         />
                         <p className='wf-filters-container__title'>Cluster</p>
@@ -37,7 +37,7 @@ export class WorkflowFilters extends React.Component<WorkflowFilterProps, {}> {
                             changeCluster={this.props.changeCluster}
                             value={this.props.cluster}
                             onChange={cls => {
-                                this.props.onChange(cls, this.props.selectedPhases, this.props.selectedLabels);
+                                this.props.onChange(this.props.namespace, cls, this.props.selectedPhases, this.props.selectedLabels);
                             }}
                         />
                     </div>
@@ -48,7 +48,7 @@ export class WorkflowFilters extends React.Component<WorkflowFilterProps, {}> {
                             autocomplete={this.getLabelSuggestions(this.props.workflows)}
                             tags={this.props.selectedLabels}
                             onChange={tags => {
-                                this.props.onChange(this.props.namespace, this.props.selectedPhases, tags);
+                                this.props.onChange(this.props.namespace, this.props.cluster, this.props.selectedPhases, tags);
                             }}
                         />
                     </div>
@@ -57,7 +57,7 @@ export class WorkflowFilters extends React.Component<WorkflowFilterProps, {}> {
                         <CheckboxFilter
                             selected={this.props.selectedPhases}
                             onChange={selected => {
-                                this.props.onChange(this.props.namespace, selected, this.props.selectedLabels);
+                                this.props.onChange(this.props.namespace, this.props.cluster, selected, this.props.selectedLabels);
                             }}
                             items={this.getPhaseItems(this.props.workflows)}
                             type='phase'

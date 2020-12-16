@@ -34,7 +34,8 @@ export class WorkflowsService {
             'items.status.startedAt',
             'items.status.estimatedDuration',
             'items.status.progress',
-            'items.spec.suspend'
+            'items.spec.suspend',
+            'items.spec.nodeSelector.clusterName'
         ]
     ) {
         const params = this.queryParams({phases, labels});
@@ -50,7 +51,6 @@ export class WorkflowsService {
 
     public get(namespace: string, name: string) {
         return requests.get(`argo/workflows/${namespace}/${name}`).then(res => {
-            console.log(res.body);
             return res.body as Workflow;
         });
     }

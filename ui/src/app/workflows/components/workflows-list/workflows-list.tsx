@@ -163,7 +163,8 @@ export class WorkflowsList extends BasePage<RouteComponentProps<any>, State> {
                             clearSelection={() => this.setState({selectedWorkflows: new Map<string, models.Workflow>()})}
                             loadWorkflows={() => {
                                 this.setState({selectedWorkflows: new Map<string, models.Workflow>()});
-                                this.changeFilters(this.state.namespace, this.state.selectedPhases, this.state.selectedLabels, {limit: this.state.pagination.limit});
+                                this.changeFilters(this.state.namespace, this.state.cluster, this.state.selectedPhases, this.state.selectedLabels,
+                                     {limit: this.state.pagination.limit});
                             }}
                             isDisabled={this.state.batchActionDisabled}
                         />}
@@ -179,8 +180,8 @@ export class WorkflowsList extends BasePage<RouteComponentProps<any>, State> {
                                         phaseItems={Object.values(models.NODE_PHASE)}
                                         selectedPhases={this.state.selectedPhases}
                                         selectedLabels={this.state.selectedLabels}
-                                        onChange={(namespace, selectedPhases, selectedLabels) =>
-                                            this.changeFilters(namespace, selectedPhases, selectedLabels, {limit: this.state.pagination.limit})
+                                        onChange={(namespace: string, cluster: string, selectedPhases: string[], selectedLabels: string[]) =>
+                                            this.changeFilters(namespace, cluster, selectedPhases, selectedLabels, {limit: this.state.pagination.limit})
                                         }
                                     />
                                 </div>
@@ -220,6 +221,7 @@ export class WorkflowsList extends BasePage<RouteComponentProps<any>, State> {
         services.workflows
             .list(namespace, selectedPhases, selectedLabels, pagination)
             .then(wfList => {
+                console.log(wfList);
                 this.setState(
                     {
                         error: null,
@@ -262,7 +264,17 @@ export class WorkflowsList extends BasePage<RouteComponentProps<any>, State> {
                     .filter(item => item.updated)
                     .map(item => item.workflows)
                     .subscribe(
-                        workflows => this.setState({error: null, workflows}),
+                        workflows => {
+                            if (this.state.cluster !== '') {
+                                workflows = workflows.filter(workflow => {
+                                    console.log(workflow);
+                                    return workflow.metadata.clusterName === this.state.cluster;
+                                })
+                            } else {
+                                console.log(workflows);
+                                this.setState({error: null, workflows})
+                            }
+                        },
                         error => this.setState({error})
                     );
             })
@@ -270,8 +282,22 @@ export class WorkflowsList extends BasePage<RouteComponentProps<any>, State> {
             .catch(error => this.setState({error}));
     }
 
-    private changeFilters(namespace: string, selectedPhases: string[], selectedLabels: string[], pagination: Pagination) {
-        this.fetchWorkflows(namespace, selectedPhases, selectedLabels, pagination);
+    private changeFilters(namespace: string, cluster: string, selectedPhases: string[], selectedLabels: string[], pagination: Pagination) {
+        if (cluster === '') {
+            // namespace가 결정된 상태에서만이 cluster가 있는 workflows를 조회할 수 있으므로 
+            this.fetchWorkflows(namespace, selectedPhases, selectedLabels, pagination);
+        } else {
+            // 기존 workflows를 cluster에 따라서 filtering만 
+            const filteredWorkflows = this.state.workflows.filter(workflow => {
+                if (typeof workflow.spec.nodeSelector === 'undefined') {
+                    return false;
+                } else {
+                    return workflow.spec.nodeSelector.clusterName === cluster;
+                }
+            })
+            console.log(filteredWorkflows);
+            this.setState({workflows: filteredWorkflows});
+        }
     }
 
     private saveHistory() {
@@ -343,7 +369,7 @@ export class WorkflowsList extends BasePage<RouteComponentProps<any>, State> {
                                         newTags = this.state.selectedLabels.concat(value);
                                         this.setState({selectedLabels: newTags});
                                     }
-                                    this.changeFilters(this.state.namespace, this.state.selectedPhases, newTags, this.state.pagination);
+                                    this.changeFilters(this.state.namespace, this.state.cluster, this.state.selectedPhases, newTags, this.state.pagination);
                                 }}
                                 select={subWf => {
                                     const wfUID = subWf.metadata.uid;
@@ -363,7 +389,7 @@ export class WorkflowsList extends BasePage<RouteComponentProps<any>, State> {
                     })}
                 </div>
                 <PaginationPanel
-                    onChange={pagination => this.changeFilters(this.state.namespace, this.state.selectedPhases, this.state.selectedLabels, pagination)}
+                    onChange={pagination => this.changeFilters(this.state.namespace, this.state.cluster, this.state.selectedPhases, this.state.selectedLabels, pagination)}
                     pagination={this.state.pagination}
                 />
             </>
