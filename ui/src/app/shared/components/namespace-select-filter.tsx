@@ -30,7 +30,6 @@ export class SelectFilter extends React.Component<InputProps, InputState> {
     public componentDidMount() {
         service.get().then(ns => ns.namespaces)
         .then( ns => {
-            console.log(ns);
             this.setState({ namespaces: ns.map((item: {name: string; }) => item.name) });
         })
     }

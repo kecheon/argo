@@ -36,7 +36,6 @@ export class ClusterSelectFilter extends React.Component<InputProps, InputState>
     public componentDidMount() {
         service.get()
         .then( clusters => {
-            console.log(clusters);
             this.setState({ clusters: clusters.map((item: {name: string; }) => item.name) });
         })
     }

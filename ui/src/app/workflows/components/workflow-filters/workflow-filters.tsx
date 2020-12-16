@@ -32,14 +32,18 @@ export class WorkflowFilters extends React.Component<WorkflowFilterProps, {}> {
                                 this.props.onChange(ns, this.props.cluster, this.props.selectedPhases, this.props.selectedLabels);
                             }}
                         />
-                        <p className='wf-filters-container__title'>Cluster</p>
-                        <ClusterFilter
-                            changeCluster={this.props.changeCluster}
-                            value={this.props.cluster}
-                            onChange={cls => {
-                                this.props.onChange(this.props.namespace, cls, this.props.selectedPhases, this.props.selectedLabels);
-                            }}
-                        />
+                        { (this.props.namespace !== '') && 
+                            <p className='wf-filters-container__title'>Cluster</p>
+                        }
+                        { (this.props.namespace !== '') && 
+                            <ClusterFilter
+                                changeCluster={this.props.changeCluster}
+                                value={this.props.cluster}
+                                onChange={cls => {
+                                    this.props.onChange(this.props.namespace, cls, this.props.selectedPhases, this.props.selectedLabels);
+                                }}
+                            />
+                        }
                     </div>
                     <div className='columns small-3 xlarge-12'>
                         <p className='wf-filters-container__title'>Labels</p>

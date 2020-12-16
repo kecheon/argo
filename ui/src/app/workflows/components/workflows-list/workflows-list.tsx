@@ -221,7 +221,6 @@ export class WorkflowsList extends BasePage<RouteComponentProps<any>, State> {
         services.workflows
             .list(namespace, selectedPhases, selectedLabels, pagination)
             .then(wfList => {
-                console.log(wfList);
                 this.setState(
                     {
                         error: null,
@@ -264,17 +263,7 @@ export class WorkflowsList extends BasePage<RouteComponentProps<any>, State> {
                     .filter(item => item.updated)
                     .map(item => item.workflows)
                     .subscribe(
-                        workflows => {
-                            if (this.state.cluster !== '') {
-                                workflows = workflows.filter(workflow => {
-                                    console.log(workflow);
-                                    return workflow.metadata.clusterName === this.state.cluster;
-                                })
-                            } else {
-                                console.log(workflows);
-                                this.setState({error: null, workflows})
-                            }
-                        },
+                        workflows => this.setState({error: null, workflows}),
                         error => this.setState({error})
                     );
             })
@@ -284,19 +273,25 @@ export class WorkflowsList extends BasePage<RouteComponentProps<any>, State> {
 
     private changeFilters(namespace: string, cluster: string, selectedPhases: string[], selectedLabels: string[], pagination: Pagination) {
         if (cluster === '') {
-            // namespace가 결정된 상태에서만이 cluster가 있는 workflows를 조회할 수 있으므로 
+            // backend의 구조상 namespace가 결정된 상태에서만이 cluster가 있는 workflows를 조회할 수 있으므로 
+            // endpoint /argo/workflows/는 cluster정보를 리턴하지 않는다.
+            // endpoint /argo/workflows/{namespace} 는 클러스터 정보를 리턴해준다.
+            // 그러므로 cluster에 의한 filtering은 given namespace라야만 유효하다.
             this.fetchWorkflows(namespace, selectedPhases, selectedLabels, pagination);
         } else {
-            // 기존 workflows를 cluster에 따라서 filtering만 
-            const filteredWorkflows = this.state.workflows.filter(workflow => {
-                if (typeof workflow.spec.nodeSelector === 'undefined') {
-                    return false;
-                } else {
-                    return workflow.spec.nodeSelector.clusterName === cluster;
-                }
-            })
-            console.log(filteredWorkflows);
-            this.setState({workflows: filteredWorkflows});
+            if (namespace !== '') {
+                // 기존 workflows를 cluster에 따라서 filtering만 
+                const filteredWorkflows = this.state.workflows.filter(workflow => {
+                    if (typeof workflow.spec.nodeSelector === 'undefined') {
+                        return false;
+                    } else {
+                        return workflow.spec.nodeSelector.clusterName === cluster;
+                    }
+                })
+                this.setState({workflows: filteredWorkflows});
+            } else {
+                this.fetchWorkflows(namespace, selectedPhases, selectedLabels, pagination);
+            }
         }
     }
 
