@@ -12,12 +12,14 @@ import {Consumer} from '../../../shared/context';
 import {services} from '../../../shared/services';
 import {SubmitWorkflowPanel} from '../../../workflows/components/submit-workflow-panel';
 import {WorkflowTemplateSummaryPanel} from '../workflow-template-summary-panel';
+import {ClusterFilter} from '../../../shared/components/cluster-filter';
 
 require('../../../workflows/components/workflow-details/workflow-details.scss');
 
 interface State {
     template?: models.WorkflowTemplate;
     error?: Error;
+    clusterName?: string;
 }
 
 export class WorkflowTemplateDetails extends BasePage<RouteComponentProps<any>, State> {
@@ -39,13 +41,17 @@ export class WorkflowTemplateDetails extends BasePage<RouteComponentProps<any>, 
 
     constructor(props: RouteComponentProps<any>, context: any) {
         super(props, context);
-        this.state = {};
+        this.state = {
+            clusterName: ''
+        };
     }
 
     public componentDidMount(): void {
         services.workflowTemplate
             .get(this.name, this.namespace)
-            .then(template => this.setState({error: null, template}))
+            .then(template => { 
+                this.setState({error: null, template}) 
+            })
             .catch(error => this.setState({error}));
     }
 
@@ -81,7 +87,15 @@ export class WorkflowTemplateDetails extends BasePage<RouteComponentProps<any>, 
                             ]
                         }}>
                         <div className='argo-container'>
-                            <div className='workflow-details__content'>{this.renderWorkflowTemplate(ctx.currentUser)}</div>
+                            <ClusterFilter
+                                value={'this.state.clusterName'}
+                                onChange={cls => {
+                                    this.setState({clusterName: cls})
+                                }}
+                            />
+                            { this.state.clusterName && 
+                                <div className='workflow-details__content'>{this.renderWorkflowTemplate(ctx.currentUser, this.state.clusterName)}</div>
+                            }
                         </div>
                         {this.state.template && (
                             <SlidingPanel isShown={this.sidePanel !== null} onClose={() => (this.sidePanel = null)}>
@@ -101,14 +115,17 @@ export class WorkflowTemplateDetails extends BasePage<RouteComponentProps<any>, 
         );
     }
 
-    private renderWorkflowTemplate(currentUser: UserState) {
+    private renderWorkflowTemplate(currentUser: UserState, clusterName: string) {
         if (this.state.error) {
             return <ErrorNotice error={this.state.error} />;
         }
         if (!this.state.template) {
             return <Loading />;
         }
-        return <WorkflowTemplateSummaryPanel template={this.state.template} onChange={template => this.setState({template})} currentUser={currentUser} />;
+        const newTemplate = this.state.template;
+        newTemplate.metadata.labels.workflowCreator = currentUser.username;
+        newTemplate.spec.nodeSelector = { clusterName };
+        return <WorkflowTemplateSummaryPanel template={newTemplate} onChange={template => this.setState({template})} currentUser={currentUser} />;
     }
 
     private deleteWorkflowTemplate() {

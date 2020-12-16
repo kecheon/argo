@@ -21,6 +21,7 @@ export class WorkflowTemplateService {
     }
 
     public update(template: models.WorkflowTemplate, name: string, namespace: string) {
+        console.log('submit....');
         return requests
             .put(`argo/workflow-templates/${namespace}/${name}`)
             .send({template})

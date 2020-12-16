@@ -1,6 +1,8 @@
 import * as React from 'react';
 
 import {WorkflowTemplate} from '../../../models';
+import {exampleWorkflowTemplate} from '../../shared/examples';
+
 import { UserState } from '../../devstack/classes/current-user';
 import {ResourceEditor} from '../../shared/components/resource-editor/resource-editor';
 import {Timestamp} from '../../shared/components/timestamp';
