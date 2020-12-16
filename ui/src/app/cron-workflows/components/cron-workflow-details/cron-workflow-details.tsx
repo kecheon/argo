@@ -8,6 +8,9 @@ import {ErrorNotice} from '../../../shared/components/error-notice';
 import {Loading} from '../../../shared/components/loading';
 import {services} from '../../../shared/services';
 import {CronWorkflowSummaryPanel} from '../cron-workflow-summary-panel';
+import {ClusterFilter} from '../../../shared/components/cluster-filter';
+import {Consumer} from '../../../shared/context';
+import { UserState } from '../../../devstack/classes/current-user';
 
 const jsonMergePatch = require('json-merge-patch');
 require('../../../workflows/components/workflow-details/workflow-details.scss');
@@ -15,6 +18,7 @@ require('../../../workflows/components/workflow-details/workflow-details.scss');
 interface State {
     cronWorkflow?: CronWorkflow;
     error?: Error;
+    clusterName: string;
 }
 
 export class CronWorkflowDetails extends BasePage<RouteComponentProps<any>, State> {
@@ -32,7 +36,9 @@ export class CronWorkflowDetails extends BasePage<RouteComponentProps<any>, Stat
 
     constructor(props: RouteComponentProps<any>, context: any) {
         super(props, context);
-        this.state = {};
+        this.state = {
+            clusterName: ''
+        };
     }
 
     public componentDidMount(): void {
@@ -58,49 +64,64 @@ export class CronWorkflowDetails extends BasePage<RouteComponentProps<any>, Stat
                       disabled: !this.state.cronWorkflow || !this.state.cronWorkflow.spec.suspend || this.level >= 3
                   };
         return (
-            <Page
-                title='Cron Workflow Details'
-                toolbar={{
-                    actionMenu: {
-                        items: [
-                            {
-                                title: 'Submit',
-                                iconClassName: 'fa fa-plus',
-                                action: () => this.submitCronWorkflow(),
-                                disabled: this.level >= 3
+            <Consumer>
+                {ctx => (
+                    <Page
+                        title='Cron Workflow Details'
+                        toolbar={{
+                            actionMenu: {
+                                items: [
+                                    {
+                                        title: 'Submit',
+                                        iconClassName: 'fa fa-plus',
+                                        action: () => this.submitCronWorkflow(),
+                                        disabled: this.level >= 3
+                                    },
+                                    {
+                                        title: 'Delete',
+                                        iconClassName: 'fa fa-trash',
+                                        action: () => this.deleteCronWorkflow(),
+                                        disabled: this.level >= 3
+                                    },
+                                    suspendButton
+                                ]
                             },
-                            {
-                                title: 'Delete',
-                                iconClassName: 'fa fa-trash',
-                                action: () => this.deleteCronWorkflow(),
-                                disabled: this.level >= 3
-                            },
-                            suspendButton
-                        ]
-                    },
-                    breadcrumbs: [
-                        {
-                            title: 'Cron Workflows',
-                            path: uiUrl('cron-workflows')
-                        },
-                        {title: this.namespace + '/' + this.name}
-                    ]
-                }}>
-                <div className='argo-container'>
-                    <div className='workflow-details__content'>{this.renderCronWorkflow()}</div>
-                </div>
-            </Page>
+                            breadcrumbs: [
+                                {
+                                    title: 'Cron Workflows',
+                                    path: uiUrl('cron-workflows')
+                                },
+                                {title: this.namespace + '/' + this.name}
+                            ]
+                        }}>
+                        <div className='argo-container'>
+                            <ClusterFilter
+                                value={'this.state.clusterName'}
+                                onChange={cls => {
+                                    this.setState({clusterName: cls})
+                                }}
+                            />
+                            { this.state.clusterName && 
+                                <div className='workflow-details__content'>{this.renderCronWorkflow(ctx.currentUser, this.state.clusterName)}</div>
+                            }
+                        </div>
+                    </Page>
+                )}
+            </Consumer>
         );
     }
 
-    private renderCronWorkflow() {
+    private renderCronWorkflow(currentUser: UserState, clusterName: string) {
         if (this.state.error) {
             return <ErrorNotice error={this.state.error} />;
         }
         if (!this.state.cronWorkflow) {
             return <Loading />;
         }
-        return <CronWorkflowSummaryPanel cronWorkflow={this.state.cronWorkflow} onChange={cronWorkflow => this.setState({cronWorkflow})} level={this.level} />;
+        const newCronWorkflow = this.state.cronWorkflow;
+        newCronWorkflow.metadata.labels.workflowCreator = currentUser.username;
+        newCronWorkflow.spec.nodeSelector = { clusterName };
+        return <CronWorkflowSummaryPanel cronWorkflow={newCronWorkflow} onChange={cronWorkflow => this.setState({cronWorkflow})} level={this.level} />;
     }
 
     private submitCronWorkflow() {
