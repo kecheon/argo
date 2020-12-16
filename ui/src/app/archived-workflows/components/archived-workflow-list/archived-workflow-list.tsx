@@ -76,8 +76,8 @@ export class ArchivedWorkflowList extends BasePage<RouteComponentProps<any>, Sta
                                 selectedLabels={this.state.selectedLabels}
                                 minStartedAt={this.state.minStartedAt}
                                 maxStartedAt={this.state.maxStartedAt}
-                                onChange={(namespace, selectedPhases, selectedLabels, minStartedAt, maxStartedAt) =>
-                                    this.changeFilters(namespace, selectedPhases, selectedLabels, minStartedAt, maxStartedAt, {limit: this.state.pagination.limit})
+                                onChange={(namespace, cluster, selectedPhases, selectedLabels, minStartedAt, maxStartedAt) =>
+                                    this.changeFilters(namespace, cluster, selectedPhases, selectedLabels, minStartedAt, maxStartedAt, {limit: this.state.pagination.limit})
                                 }
                             />
                         </div>
@@ -108,7 +108,8 @@ export class ArchivedWorkflowList extends BasePage<RouteComponentProps<any>, Sta
         }
     }
 
-    private changeFilters(namespace: string, selectedPhases: string[], selectedLabels: string[], minStartedAt: Date, maxStartedAt: Date, pagination: Pagination) {
+    private changeFilters(namespace: string, cluster: string, selectedPhases: string[], selectedLabels: string[], minStartedAt: Date, maxStartedAt: Date, pagination: Pagination) {
+        console.log(namespace);
         this.fetchArchivedWorkflows(namespace, selectedPhases, selectedLabels, minStartedAt, maxStartedAt, pagination);
     }
 
@@ -208,7 +209,8 @@ export class ArchivedWorkflowList extends BasePage<RouteComponentProps<any>, Sta
                 </div>
                 <PaginationPanel
                     onChange={pagination =>
-                        this.changeFilters(this.state.namespace, this.state.selectedPhases, this.state.selectedLabels, this.state.minStartedAt, this.state.maxStartedAt, pagination)
+                        this.changeFilters(this.state.namespace, this.state.cluster, this.state.selectedPhases,
+                            this.state.selectedLabels, this.state.minStartedAt, this.state.maxStartedAt, pagination)
                     }
                     pagination={this.state.pagination}
                 />

@@ -1,6 +1,7 @@
 import { Table } from 'react-bootstrap';
 import DatePicker, { DayValue, DayRange, Day } from 'react-modern-calendar-datepicker'
 import 'react-modern-calendar-datepicker/lib/DatePicker.css';
+// import DatePicker from 'react-datepicker'; 
 import { addDays } from 'date-fns';
 import { Page, Select } from 'argo-ui';
 import * as React from 'react';
@@ -15,6 +16,7 @@ const meteringService = new MeteringService();
 export default () => {
   const [namespace, setNamespace] = useState('');
   const [options, setOptions] = useState([]);
+  const [cluster, setCluster] = useState('');
   const [clusterOptions, setClusterOptions] = useState([]);
   const [workflows, setWorkflows] = useState([])
 //   const [startDate, setStartDate] = useState(new Date());
@@ -45,7 +47,8 @@ export default () => {
     
     const getWorkflows = (startDate: string, endDate: string) => {
         meteringService.get(startDate, endDate).then((workflowsData: any) => {
-            setWorkflows(workflowsData);
+          console.log(workflowsData);
+          setWorkflows(workflowsData);
         });
     };
 
@@ -56,8 +59,8 @@ export default () => {
         clusterService.get().then(clusters => {
             setClusterOptions(clusters.map((item: { name: string }) => item.name));
         });
-        const start = addDays(new Date(), -7).toISOString();
-        const end = (new Date()).toISOString();
+        const start = (new Date(dayRange.from.year, dayRange.from.month, dayRange.from.day - 7)).toISOString();
+        const end = (new Date(dayRange.to.year, dayRange.to.month, dayRange.to.day)).toISOString();
         getWorkflows(start, end);
     }, [])
 
@@ -66,10 +69,7 @@ export default () => {
     const startDate = (new Date(dayRange.from.year, dayRange.from.month, dayRange.from.day)).toISOString();
     const endDate = (new Date(dayRange.to.year, dayRange.to.month, dayRange.to.day)).toISOString();
     if (value === '') {
-        const start = addDays(new Date(), -7).toISOString();
-        const end = (new Date()).toISOString();
-        getWorkflows(start, end);
-
+        getWorkflows(startDate, endDate);
     } else {
         meteringService.getByNamespace(value, startDate, endDate).then((workflowsData: any) => {
           setWorkflows(workflowsData)
@@ -77,8 +77,19 @@ export default () => {
     }
   }
 
-  const changeHandler2 = (value: string) => {
-    setNamespace(value);
+  const changeClusterHandler = (value: string) => {
+    setCluster(value);
+    if (value === '') {
+      setNamespace('');
+      const startDate = (new Date(dayRange.from.year, dayRange.from.month, dayRange.from.day)).toISOString();
+      const endDate = (new Date(dayRange.to.year, dayRange.to.month, dayRange.to.day)).toISOString();
+      getWorkflows(startDate, endDate);
+    } else {
+      const filteredWorkflows = workflows.filter((workflow) => {
+        return workflow.clusterName === value;
+      });
+      setWorkflows(filteredWorkflows);
+    }
   }
 
   const clickHandler = () => {
@@ -91,8 +102,22 @@ export default () => {
   return (
     <Page title='Metering'>
         <div className='row'>
-          <div className='columns small-3' />
-          <div className='columns small-6'>
+          <div className='columns small-4'>
+              <br/><br/>
+                <DatePicker value={dayRange} onChange={setDayRange} />
+                <button className='argo-button argo-button--base argo-button--sm'  onClick={clickHandler}>Go</button>
+                {/* <DatePicker
+                    selected={this.props.maxStartedAt}
+                    onChange={date => {
+                        this.props.onChange(this.props.namespace, this.props.cluster, this.props.selectedPhases, this.props.selectedLabels, this.props.minStartedAt, date);
+                    }}
+                    placeholderText='To'
+                    dateFormat='dd MMM yyyy'
+                    todayButton='Today'
+                    className='argo-field argo-textarea'
+                /> */}
+          </div>
+          <div className='columns small-4'>
             <form>
                 <div className='argo-form-row'>
                     <Select options={options}
@@ -111,24 +136,27 @@ export default () => {
                 </div>
             </form>
           </div>
-        </div>
-
-        <div className='row'>
-          <div className='columns small-6'>
-                <DatePicker value={dayRange} onChange={setDayRange} />
-                <button onClick={clickHandler}>Go</button>
-          </div>
-          <div className='columns small-6'>
+          <div className='columns small-4'>
             <form>
                 <div className='argo-form-row'>
                     <Select options={clusterOptions}
                     placeholder='Select Cluster'
-                    value={namespace}
-                    onChange={(option) => changeHandler2(option.value) } />
+                    value={cluster}
+                    onChange={(option) => changeClusterHandler(option.value) } />
+                    {(cluster !== '') && 
+                        <a
+                            onClick={() => {
+                                setCluster('');
+                                changeClusterHandler('');
+                            }}>
+                            <i className='fa fa-times-circle' /> Clear selection
+                        </a>
+                    }
                 </div>
             </form>
           </div>
         </div>
+     
         <Table striped={true} bordered={true} hover={true} size={'sm'}>
           <thead>
             <tr>
@@ -145,7 +173,7 @@ export default () => {
               {workflows.map((workflow: any) => {
                 return (
                   // tslint:disable-next-line:jsx-key
-                  <tr>
+                  <tr key={workflow.uid}>
                     { Object.entries(workflow).filter(([key1, value1]) => {
                       const include = ['name', 'phase', 'startedAt', 'finishedAt', 'nodeDurationFormatted', 
                       'resourceDurationCPU', 'resourceDurationMem'];
