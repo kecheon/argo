@@ -1,5 +1,7 @@
 import * as React from 'react';
 import {Page} from 'argo-ui';
+import {Consumer} from '../../../shared/context';
+import {uiUrl} from '../../../shared/base';
 
 // argo workflows
 const iframe1 = '<iframe src="http://183.111.177.160:3000/d-solo/ix01wn1Gk/argo-workflow?orgId=1&refresh=5s&theme=light&panelId=2" width="100%" height="200" frameborder="0" />';
@@ -23,53 +25,57 @@ const Iframe = (props: { iframe: string; }) => {
 
 export default () => {
     return (
-        <Page title='Monitor' toolbar={{breadcrumbs: [{title: 'Monitor'}]}}>
-            <h3>Workflows</h3>
-            <div className='row small-12'>
-                <div className='columns small-3'>
-                    <Iframe iframe={iframe1} />
+        <Consumer>
+            {ctx => (
+                <Page title='Monitor' toolbar={{breadcrumbs: [{title: 'Monitor',path: uiUrl('workflows')}]}}>
+                    <h3>Workflows</h3>
+                    <div className='row small-12'>
+                        <div className='columns small-3'>
+                            <Iframe iframe={iframe1} />
+                        </div>
+                        <div className='columns small-3'>
+                            <Iframe iframe={iframe2} />
+                        </div>
+                        <div className='columns small-3'>
+                            <Iframe iframe={iframe3} />
+                        </div>
+                        <div className='columns small-3'>
+                            <Iframe iframe={iframe4} />
+                        </div>
+                    </div>
+                    <div className='row'>
+                        <div className='columns small-3'>
+                            <Iframe iframe={iframe5} />
+                        </div>
+                        <div className='columns small-3'>
+                            <Iframe iframe={iframe6} />
+                        </div>
+                        <div className='columns small-3'>
+                            <Iframe iframe={iframe7} />
+                        </div>
+                        <div className='columns small-3'>
+                            <Iframe iframe={iframe8} />
+                        </div>
                 </div>
-                <div className='columns small-3'>
-                    <Iframe iframe={iframe2} />
-                </div>
-                <div className='columns small-3'>
-                    <Iframe iframe={iframe3} />
-                </div>
-                <div className='columns small-3'>
-                    <Iframe iframe={iframe4} />
-                </div>
-            </div>
-            <div className='row'>
-                <div className='columns small-3'>
-                    <Iframe iframe={iframe5} />
-                </div>
-                <div className='columns small-3'>
-                    <Iframe iframe={iframe6} />
-                </div>
-                <div className='columns small-3'>
-                    <Iframe iframe={iframe7} />
-                </div>
-                <div className='columns small-3'>
-                    <Iframe iframe={iframe8} />
-                </div>
-          </div>
 
-          <h3>GPU</h3>
-            <div className='row'>
-                <div className='columns small-3'>
-                    <Iframe iframe={gpu1} />
-                </div>
-                <div className='columns small-3'>
-                    <Iframe iframe={gpu2} />
-                </div>
-                <div className='columns small-3'>
-                    <Iframe iframe={gpu3} />
-                </div>
-                <div className='columns small-3'>
-                    <Iframe iframe={gpu4} />
-                </div>
-            </div>
+                <h3>GPU</h3>
+                    <div className='row'>
+                        <div className='columns small-3'>
+                            <Iframe iframe={gpu1} />
+                        </div>
+                        <div className='columns small-3'>
+                            <Iframe iframe={gpu2} />
+                        </div>
+                        <div className='columns small-3'>
+                            <Iframe iframe={gpu3} />
+                        </div>
+                        <div className='columns small-3'>
+                            <Iframe iframe={gpu4} />
+                        </div>
+                    </div>
 
-        </Page>
+                </Page>
+            )}
+        </Consumer>
     );
 };

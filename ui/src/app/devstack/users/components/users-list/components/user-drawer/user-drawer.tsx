@@ -30,8 +30,8 @@ export class UserDrawer extends React.Component<UserDrawerProps, UserDrawerState
     
     public componentDidMount() {
         userService.getUserProfile(this.props.id).then(userProfile => {
-            console.log(userProfile.user);
-            this.setState({user: userProfile.user});
+            console.log(userProfile);
+            this.setState({user: userProfile});
         });
     }
 

@@ -28,16 +28,17 @@ export class UserService {
     // }
     public async register(userProfileData: object): Promise<any> {
         const response = await axios.post(`${endpoint}/user`, userProfileData, { headers });
-        return response.data;
-    }
-    public async getUsers(): Promise<any> {
-        const response = await axios.get(`${endpoint}/user`, { headers });
-        console.log(response);
         if (response.status === 201) {
             return { status: 'success', data: response};
         } else {
             return { status: 'fail', data: response }
         }
+    }
+    public async getUsers(): Promise<any> {
+        const response = await axios.get(`${endpoint}/user`, { headers });
+        console.log(response);
+        return response.data;
+
     }
     public async getUserProfile(id: string): Promise<any> {
         const response = await axios.get(`${endpoint}/user/${id}`, { headers })

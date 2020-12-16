@@ -213,7 +213,7 @@ export class UsersList extends BasePage<RouteComponentProps<any>, State> {
                     {
                         error: null,
                         namespace,
-                        users: usersList.users || [],
+                        users: usersList || [],
                         pagination: {offset: pagination.offset, limit: pagination.limit, nextOffset: 'wfList.metadata.continue'},
                         selectedPhases,
                         selectedLabels,
