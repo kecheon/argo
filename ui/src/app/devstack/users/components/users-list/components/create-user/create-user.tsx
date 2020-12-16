@@ -14,8 +14,8 @@ interface UserForm {
   email?: string;
   password: string;
   description?: string;
-  default_project_id: string;
-  role: string;
+  primary_namespace_id: string;
+  role_id: string;
   enabled?: boolean;
 }
 
@@ -51,8 +51,8 @@ export default () => {
           email,
           password,
           description,
-          default_project_id: project,
-          role: roleName,
+          primary_namespace_id: project,
+          role_id: roleName,
           enabled
       }
       console.log(newUser);

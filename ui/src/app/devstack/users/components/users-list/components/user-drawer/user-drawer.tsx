@@ -20,12 +20,18 @@ interface UserDrawerProps {
 
 interface UserDrawerState {
     user?: User;
+    password?: string;
+    password2?: string;
 }
 
 export class UserDrawer extends React.Component<UserDrawerProps, UserDrawerState> {
     constructor(props: UserDrawerProps) {
         super(props);
-        this.state = {};
+        this.state = {
+            user: null,
+            password: '',
+            password2: ''
+        };
     }
     
     public componentDidMount() {
@@ -53,12 +59,27 @@ export class UserDrawer extends React.Component<UserDrawerProps, UserDrawerState
             alert('User profile update failed');
         }
     }
+    public submitPasswordHandler = async (e: any) => {
+        e.preventDefault();
+        if (this.state.password !== this.state.password2) {
+            alert('Passwords are not the consistent!');
+        } else {
+            this.setState({user: {...this.state.user, password: this.state.password }})
+            const payload = this.state.user
+            payload.password = this.state.password
+            const res = await userService.updateUser(this.state.user.id, payload );
+            if (res.status === 'success') {
+                alert('Password changed');
+            } else {
+                alert('Password not changed');
+            }
+        }
+    }
     
     public render() {
         if (!this.state.user) {
             return <Loading />;
         }
-        // const {user} = this.state.userProile
         return (
             <Consumer>
                 {ctx => (
@@ -87,7 +108,7 @@ export class UserDrawer extends React.Component<UserDrawerProps, UserDrawerState
                                 </tr>
                                 <tr>
                                     <th>Primary Namespace ID</th>
-                                    <td>{this.state.user.default_project_id}</td>
+                                    <td>{this.state.user.primary_namespace_id}</td>
                                 </tr>
                                 <tr>
                                     <th>Primary Namespace Name</th>
@@ -160,6 +181,38 @@ export class UserDrawer extends React.Component<UserDrawerProps, UserDrawerState
                                 </Form.Group>
                             </div>
                         </form>
+                        <div className='workflow-drawer'>
+                            <form onSubmit={this.submitPasswordHandler}>
+                                <div className='login__form-row'>
+                                    <button className='argo-button argo-button--base' type='submit'>
+                                        <i className='fa fa-plus-circle' /> Change Password
+                                    </button>
+                                </div>
+                                <div className='argo-form-row'>
+                                    <Form.Group as={Row} controlId='formBasicUsername'>
+                                        <Form.Label column={true} sm={2}>Password*</Form.Label>
+                                        <Col sm={10}>
+                                            <Form.Control type='password' placeholder='password'
+                                                value={ this.state.password } 
+                                                onChange={(e: any) =>  this.setState({password: e.target.value})}
+                                            />
+                                        </Col>
+                                    </Form.Group>
+                                </div>
+                                <div className='argo-form-row'>
+                                    <Form.Group as={Row} controlId='formBasicEmail'>
+                                        <Form.Label column={true} sm={2}>Confirm Password</Form.Label>
+                                        <Col sm={10}>
+                                            <Form.Control type='password'
+                                                placeholder='password'
+                                                onChange={(e: any) =>  this.setState({password2: e.target.value})}
+                                                value={ this.state.password2 } />
+                                        </Col>
+                                    </Form.Group>
+                                </div>
+                                
+                            </form>
+                        </div>
                     </div>
                 )}
             </Consumer>

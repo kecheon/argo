@@ -9,7 +9,9 @@ export interface User {
   password_expires_at?: string;
   links?: {
     self: string;
-  }
+  },
+  primary_namespace_id?: string;
+  password?: string;
 }
 
 export interface Namespace {
