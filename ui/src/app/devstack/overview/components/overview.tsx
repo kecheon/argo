@@ -2,8 +2,8 @@ import { Page, Select } from 'argo-ui';
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import {uiUrl} from '../../../shared/base';
-import { Table } from 'react-bootstrap';
 require('./overview.scss');
+import { WorkflowsTable } from '../../commons/WorkflowsTable';
 
 import { NamespaceService } from '../../services/namespace-service';
 import { OverviewService } from '../../services/overview-service';
@@ -188,47 +188,7 @@ export default () => {
           </form>
           </div>
         </div>
-        { (workflowsOverview.workflows) && renderWorkflows(workflowsOverview.workflows) }
+        { (workflowsOverview.workflows) && WorkflowsTable(workflowsOverview.workflows) }
     </Page>
   )
 }
-
-const renderWorkflows = ((workflows: IWorkflow[]) => {
-  return (
-    <Table striped={true} bordered={true} hover={true} size={'sm'}>
-      <thead>
-        <tr>
-              <th className='columns small-2'>NAME</th>
-              <th className='columns small-1'>Phase</th>
-              <th className='columns small-2'>Started At</th>
-              <th className='columns small-2'>Finished At</th>
-              <th className='columns small-2'>Node Duration</th>
-              <th className='columns small-1'>CPU</th>
-              <th className='columns small-1'>Memory</th>
-        </tr>
-      </thead>
-      <tbody>
-          { workflows.map(workflow => {
-            return (
-              // tslint:disable-next-line:jsx-key
-              <tr key={workflow.uid}>
-                { Object.entries(workflow).filter(([key1, value1]) => {
-                  const include = ['name', 'phase', 'startedAt', 'finishedAt', 'nodeDurationFormatted', 
-                  'resourceDurationCPU', 'resourceDurationMem'];
-                  return include.includes(key1)
-                }).map(([key, value]) => {
-                    return (
-                      // tslint:disable-next-line:jsx-key
-                      <td key={key}>
-                        { value }
-                      </td>
-                    )
-                  })
-                }
-              </tr>
-            );
-          })}
-      </tbody>
-    </Table>
-  )
-});
