@@ -43,7 +43,6 @@ export interface IWorkflow {
   price?: number;
 }
 
-
 export default () => {
   const [namespace, setNamespace] = useState('');
   const [cluster, setCluster] = useState('');
@@ -103,9 +102,17 @@ export default () => {
 
   const clusterChangeHandler = (value: string) => {
     setCluster(value);
+    if (value === 'all') {
+      if (namespace !== '') {
+        getWorkFlowsByNamespace(namespace);
+      } else {
+        getWorkflows();
+      }
+      return
+    }
     const wfs = workflowsOverview.workflows;
     const filtered = wfs.filter((wf) => {
-      return wf.clusterName === value;
+        return wf.clusterName === value;
     })
     workflowsOverview.workflows = filtered;
     setWorkflowsOverview({...workflowsOverview});
@@ -168,45 +175,60 @@ export default () => {
                   placeholder='Select Cluster'
                   value={namespace}
                   onChange={(option) => clusterChangeHandler(option.value) } />
+                {(cluster !== '') && 
+                  <a
+                      onClick={() => {
+                          setCluster('');
+                          clusterChangeHandler('all');
+                      }}>
+                      <i className='fa fa-times-circle' /> Clear selection
+                  </a>
+                }
             </div>
           </form>
           </div>
         </div>
-        <Table striped={true} bordered={true} hover={true} size={'sm'}>
-          <thead>
-            <tr>
-                  <th className='columns small-2'>NAME</th>
-                  <th className='columns small-1'>Phase</th>
-                  <th className='columns small-2'>Started At</th>
-                  <th className='columns small-2'>Finished At</th>
-                  <th className='columns small-2'>Node Duration</th>
-                  <th className='columns small-1'>CPU</th>
-                  <th className='columns small-1'>Memory</th>
-            </tr>
-          </thead>
-          <tbody>
-              {workflowsOverview.workflows.map(workflow => {
-                return (
-                  // tslint:disable-next-line:jsx-key
-                  <tr key={workflow.id}>
-                    { Object.entries(workflow).filter(([key1, value1]) => {
-                      const include = ['name', 'phase', 'startedAt', 'finishedAt', 'nodeDurationFormatted', 
-                      'resourceDurationCPU', 'resourceDurationMem'];
-                      return include.includes(key1)
-                    }).map(([key, value]) => {
-                        return (
-                          // tslint:disable-next-line:jsx-key
-                          <td key={key}>
-                            { value }
-                          </td>
-                        )
-                      })
-                    }
-                  </tr>
-                );
-              })}
-          </tbody>
-        </Table>
+        { (workflowsOverview.workflows) && renderWorkflows(workflowsOverview.workflows) }
     </Page>
   )
 }
+
+const renderWorkflows = ((workflows: IWorkflow[]) => {
+  return (
+    <Table striped={true} bordered={true} hover={true} size={'sm'}>
+      <thead>
+        <tr>
+              <th className='columns small-2'>NAME</th>
+              <th className='columns small-1'>Phase</th>
+              <th className='columns small-2'>Started At</th>
+              <th className='columns small-2'>Finished At</th>
+              <th className='columns small-2'>Node Duration</th>
+              <th className='columns small-1'>CPU</th>
+              <th className='columns small-1'>Memory</th>
+        </tr>
+      </thead>
+      <tbody>
+          { workflows.map(workflow => {
+            return (
+              // tslint:disable-next-line:jsx-key
+              <tr key={workflow.uid}>
+                { Object.entries(workflow).filter(([key1, value1]) => {
+                  const include = ['name', 'phase', 'startedAt', 'finishedAt', 'nodeDurationFormatted', 
+                  'resourceDurationCPU', 'resourceDurationMem'];
+                  return include.includes(key1)
+                }).map(([key, value]) => {
+                    return (
+                      // tslint:disable-next-line:jsx-key
+                      <td key={key}>
+                        { value }
+                      </td>
+                    )
+                  })
+                }
+              </tr>
+            );
+          })}
+      </tbody>
+    </Table>
+  )
+});
