@@ -49,6 +49,9 @@ export class NamespaceDrawer extends React.Component<NamespaceDrawerProps, Names
         this.state = {};
     }
 
+    public cancelDrawer() {
+        console.log('cancel');
+    }
     public componentDidMount() {
         namespaceService.getProfile(this.props.id).then(namespace=> {
             const flatten = Object.assign(
@@ -169,9 +172,9 @@ export class NamespaceDrawer extends React.Component<NamespaceDrawerProps, Names
                                 <button className='argo-button argo-button--base' type='submit'>
                                     <i className='fa fa-plus-circle' /> Submit
                                 </button>
-                                <button className='argo-button argo-button--base' type='button' onClick={() => ctx.navigation.goto('.', {new: null})}>
+                                {/* <button className='argo-button argo-button--base' type='button' onClick={this.cancelDrawer}>
                                     <i className='fa fa-times-circle' /> Cancel
-                                </button>
+                                </button> */}
                             </div>
                             <div className='argo-form-row'>
                                 <Form.Group as={Row} controlId='formBasicName'>
