@@ -8,36 +8,35 @@ import { Row } from 'react-bootstrap';
 
 export interface NamespaceForm {
   name: string;
-  member?: {
-      userId: string;
-      role: string;
-  };
+//   member?: {
+//       userId: string;
+//       role: string;
+//   };
   quota?: {
       cpu: number,
       memory: number
   },
   enabled?: boolean;
+  description?: string;
 } 
 
 export default () => {
   const [name, setName] = useState('');
-  const [userId, setUserId] = useState('');
-  const [role, setRole] = useState('');
   const [enabled, setEnabled] = useState(false);
   const [description, setDescription] = useState('');
   const [cpu, setCpu] = useState(0);
   const [memory, setMemory] = useState(0);
-  // const [user, setUser] = useState();
   const service = new NamespaceService();
   const handleSubmit = async (e: any) => {
       e.preventDefault();
       const newNamespace: NamespaceForm = {
           name,
-          member: {
-              userId,
-              role
-          },
           enabled,
+          quota: {
+              cpu,
+              memory
+          },
+          description
       }
       const result = await service.create(newNamespace);
       if (result.status === 'success') {
@@ -46,15 +45,7 @@ export default () => {
           alert(`Namespace create Error ${name}`);
       }
   }
-//   const options: any = [
-//       {title: 'dummy user1', value: 'admin'},
-//       {title: 'dummy user2', value: 'executor'},
-//       {title: 'dummy user3', value: 'viewer'},
-//   ];
-//   const options2: any = [
-//     {title: 'testuser', value: 'admin'},
-//     {title: 'example2', value: 'viewer'}
-//   ];
+
   return (
     <Consumer>
         {ctx => (
@@ -118,10 +109,14 @@ export default () => {
                 <div className='argo-form-row'>
                     <Form.Group as={Row} controlId='formBasicEnabled'>
                         <Form.Label column={true} sm={2}>Enabled</Form.Label>
-                        <Col sm={2}>
-                            <Form.Check inline={true} type={'checkbox'}
-                                onChange={(e: { target: { value: React.SetStateAction<boolean>; }; }) => setEnabled(e.target.value)}/>
-                        </Col>
+                        <Form.Check inline={true} type={'checkbox'}
+                            defaultChecked={enabled}
+                            value={enabled}
+                            onChange={(e: { target: { value: React.SetStateAction<boolean>, checked: any }; }) => 
+                                {
+                                    setEnabled(e.target.checked)
+                                }
+                            }/>
                     </Form.Group>
                 </div>
                 <div className='argo-form-row'>

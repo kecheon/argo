@@ -8,31 +8,22 @@ import { Row, Col } from 'react-bootstrap';
 
 interface ClusterForm {
   name: string;
-//   domain_id: string;
   description: string;
   enabled: boolean;
-//   parent_id: string;
-//   is_domain: boolean;
 }
 
 
 export default () => {
   const [name, setName] = useState('');
-//   const [domain_id, setDomainId] = useState('');
   const [description, setDescription] = useState('');
   const [enabled, setEnabled] = useState(false);
-//   const [parent_id, setParentId] = useState('');
-//   const [is_domain, setIsDomain] = useState(false);
   const service = new ClusterService();
   const handleSubmit = async (e: any) => {
       e.preventDefault();
       const newCluster: ClusterForm = {
           name,
-        //   domain_id,
           description,
           enabled,
-        //   parent_id,
-        //   is_domain
       }
       const result = await service.create(newCluster);
       if (result.status === 'success') {
@@ -78,7 +69,13 @@ export default () => {
                         <Form.Label column={true} sm={2}>Enabled</Form.Label>
                         <Col sm={2}>
                             <Form.Check inline={true} type={'checkbox'}
-                                onChange={(e: { target: { value: React.SetStateAction<boolean>; }; }) => setEnabled(e.target.value)}/>
+                                defaultChecked={enabled}
+                                value={enabled}
+                                onChange={(e: { target: { value: React.SetStateAction<boolean>, checked: any }; }) => 
+                                    {
+                                        setEnabled(e.target.checked)
+                                    }
+                                }/>
                         </Col>
                     </Form.Group>
                 </div>
