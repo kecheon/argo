@@ -2,13 +2,11 @@ import * as React from 'react';
 import {RouteComponentProps} from 'react-router-dom';
 import {Subscription} from 'rxjs';
 
-// import {Autocomplete, Page, SlidingPanel} from 'argo-ui';
 import {Page, SlidingPanel} from 'argo-ui';
 // import * as models from '../../../../../models';
 import {labels, Workflow} from '../../../../../models';
 import {uiUrl} from '../../../../shared/base';
 import {Consumer} from '../../../../shared/context';
-// import {services} from '../../../../shared/services';
 
 import {BasePage} from '../../../../shared/components/base-page';
 import {Loading} from '../../../../shared/components/loading';
@@ -21,10 +19,9 @@ import * as Actions from './components/user-operations-map';
 import {CostOptimisationNudge} from '../../../../shared/components/cost-optimisation-nudge';
 import {ErrorNotice} from '../../../../shared/components/error-notice';
 import {PaginationPanel} from '../../../../shared/components/pagination-panel';
-// import {ResourceEditor} from '../../../../shared/components/resource-editor/resource-editor';
 import {Pagination, parseLimit} from '../../../../shared/pagination';
 // import {WorkflowFilters} from '../workflow-filters/workflow-filters';
-import {WorkflowsRow} from './components/workflows-row/workflows-row';
+import {NamespacesRow} from './components/namespaces-row/namespaces-row';
 import {WorkflowsToolbar} from './components/workflows-toolbar/workflows-toolbar';
 
 import CreateNamespace from './components/create-namespace/create-namespace';
@@ -122,7 +119,7 @@ export class UsersNamespaces extends BasePage<RouteComponentProps<any>, State> {
 
     public componentDidMount(): void {
         this.setState({selectedWorkflows: new Map<string, Namespace>()}, () => {
-            this.reloadWorkflows();
+            this.reloadNamespaces();
         });
     }
 
@@ -202,7 +199,7 @@ export class UsersNamespaces extends BasePage<RouteComponentProps<any>, State> {
         );
     }
 
-    private reloadWorkflows() {
+    private reloadNamespaces() {
         this.fetchNamespaces(this.state.namespace, this.state.selectedPhases, this.state.selectedLabels, this.state.pagination);
     }
 
@@ -255,7 +252,7 @@ export class UsersNamespaces extends BasePage<RouteComponentProps<any>, State> {
 
     private renderNamespaces() {
         if (this.state.error) {
-            return <ErrorNotice error={this.state.error} onReload={() => this.reloadWorkflows()} reloadAfterSeconds={10} />;
+            return <ErrorNotice error={this.state.error} onReload={() => this.reloadNamespaces()} reloadAfterSeconds={10} />;
         }
         if (!this.state.namespaces) {
             return <Loading />;
@@ -291,7 +288,7 @@ export class UsersNamespaces extends BasePage<RouteComponentProps<any>, State> {
                     </div>
                     {this.state.namespaces.map(namespace => {
                         return (
-                            <WorkflowsRow
+                            <NamespacesRow
                                 namespace={namespace}
                                 key={namespace.id}
                                 checked={this.state.selectedWorkflows.has(namespace.id)}

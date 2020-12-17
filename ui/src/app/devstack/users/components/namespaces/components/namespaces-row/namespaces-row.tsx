@@ -22,7 +22,7 @@ interface WorkflowRowState {
     hideDrawer: boolean;
 }
 
-export class WorkflowsRow extends React.Component<WorkflowsRowProps, WorkflowRowState> {
+export class NamespacesRow extends React.Component<WorkflowsRowProps, WorkflowRowState> {
     constructor(props: WorkflowsRowProps) {
         super(props);
         this.state = {

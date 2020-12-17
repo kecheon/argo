@@ -8,16 +8,20 @@ import { Row } from 'react-bootstrap';
 
 export interface NamespaceForm {
   name: string;
-//   member?: {
-//       userId: string;
-//       role: string;
-//   };
+  member?: {
+      userId: string;
+      role: string;
+  };
   quota?: {
       cpu: number,
       memory: number
   },
   enabled?: boolean;
   description?: string;
+  domain_id?: string;
+  id?: string;
+  k8s_ns?: string;
+  parent_id?: string;
 } 
 
 export default () => {

@@ -61,6 +61,20 @@ export class NamespaceDrawer extends React.Component<NamespaceDrawerProps, Names
         })
     }
 
+    public submitHandler = async (e: any) => {
+        e.preventDefault();
+        console.log(this.state.namespace);
+
+        /******  update payload에 싣기 위해서 NamespaceForm type을 맞춰서 보낸다. *****/
+
+        // const res = await namespaceService.update(this.state.namespace);
+        // if (res.status === 'success') {
+        //     alert('Namespace updated');
+        // } else {
+        //     alert('Namespace update failed')
+        // }
+    }
+
     public render() {
         if (!this.state.namespace) {
             return <Loading />;
@@ -112,7 +126,7 @@ export class NamespaceDrawer extends React.Component<NamespaceDrawerProps, Names
                                 </tr>
                             </tbody>
                         </table>
-                        <form>
+                        <form onSubmit={this.submitHandler}>
                             <div className='login__form-row'>
                                 <button className='argo-button argo-button--base' type='submit'>
                                     <i className='fa fa-plus-circle' /> Submit
