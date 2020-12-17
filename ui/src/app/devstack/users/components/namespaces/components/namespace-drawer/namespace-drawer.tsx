@@ -4,6 +4,8 @@ import { Namespace } from '../../../models';
 import {NamespaceService} from '../../../../../services/namespace-service';
 import {Consumer} from '../../../../../../shared/context';
 import { Form, Row, Col } from 'react-bootstrap';
+// import {MultiSelect} from './multiselector';
+import Select from 'react-select';
 
 require('./workflow-drawer.scss');
 
@@ -24,7 +26,22 @@ interface NamespaceDrawerProps {
 
 interface NamespaceDrawerState {
     namespace?: Namespace;
+    // userOptions?: any[];
+    selectedUsers?: any[];
+    selectedRole?: any[];
+    selected?: string;
 }
+
+const userOptions = [
+    {label: 'user1', value: 'user1'},
+    {label: 'user2', value: 'user2'},
+    {label: 'user3', value: 'user3'},
+ ];
+ const roleOptions = [
+     { label: 'wf-app-admin', value: 'wf-app-admin' },
+     { label: 'executor', value: 'executor' },
+     { label: 'viewer', value: 'viewer'}
+ ]
 
 export class NamespaceDrawer extends React.Component<NamespaceDrawerProps, NamespaceDrawerState> {
     constructor(props: NamespaceDrawerProps) {
@@ -49,6 +66,13 @@ export class NamespaceDrawer extends React.Component<NamespaceDrawerProps, Names
             console.log(flatten);
             this.setState({namespace: flatten});
         });
+        // this.setState({userOptions: [
+        //     {label: 'user1', value: 'user1'},
+        //     {label: 'user2', value: 'user2'},
+        //     {label: 'user3', value: 'user3'},
+        //  ]})
+        this.setState({selectedUsers: []})
+        this.setState({selectedRole: []})
     }
 
     public changeHandler = (key: string) => (e: any) => {
@@ -59,6 +83,20 @@ export class NamespaceDrawer extends React.Component<NamespaceDrawerProps, Names
                 [key]: e.target.value
             }
         })
+    }
+    
+    public selectHandler = (selectedOption: any) => {
+        console.log(selectedOption);
+        const selected = this.state.selectedUsers.concat(selectedOption.value);
+        // this.setState({selectedUsers: selected})
+        this.setState(
+            { selectedUsers: [...this.state.selectedUsers, selectedOption.value] }
+        );
+        this.setState(
+            { selected: selected + ', ' + selectedOption.value }
+        );
+        // this.setState({ selectedUsers: selected });
+        console.log(this.state.selectedUsers);
     }
 
     public submitHandler = async (e: any) => {
@@ -150,11 +188,9 @@ export class NamespaceDrawer extends React.Component<NamespaceDrawerProps, Names
                                 <Form.Group as={Row} controlId='formBasicUserId'>
                                     <Form.Label column={true} sm={2}>Member</Form.Label>
                                     <Col sm={10}>
-                                        <Form.Control as="select">
-                                            <option>dummy user 1</option>
-                                            <option>dummy user 2</option>
-                                            <option>dummy user 3</option>
-                                        </Form.Control>
+                                        <Select options={userOptions}
+                                            isMulti={true}
+                                            onChange={this.selectHandler} />
                                     </Col>
                                 </Form.Group>
                             </div>
@@ -162,11 +198,8 @@ export class NamespaceDrawer extends React.Component<NamespaceDrawerProps, Names
                                 <Form.Group as={Row} controlId='formBasicRole'>
                                     <Form.Label column={true} sm={2}>Role</Form.Label>
                                     <Col sm={10}>
-                                        <Form.Control as="select">
-                                            <option>App admin</option>
-                                            <option>Executor</option>
-                                            <option>Viewer</option>
-                                        </Form.Control>
+                                        <Select options={roleOptions}
+                                            onChange={this.selectHandler} />
                                     </Col>
                                 </Form.Group>
                             </div>
