@@ -95,14 +95,22 @@ export default () => {
   }, [])
 
   const changeHandler = (value: string) => {
-    setNamespace(value);
-    getOverviewByNamespace(value);
-    getWorkFlowsByNamespace(value);
+    if (value === 'all') {
+      setNamespace('');
+      getWorkflows();
+    } else if (value === '') {
+      setNamespace(value);
+      getWorkflows();
+    } else {
+      setNamespace(value);
+      getOverviewByNamespace(value);
+      getWorkFlowsByNamespace(value);
+    }
   }
 
   const clusterChangeHandler = (value: string) => {
-    setCluster(value);
     if (value === 'all') {
+      setCluster('');
       if (namespace !== '') {
         getWorkFlowsByNamespace(namespace);
       } else {
@@ -110,6 +118,7 @@ export default () => {
       }
       return
     }
+    setCluster(value);
     const wfs = workflowsOverview.workflows;
     const filtered = wfs.filter((wf) => {
         return wf.clusterName === value;
@@ -129,6 +138,15 @@ export default () => {
                   placeholder='Select Namespace'
                   value={namespace}
                   onChange={(option) => changeHandler(option.value) } />
+                 {(namespace !== '') && 
+                  <a
+                      onClick={() => {
+                          setNamespace('');
+                          changeHandler('all');
+                      }}>
+                      <i className='fa fa-times-circle' /> Clear selection
+                  </a>
+                }
             </div>
           </form>
           </div>
@@ -173,9 +191,9 @@ export default () => {
             <div className='argo-form-row'>
                 <Select options={clusterOptions}
                   placeholder='Select Cluster'
-                  value={namespace}
+                  value={cluster}
                   onChange={(option) => clusterChangeHandler(option.value) } />
-                {(cluster !== '') && 
+                {(cluster !== '')  && 
                   <a
                       onClick={() => {
                           setCluster('');
