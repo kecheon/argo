@@ -1,8 +1,8 @@
-import {Workflow} from '../../../../../../models';
-import {UserService} from '../../../../services/user-service';
+import {NamespaceService} from '../../../../services/namespace-service';
+import { Namespace } from '../../models';
 // import {Utils} from '../../../shared/utils';
 
-const service = new UserService();
+const service = new NamespaceService();
 
 export type OperationDisabled = {
     [action in WorkflowOperationName]: boolean;
@@ -14,10 +14,10 @@ export interface WorkflowOperation {
     title: WorkflowOperationName;
     action: WorkflowOperationAction;
     iconClassName: string;
-    disabled: (wf: Workflow) => boolean;
+    disabled: (wf: Namespace) => boolean;
 }
 
-export type WorkflowOperationAction = (wf: Workflow) => Promise<any>;
+export type WorkflowOperationAction = (wf: Namespace) => Promise<any>;
 
 export interface WorkflowOperations {
     [name: string]: WorkflowOperation;
@@ -67,6 +67,6 @@ export const WorkflowOperationsMap: WorkflowOperations = {
         title: 'DELETE',
         iconClassName: 'fa fa-trash',
         disabled: () => false,
-        action: (wf: Workflow) => service.deleteUser('user id')
+        action: (wf: Namespace) => service.delete('namespace id')
     }
 };

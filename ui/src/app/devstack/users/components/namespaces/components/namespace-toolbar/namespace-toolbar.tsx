@@ -1,11 +1,10 @@
 import {NotificationType} from 'argo-ui';
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
-// import {Workflow} from '../../../../../models';
 import {Namespace} from '../../../models';
 import {AppContext, Consumer} from '../../../../../../shared/context';
-import * as Actions from '../user-operations-map';
-import {WorkflowOperation, WorkflowOperationAction} from '../../../../../../shared/workflow-operations-map';
+import * as Actions from '../namespaces-operations-map';
+import {WorkflowOperation, WorkflowOperationAction} from '../namespaces-operations-map';
 
 require('./workflows-toolbar.scss');
 
@@ -58,15 +57,15 @@ export class WorkflowsToolbar extends React.Component<WorkflowsToolbarProps, {}>
         }
         const promises: Promise<any>[] = [];
         this.props.selectedWorkflows.forEach((wf: Namespace) => {
-            // promises.push(
-            //     action(wf).catch(() => {
-            //         this.props.loadWorkflows();
-            //         this.appContext.apis.notifications.show({
-            //             content: `Unable to ${title} workflow`,
-            //             type: NotificationType.Error
-            //         });
-            //     })
-            // );
+            promises.push(
+                action(wf).catch(() => {
+                    this.props.loadWorkflows();
+                    this.appContext.apis.notifications.show({
+                        content: `Unable to ${title} namespace`,
+                        type: NotificationType.Error
+                    });
+                })
+            );
             console.log(wf);
         });
         return Promise.all(promises);
@@ -87,7 +86,7 @@ export class WorkflowsToolbar extends React.Component<WorkflowsToolbarProps, {}>
                     return this.performActionOnSelectedWorkflows(ctx, action.title, action.action).then(() => {
                         this.props.clearSelection();
                         this.appContext.apis.notifications.show({
-                            content: `Performed '${action.title}' on selected workflows.`,
+                            content: `Performed '${action.title}' on selected namespace.`,
                             type: NotificationType.Success
                         });
                         this.props.loadWorkflows();

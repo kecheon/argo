@@ -14,7 +14,7 @@ import {Loading} from '../../../../shared/components/loading';
 import {ZeroState} from '../../../../shared/components/zero-state';
 // import {exampleWorkflow} from '../../../../shared/examples';
 import {Utils} from '../../../../shared/utils';
-import * as Actions from './components/user-operations-map';
+import * as Actions from './components/namespaces-operations-map';
 
 import {CostOptimisationNudge} from '../../../../shared/components/cost-optimisation-nudge';
 import {ErrorNotice} from '../../../../shared/components/error-notice';
@@ -22,7 +22,7 @@ import {PaginationPanel} from '../../../../shared/components/pagination-panel';
 import {Pagination, parseLimit} from '../../../../shared/pagination';
 // import {WorkflowFilters} from '../workflow-filters/workflow-filters';
 import {NamespacesRow} from './components/namespaces-row/namespaces-row';
-import {WorkflowsToolbar} from './components/workflows-toolbar/workflows-toolbar';
+import {WorkflowsToolbar} from './components/namespace-toolbar/namespace-toolbar';
 
 import CreateNamespace from './components/create-namespace/create-namespace';
 import { NamespaceService } from '../../../services/namespace-service';
