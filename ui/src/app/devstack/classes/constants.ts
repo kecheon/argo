@@ -16,7 +16,8 @@ const monitorUrl = uiUrl('monitor');
 const meteringUrl = uiUrl('metering');
 
 const isProd = process.env.NODE_ENV === 'production';
-export const endpoint = isProd ? 'https://argo.innog2b.com' : 'http://localhost:3000';
+// export const endpoint = isProd ? 'https://argo.innog2b.com' : 'http://localhost:3000';
+export const endpoint = 'http://localhost:3000';
 
 export const navItems = {
   loggedInUser: [

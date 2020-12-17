@@ -11,7 +11,7 @@ const superagentPromise = require('superagent-promise');
 
 const auth = (req: SuperAgentRequest) => {
     // const cookie = Cookies.get('argo_cookie');
-    req.set('Authorization', `Bearer ${accessToken}`);
+    // req.set('Authorization', `Bearer ${accessToken}`);
     // req.set('Authorization', argoToken);
     // req.set('Cookie', `argo_cookie=${cookie}`);
     return req.on('error', handle);
