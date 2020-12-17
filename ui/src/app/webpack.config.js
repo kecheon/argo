@@ -7,8 +7,8 @@ const webpack = require("webpack");
 const path = require("path");
 
 const isProd = process.env.NODE_ENV === "production";
-const END_POINT = 'http://localhost:3000';
-// const END_POINT = isProd ? 'https://argo.innog2b.com' : 'http://localhost:3000';
+// const END_POINT = 'http://localhost:3000';
+const END_POINT = isProd ? 'https://argo.innog2b.com' : 'http://localhost:3000';
 
 const config = {
   mode: isProd ? "production" : "development",
