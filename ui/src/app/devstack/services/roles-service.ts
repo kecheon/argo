@@ -2,10 +2,13 @@ import axios from 'axios';
 // import { Role } from '../users/components/models';
 import {endpoint} from '../../devstack/classes/constants';
 // const keystoneEndPoint = 'http://183.111.177.141/identity/v3';
-
+const accessToken = localStorage.getItem('accessToken');
+const headers = {
+   Authorization: `Bearer ${accessToken}` 
+}
 export class RolesService {
     public async get(): Promise<any> {
-      const response = axios.get(`${endpoint}/role`)
+      const response = await axios.get(`${endpoint}/role`, { headers })
       const roles = { 'roles': [
         {
           'is_wf': true,
@@ -68,6 +71,7 @@ export class RolesService {
         'previous': ''
         }
       };
-      return roles;
+      console.log(response);
+      return response.data;
   };
 }

@@ -203,11 +203,11 @@ export class UsersRoles extends BasePage<RouteComponentProps<any>, State> {
         }
         rolesService
             .get()
-            .then((namespacesList: any) => {
+            .then((roles: any) => {
                 this.setState(
                     {
                         error: null,
-                        roles: namespacesList.roles || [],
+                        roles: roles || [],
                         pagination: {offset: pagination.offset, limit: pagination.limit, nextOffset: 'wfList.metadata.continue'},
                         selectedPhases,
                         selectedLabels,
@@ -215,7 +215,7 @@ export class UsersRoles extends BasePage<RouteComponentProps<any>, State> {
                     },
                     this.saveHistory
                 );
-                return namespacesList;
+                return roles;
             })
             .then((_: any) => this.setState({error: null}))
             .catch((error: any) => this.setState({error}));
