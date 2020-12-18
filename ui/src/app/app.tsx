@@ -191,27 +191,27 @@ export class App extends React.Component<{}, {version?: Version; popupProps: Pop
                                         </Route>
                                     )}
                                     <Route path={workflowsUrl} component={this.currentUser.isLoggedIn ? workflows.component : login.component} />
-                                    <Route path={workflowTemplatesUrl} component={workflowTemplates.component} />
-                                    <Route path={clusterWorkflowTemplatesUrl} component={clusterWorkflowTemplates.component} />
-                                    <Route path={cronWorkflowsUrl} component={cronWorkflows.component} />
-                                    <Route path={archivedWorkflowsUrl} component={archivedWorkflows.component} />
-                                    <Route path={reportsUrl} component={reports.component} />
+                                    <Route path={workflowTemplatesUrl} component={this.currentUser.isLoggedIn ? workflowTemplates.component : login.component} />
+                                    <Route path={clusterWorkflowTemplatesUrl} component={this.currentUser.isLoggedIn ? clusterWorkflowTemplates.component : login.component} />
+                                    <Route path={cronWorkflowsUrl} component={this.currentUser.isLoggedIn ? cronWorkflows.component : login.component} />
+                                    <Route path={archivedWorkflowsUrl} component={this.currentUser.isLoggedIn ? archivedWorkflows.component : login.component} />
+                                    <Route path={reportsUrl} component={this.currentUser.isLoggedIn ? reports.component : login.component} />
                                     <Route exact={true} strict={true} path={helpUrl} component={help.component} />
                                     <Route exact={true} strict={true} path={apiDocsUrl} component={apidocs.component} />
-                                    <Route exact={true} strict={true} path={userInfoUrl} component={userinfo.component} />
+                                    <Route exact={true} strict={true} path={userInfoUrl} component={this.currentUser.isLoggedIn ? userinfo.component : login.component} />
                                     <Route exact={true} strict={true} path={loginUrl} component={login.component} />
                                     <Route exact={true} strict={true} path={registerUrl} component={register.component} />
                                     <Route exact={true} strict={true} path={logoutUrl} component={logout.component} />
-                                    <Route exact={true} strict={true} path={usersNamespacesUrl} component={UsersNamespaces} />
-                                    <Route exact={true} strict={true} path={usersListUrl} component={UsersList} />
-                                    <Route exact={true} strict={true} path={usersRolesUrl} component={UsersRoles} />
-                                    <Route exact={true} strict={true} path={usersClusterUrl} component={ClustersList} />
-                                    <Route exact={true} strict={true} path={usersTenantUrl} component={TenantsList} />
-                                    <Route exact={true} strict={true} path={usersUrl} component={users.component} />
-                                    <Route exact={true} strict={true} path={overviewUrl} component={overview.component} />
-                                    <Route exact={true} strict={true} path={metricUrl} component={metric.component} />
-                                    <Route exact={true} strict={true} path={monitorUrl} component={monitor.component} />
-                                    <Route exact={true} strict={true} path={meteringUrl} component={metering.component} />
+                                    <Route exact={true} strict={true} path={usersNamespacesUrl} component={this.currentUser.isLoggedIn ? UsersNamespaces : login.component} />
+                                    <Route exact={true} strict={true} path={usersListUrl} component={this.currentUser.isLoggedIn ? UsersList : login.component } />
+                                    <Route exact={true} strict={true} path={usersRolesUrl} component={this.currentUser.isLoggedIn ? UsersRoles : login.component} />
+                                    <Route exact={true} strict={true} path={usersClusterUrl} component={this.currentUser.isLoggedIn ? ClustersList : login.component } />
+                                    <Route exact={true} strict={true} path={usersTenantUrl} component={this.currentUser.isLoggedIn ? TenantsList : login.component} />
+                                    <Route exact={true} strict={true} path={usersUrl} component={this.currentUser.isLoggedIn ? users.component : login.component} />
+                                    <Route exact={true} strict={true} path={overviewUrl} component={this.currentUser.isLoggedIn ? overview.component : login.component} />
+                                    <Route exact={true} strict={true} path={metricUrl} component={this.currentUser.isLoggedIn ? metric.component : login.component} />
+                                    <Route exact={true} strict={true} path={monitorUrl} component={this.currentUser.isLoggedIn ? monitor.component : login.component} />
+                                    <Route exact={true} strict={true} path={meteringUrl} component={this.currentUser.isLoggedIn ? metering.component: login.component} />
                                 </Switch>
                             </ErrorBoundary>
                         </Layout>
