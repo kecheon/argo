@@ -109,7 +109,6 @@ export class ArchivedWorkflowList extends BasePage<RouteComponentProps<any>, Sta
     }
 
     private changeFilters(namespace: string, cluster: string, selectedPhases: string[], selectedLabels: string[], minStartedAt: Date, maxStartedAt: Date, pagination: Pagination) {
-        console.log(namespace);
         this.fetchArchivedWorkflows(namespace, selectedPhases, selectedLabels, minStartedAt, maxStartedAt, pagination);
     }
 
