@@ -29,12 +29,12 @@ export default () => {
     const today = new Date()
     const defaultFrom = {
         year: today.getFullYear(),
-        month: today.getMonth() + 1,
+        month: today.getMonth(),
         day: today.getDate() - 7
     }
     const defaultTo ={
         year: today.getFullYear(),
-        month: today.getMonth() + 1,
+        month: today.getMonth(),
         day: today.getDate()
     }
     const defaultRange = {
@@ -47,7 +47,6 @@ export default () => {
     
     const getWorkflows = (startDate: string, endDate: string) => {
         meteringService.get(startDate, endDate).then((workflowsData: any) => {
-          console.log(workflowsData);
           setWorkflows(workflowsData);
         });
     };
@@ -59,7 +58,7 @@ export default () => {
         clusterService.get().then(clusters => {
             setClusterOptions(clusters.map((item: { name: string }) => item.name));
         });
-        const start = (new Date(dayRange.from.year, dayRange.from.month, dayRange.from.day - 7)).toISOString();
+        const start = (new Date(dayRange.from.year, dayRange.from.month, dayRange.from.day)).toISOString();
         const end = (new Date(dayRange.to.year, dayRange.to.month, dayRange.to.day)).toISOString();
         getWorkflows(start, end);
     }, [])
@@ -94,17 +93,41 @@ export default () => {
 
   const clickHandler = () => {
       console.log(dayRange);
-      const startDate = (new Date(dayRange.from.year, dayRange.from.month, dayRange.from.day)).toISOString();
-      const endDate = (new Date(dayRange.to.year, dayRange.to.month, dayRange.to.day)).toISOString();
+      const startDate = (new Date(dayRange.from.year, dayRange.from.month - 1, dayRange.from.day)).toISOString();
+      const endDate = (new Date(dayRange.to.year, dayRange.to.month - 1, dayRange.to.day)).toISOString();
+      console.log(startDate, endDate);
       getWorkflows(startDate, endDate);
   }
+
+  // const [selectedDay, setSelectedDay] = useState(null);
+  const renderCustomInput = (ref: any) => (
+    <input
+      size={30}
+      readOnly={true}
+      ref={ref.ref} // necessary
+      placeholder='Select range'
+      value={ (dayRange.from && dayRange.to) ? new Date(dayRange.from.year, dayRange.from.month, dayRange.from.day).toLocaleDateString() 
+        + '~' +  new Date(dayRange.to.year, dayRange.to.month, dayRange.to.day).toLocaleDateString() : ''
+      }
+      style={{
+        textAlign: 'center',
+        border: '1px solid #9c88ff',
+        boxShadow: '0 1.5rem 2rem rgba(156, 136, 255, 0.2)',
+        color: '#9c88ff',
+        outline: 'none',
+      }}
+      className='my-custom-input-class' // a styling class
+    />
+  )
 
   return (
     <Page title='Metering'>
         <div className='row'>
-          <div className='columns small-4'>
+          <div className='columns small-6'>
               <br/><br/>
-                <DatePicker value={dayRange} onChange={setDayRange} />
+                <DatePicker value={dayRange} 
+                  renderInput={renderCustomInput}
+                  onChange={setDayRange} />
                 <button className='argo-button argo-button--base argo-button--sm'  onClick={clickHandler}>Go</button>
                 {/* <DatePicker
                     selected={this.props.maxStartedAt}
@@ -117,7 +140,7 @@ export default () => {
                     className='argo-field argo-textarea'
                 /> */}
           </div>
-          <div className='columns small-4'>
+          <div className='columns small-3'>
             <form>
                 <div className='argo-form-row'>
                     <Select options={options}
@@ -136,7 +159,7 @@ export default () => {
                 </div>
             </form>
           </div>
-          <div className='columns small-4'>
+          <div className='columns small-3'>
             <form>
                 <div className='argo-form-row'>
                     <Select options={clusterOptions}
@@ -181,7 +204,7 @@ export default () => {
                     }).map(([key, value]) => {
                         return (
                           // tslint:disable-next-line:jsx-key
-                          <td>
+                          <td key={key}>
                             { value }
                           </td>
                         )

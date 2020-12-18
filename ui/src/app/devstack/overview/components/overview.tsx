@@ -44,8 +44,8 @@ export interface IWorkflow {
 }
 
 export default () => {
-  const [namespace, setNamespace] = useState('');
-  const [cluster, setCluster] = useState('');
+  const [namespace, setNamespace] = useState('all');
+  const [cluster, setCluster] = useState('all');
   const [options, setOptions] = useState([]);
   const [clusterOptions, setClusterOptions] = useState([]);
   const [overview, setOverview] = useState({
@@ -116,7 +116,7 @@ export default () => {
       } else {
         getWorkflows();
       }
-      return
+      return;
     }
     setCluster(value);
     const wfs = workflowsOverview.workflows;
@@ -138,7 +138,7 @@ export default () => {
                   placeholder='Select Namespace'
                   value={namespace}
                   onChange={(option) => changeHandler(option.value) } />
-                 {(namespace !== '') && 
+                 {(!(namespace === '' || namespace === 'all')) && 
                   <a
                       onClick={() => {
                           setNamespace('');
@@ -193,7 +193,7 @@ export default () => {
                   placeholder='Select Cluster'
                   value={cluster}
                   onChange={(option) => clusterChangeHandler(option.value) } />
-                {(cluster !== '')  && 
+                {(!(cluster === '' || cluster === 'all')) && 
                   <a
                       onClick={() => {
                           setCluster('');
