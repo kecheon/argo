@@ -209,6 +209,7 @@ export class UsersList extends BasePage<RouteComponentProps<any>, State> {
         userService
             .getUsers()
             .then(usersList => {
+                console.log(usersList);
                 this.setState(
                     {
                         error: null,
@@ -281,9 +282,7 @@ export class UsersList extends BasePage<RouteComponentProps<any>, State> {
                             <div className='columns small-2'>DESCRIPTION</div>
                             <div className='columns small-2'>EMAIL</div>
                             <div className='columns small-2'>USER ID</div>
-                            <div className='columns small-1'>ENABLED</div>
-                            <div className='columns small-2'>DOMAIN NAME</div>
-                            <div className='columns small-1'>DETAILS</div>
+                            <div className='columns small-2'>DETAILS</div>
                         </div>
                     </div>
                     {this.state.users.map(user => {
