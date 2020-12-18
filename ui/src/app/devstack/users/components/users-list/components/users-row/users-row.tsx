@@ -42,12 +42,10 @@ export class UsersRow extends React.Component<UsersRowProps, UserRowState> {
                     </div>
                     <div className='row small-11'>
                         <div className='columns small-2'>{wf.name}</div>
-                        <div className='columns small-2'>Description</div>
+                        <div className='columns small-2'>{wf.description}</div>
                         <div className='columns small-2'>{wf.email}</div>
                         <div className='columns small-2'>{wf.id}</div>
-                        <div className='columns small-1'>{wf.enabled ? 'Yes' : 'No'}</div>
-                        <div className='columns small-2'>{wf.domain_id}</div>
-                        <div className='columns small-1'>
+                        <div className='columns small-2'>
                             <div className='workflows-list__labels-container'>
                                 <div
                                     onClick={e => {

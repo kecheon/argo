@@ -30,6 +30,7 @@ interface NamespaceDrawerState {
     selectedUsers?: any[];
     selectedRole?: any[];
     selected?: string;
+    isSelected?: any;
 }
 
 const userOptions = [
@@ -46,7 +47,12 @@ const userOptions = [
 export class NamespaceDrawer extends React.Component<NamespaceDrawerProps, NamespaceDrawerState> {
     constructor(props: NamespaceDrawerProps) {
         super(props);
-        this.state = {};
+        this.state = {
+            isSelected: {
+                userId: '',
+                selected: false,
+            }
+        };
     }
 
     public cancelDrawer() {
@@ -87,19 +93,24 @@ export class NamespaceDrawer extends React.Component<NamespaceDrawerProps, Names
             }
         })
     }
+
+    public selectRoleHandler = (selectedRole: any) => {
+        console.log(this.state.selectedUsers);
+        this.setState({isSelected: { userId: 'user id', selected: false }});
+    };
     
     public selectHandler = (selectedOption: any) => {
         console.log(selectedOption);
-        const selected = this.state.selectedUsers.concat(selectedOption.value);
         // this.setState({selectedUsers: selected})
         this.setState(
             { selectedUsers: [...this.state.selectedUsers, selectedOption.value] }
         );
         this.setState(
-            { selected: selected + ', ' + selectedOption.value }
+            { selected: selectedOption.value }
         );
         // this.setState({ selectedUsers: selected });
         console.log(this.state.selectedUsers);
+        this.setState({isSelected: { userId: selectedOption.id, selected: true }});
     }
 
     public submitHandler = async (e: any) => {
@@ -197,15 +208,17 @@ export class NamespaceDrawer extends React.Component<NamespaceDrawerProps, Names
                                     </Col>
                                 </Form.Group>
                             </div>
-                            <div className='argo-form-row'>
-                                <Form.Group as={Row} controlId='formBasicRole'>
-                                    <Form.Label column={true} sm={2}>Role</Form.Label>
-                                    <Col sm={10}>
-                                        <Select options={roleOptions}
-                                            onChange={this.selectHandler} />
-                                    </Col>
-                                </Form.Group>
-                            </div>
+                            { this.state.isSelected.selected &&
+                                <div className='argo-form-row'>
+                                    <Form.Group as={Row} controlId='formBasicRole'>
+                                        <Form.Label column={true} sm={2}>Role</Form.Label>
+                                        <Col sm={10}>
+                                            <Select options={roleOptions}
+                                                onChange={this.selectRoleHandler} />
+                                        </Col>
+                                    </Form.Group>
+                                </div>
+                            }
                             {/* <div className='argo-form-row'>
                                 { 
                                     Object.entries(this.state.namespace.wf).map(([key, value]) => {

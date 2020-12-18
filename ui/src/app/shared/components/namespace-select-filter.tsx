@@ -13,7 +13,7 @@ interface InputProps {
 
 interface InputState {
     value: string;
-    localCache: string[];
+    localCache?: string[];
     error?: Error;
     namespaces: string[];
 }
@@ -23,7 +23,7 @@ export class SelectFilter extends React.Component<InputProps, InputState> {
         super(props);
         this.state = {
             value: props.value,
-            localCache: (localStorage.getItem(this.props.name + '_inputs') || '').split(',').filter(value => value !== ''),
+            // localCache: (localStorage.getItem(this.props.name + '_inputs') || '').split(',').filter(value => value !== ''),
             namespaces: []
         };
     }

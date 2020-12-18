@@ -57,6 +57,9 @@ export class ClusterSelectFilter extends React.Component<InputProps, InputState>
                         onClick={() => {
                             this.setState({value: ''});
                             this.props.onChange('');
+                            if (typeof this.props.changeCluster === 'function') {
+                                this.props.changeCluster('');
+                            }
                         }}>
                         <i className='fa fa-times-circle' /> Clear selection
                     </a>
