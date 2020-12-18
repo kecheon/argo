@@ -102,12 +102,12 @@ export default () => {
   // const [selectedDay, setSelectedDay] = useState(null);
   const renderCustomInput = (ref: any) => (
     <input
-      size={50}
+      size={35}
       readOnly={true}
       ref={ref.ref} // necessary
       placeholder='Select range'
-      value={new Date(dayRange.from.year, dayRange.from.month, dayRange.from.day).toISOString() 
-        + '~' +  new Date(dayRange.to.year, dayRange.to.month, dayRange.to.day).toISOString() 
+      value={new Date(dayRange.from.year, dayRange.from.month, dayRange.from.day).toLocaleDateString() 
+        + '~' +  new Date(dayRange.to.year, dayRange.to.month, dayRange.to.day).toLocaleDateString() 
       }
       style={{
         textAlign: 'center',
@@ -123,10 +123,10 @@ export default () => {
   return (
     <Page title='Metering'>
         <div className='row'>
-          <div className='columns small-4'>
+          <div className='columns small-6'>
               <br/><br/>
                 <DatePicker value={dayRange} 
-                  // renderInput={renderCustomInput}
+                  renderInput={renderCustomInput}
                   onChange={setDayRange} />
                 <button className='argo-button argo-button--base argo-button--sm'  onClick={clickHandler}>Go</button>
                 {/* <DatePicker
@@ -140,7 +140,7 @@ export default () => {
                     className='argo-field argo-textarea'
                 /> */}
           </div>
-          <div className='columns small-4'>
+          <div className='columns small-3'>
             <form>
                 <div className='argo-form-row'>
                     <Select options={options}
@@ -159,7 +159,7 @@ export default () => {
                 </div>
             </form>
           </div>
-          <div className='columns small-4'>
+          <div className='columns small-3'>
             <form>
                 <div className='argo-form-row'>
                     <Select options={clusterOptions}
