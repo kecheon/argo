@@ -57,18 +57,22 @@ export default () => {
         clusterService.get().then(clusters => {
             setClusterOptions(clusters.map((item: { name: string }) => item.name));
         });
-        const start = (new Date(dayRange.from.year, dayRange.from.month, dayRange.from.day)).toISOString();
-        const end = (new Date(dayRange.to.year, dayRange.to.month, dayRange.to.day)).toISOString();
+        const start = (new Date(dayRange.from.year, dayRange.from.month, dayRange.from.day, 9)).toISOString();
+        const end = (new Date(dayRange.to.year, dayRange.to.month, dayRange.to.day, 9)).toISOString();
         getWorkflows(start, end);
     }, [])
 
   const changeNamespaceHandler = (value: string) => {
     setNamespace(value);
-    const startDate = (new Date(dayRange.from.year, dayRange.from.month, dayRange.from.day)).toISOString();
-    const endDate = (new Date(dayRange.to.year, dayRange.to.month, dayRange.to.day)).toISOString();
     if (value === '') {
-        getWorkflows(startDate, endDate);
+      setDayRange(defaultRange);
+      const startDate = (new Date(defaultRange.from.year, defaultRange.from.month, defaultRange.from.day, 9)).toISOString();
+      const endDate = (new Date(defaultRange.to.year, defaultRange.to.month, defaultRange.to.day, 9)).toISOString();
+
+      getWorkflows(startDate, endDate);
     } else {
+        const startDate = (new Date(dayRange.from.year, dayRange.from.month, dayRange.from.day, 9)).toISOString();
+        const endDate = (new Date(dayRange.to.year, dayRange.to.month, dayRange.to.day, 9)).toISOString();
         meteringService.getByNamespace(value, startDate, endDate).then((workflowsData: any) => {
           setWorkflows(workflowsData)
         });
@@ -79,8 +83,8 @@ export default () => {
     setCluster(value);
     if (value === '') {
       setNamespace('');
-      const startDate = (new Date(dayRange.from.year, dayRange.from.month, dayRange.from.day)).toISOString();
-      const endDate = (new Date(dayRange.to.year, dayRange.to.month, dayRange.to.day)).toISOString();
+      const startDate = (new Date(dayRange.from.year, dayRange.from.month, dayRange.from.day, 9)).toISOString();
+      const endDate = (new Date(dayRange.to.year, dayRange.to.month, dayRange.to.day, 9)).toISOString();
       getWorkflows(startDate, endDate);
     } else {
       const filteredWorkflows = workflows.filter((workflow) => {
@@ -92,8 +96,8 @@ export default () => {
 
   const clickHandler = () => {
       console.log(dayRange);
-      const startDate = (new Date(dayRange.from.year, dayRange.from.month - 1, dayRange.from.day)).toISOString();
-      const endDate = (new Date(dayRange.to.year, dayRange.to.month - 1, dayRange.to.day)).toISOString();
+      const startDate = (new Date(dayRange.from.year, dayRange.from.month, dayRange.from.day, 9)).toISOString();
+      const endDate = (new Date(dayRange.to.year, dayRange.to.month, dayRange.to.day, 9)).toISOString();
       console.log(startDate, endDate);
       getWorkflows(startDate, endDate);
   }
@@ -105,8 +109,8 @@ export default () => {
       readOnly={true}
       ref={ref.ref} // necessary
       placeholder='Select range'
-      value={ (dayRange.from && dayRange.to) ? new Date(dayRange.from.year, dayRange.from.month, dayRange.from.day).toLocaleDateString() 
-        + '~' +  new Date(dayRange.to.year, dayRange.to.month, dayRange.to.day).toLocaleDateString() : ''
+      value={ (dayRange.from && dayRange.to) ? new Date(dayRange.from.year, dayRange.from.month, dayRange.from.day, 9).toLocaleDateString() 
+        + '~' +  new Date(dayRange.to.year, dayRange.to.month, dayRange.to.day, 9).toLocaleDateString() : ''
       }
       style={{
         textAlign: 'center',
@@ -149,7 +153,6 @@ export default () => {
                     {(namespace !== '') && 
                         <a
                             onClick={() => {
-                                setNamespace('');
                                 changeNamespaceHandler('');
                             }}>
                             <i className='fa fa-times-circle' /> Clear selection
