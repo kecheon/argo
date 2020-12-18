@@ -2,12 +2,15 @@ import * as React from 'react';
 import {Loading} from '../../../../../../shared/components/loading';
 import { User } from '../../../models';
 import {UserService} from '../../../../../services/user-service';
-import { ListGroup, Form, Col, Row } from 'react-bootstrap';
+import {NamespaceService} from '../../../../../services/namespace-service';
+import { Form, Col, Row } from 'react-bootstrap';
 import {Consumer} from '../../../../../../shared/context';
+
 
 require('./workflow-drawer.scss');
 
 const userService = new UserService();
+const namespaceService = new NamespaceService();
 
 interface UserDrawerProps {
     name: string;
@@ -22,6 +25,7 @@ interface UserDrawerState {
     user?: User;
     password?: string;
     password2?: string;
+    namespaceOptions?: string[];
 }
 
 export class UserDrawer extends React.Component<UserDrawerProps, UserDrawerState> {
@@ -30,7 +34,8 @@ export class UserDrawer extends React.Component<UserDrawerProps, UserDrawerState
         this.state = {
             user: null,
             password: '',
-            password2: ''
+            password2: '',
+            namespaceOptions: []
         };
     }
     
@@ -38,6 +43,13 @@ export class UserDrawer extends React.Component<UserDrawerProps, UserDrawerState
         userService.getUserProfile(this.props.id).then(userProfile => {
             console.log(userProfile);
             this.setState({user: userProfile});
+        });
+        namespaceService.get().then(ns => {
+            console.log(ns);
+            const namespaceOptions = ns.namespaces.map((namespace: any) => {
+                return { option: namespace.name, value: namespace.id }
+            })
+            this.setState({namespaceOptions})
         });
     }
 
@@ -156,14 +168,18 @@ export class UserDrawer extends React.Component<UserDrawerProps, UserDrawerState
                                 </Form.Group>
                             </div>
                             <div className='argo-form-row'>
-                                <Form.Group as={Row} controlId='formBasicProject'>
+                                <Form.Group as={Row} controlId='formBasicProject' className='row'>
                                     <Form.Label column={true} sm={2}>Primary Project(Namespace)</Form.Label>
                                     <Col sm={10}>
-                                    <Form.Control as="select">
-                                        <option>Service 1</option>
-                                        <option>Service 2</option>
-                                        <option>Service 3</option>
-                                    </Form.Control>
+                                        <Form.Control as='select'>
+                                            {
+                                                this.state.namespaceOptions.map((option: any, index: number) => {
+                                                    return (
+                                                        <option key={index} value={option.value}>{option.option}</option>
+                                                    );
+                                                })
+                                            }
+                                        </Form.Control>
                                     </Col>
                                 </Form.Group>
                             </div>

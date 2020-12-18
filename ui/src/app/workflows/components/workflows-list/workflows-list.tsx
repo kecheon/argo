@@ -128,8 +128,6 @@ export class WorkflowsList extends BasePage<RouteComponentProps<any>, State> {
     }
 
     public changeCluster = (cluster: string) => {
-        console.log('===========');
-        console.log(cluster);
         this.setState({ cluster })
     }
 
@@ -279,10 +277,8 @@ export class WorkflowsList extends BasePage<RouteComponentProps<any>, State> {
             // endpoint /argo/workflows/는 cluster정보를 리턴하지 않는다.
             // endpoint /argo/workflows/{namespace} 는 클러스터 정보를 리턴해준다.
             // 그러므로 cluster에 의한 filtering은 given namespace라야만 유효하다.
-            console.log('namespace when cluster =="" :', namespace);
             this.fetchWorkflows(namespace, selectedPhases, selectedLabels, pagination);
         } else {
-            console.log('cluster is not none', namespace, cluster);
             if (namespace !== '') {
                 // 기존 workflows를 cluster에 따라서 filtering만 
                 const filteredWorkflows = this.state.workflows.filter(workflow => {

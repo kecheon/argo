@@ -4,9 +4,7 @@ import {CheckboxFilter} from '../../../shared/components/checkbox-filter/checkbo
 import {NamespaceFilter} from '../../../shared/components/namespace-filter';
 import {ClusterFilter} from '../../../shared/components/cluster-filter';
 import {TagsInput} from '../../../shared/components/tags-input/tags-input';
-
 require('./workflow-filters.scss');
-import NamespaceSelect from '../../../devstack/components/namespace-select';
 
 interface WorkflowFilterProps {
     workflows: models.Workflow[];
