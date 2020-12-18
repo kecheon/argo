@@ -29,12 +29,12 @@ export default () => {
     const today = new Date()
     const defaultFrom = {
         year: today.getFullYear(),
-        month: today.getMonth() + 1,
+        month: today.getMonth(),
         day: today.getDate() - 7
     }
     const defaultTo ={
         year: today.getFullYear(),
-        month: today.getMonth() + 1,
+        month: today.getMonth(),
         day: today.getDate()
     }
     const defaultRange = {
@@ -102,12 +102,12 @@ export default () => {
   // const [selectedDay, setSelectedDay] = useState(null);
   const renderCustomInput = (ref: any) => (
     <input
-      size={35}
+      size={30}
       readOnly={true}
       ref={ref.ref} // necessary
       placeholder='Select range'
-      value={new Date(dayRange.from.year, dayRange.from.month, dayRange.from.day).toLocaleDateString() 
-        + '~' +  new Date(dayRange.to.year, dayRange.to.month, dayRange.to.day).toLocaleDateString() 
+      value={ (dayRange.from && dayRange.to) ? new Date(dayRange.from.year, dayRange.from.month, dayRange.from.day).toLocaleDateString() 
+        + '~' +  new Date(dayRange.to.year, dayRange.to.month, dayRange.to.day).toLocaleDateString() : ''
       }
       style={{
         textAlign: 'center',
