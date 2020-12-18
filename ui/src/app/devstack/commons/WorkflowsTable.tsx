@@ -7,7 +7,7 @@ export const WorkflowsTable = ((workflows: IWorkflow[]) => {
     <Table striped={true} bordered={true} hover={true} size={'sm'}>
       <thead>
         <tr>
-              <th className='columns small-2'>NAME</th>
+              <th className='columns small-2'>Namespace</th>
               <th className='columns small-1'>Phase</th>
               <th className='columns small-2'>Started At</th>
               <th className='columns small-2'>Finished At</th>
@@ -22,7 +22,7 @@ export const WorkflowsTable = ((workflows: IWorkflow[]) => {
               // tslint:disable-next-line:jsx-key
               <tr key={workflow.uid}>
                 { Object.entries(workflow).filter(([key1, value1]) => {
-                  const include = ['name', 'phase', 'startedAt', 'finishedAt', 'nodeDurationFormatted', 
+                  const include = ['namespace', 'phase', 'startedAt', 'finishedAt', 'nodeDurationFormatted', 
                   'resourceDurationCPU', 'resourceDurationMem'];
                   return include.includes(key1)
                 }).map(([key, value]) => {
