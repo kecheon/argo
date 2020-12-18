@@ -58,7 +58,7 @@ export default () => {
         clusterService.get().then(clusters => {
             setClusterOptions(clusters.map((item: { name: string }) => item.name));
         });
-        const start = (new Date(dayRange.from.year, dayRange.from.month, dayRange.from.day - 7)).toISOString();
+        const start = (new Date(dayRange.from.year, dayRange.from.month, dayRange.from.day)).toISOString();
         const end = (new Date(dayRange.to.year, dayRange.to.month, dayRange.to.day)).toISOString();
         getWorkflows(start, end);
     }, [])
