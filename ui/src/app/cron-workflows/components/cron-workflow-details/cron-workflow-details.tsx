@@ -96,7 +96,7 @@ export class CronWorkflowDetails extends BasePage<RouteComponentProps<any>, Stat
                         }}>
                         <div className='argo-container'>
                             <ClusterFilter
-                                value={'this.state.clusterName'}
+                                value={this.state.clusterName}
                                 onChange={cls => {
                                     this.setState({clusterName: cls})
                                 }}
