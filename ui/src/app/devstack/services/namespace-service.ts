@@ -51,4 +51,9 @@ export class NamespaceService {
         // };
         return response.data;
     }
+    public async getMembers(id: string): Promise<any> {
+        const response = await axios.get(`${endpoint}/namespace/${id}/member`, { headers });
+        console.log(response);
+        return response.data;
+    }
 }

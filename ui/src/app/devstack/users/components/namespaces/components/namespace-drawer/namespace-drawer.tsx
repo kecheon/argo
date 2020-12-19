@@ -26,11 +26,14 @@ interface NamespaceDrawerProps {
 
 interface NamespaceDrawerState {
     namespace?: Namespace;
+    members?: any[];
     selectedUsers?: any[];
     selectedRole?: any[];
     selected?: string;
     isSelected?: any;
     treeData: any[];
+    added?: any[];
+    removed?: any[];
 }
 
 const userOptions = [
@@ -46,16 +49,16 @@ const userOptions = [
  ]
 
 
- const makeTreeData = () => {
-     return userOptions.map(option => {
+ const makeTreeData = (members: any[]) => {
+     return members.map(option => {
          return {
-             title: option.label,
-             value: option.value,
+             title: option.name,
+             value: option.id,
              disabled: true,
-             children: roleOptions.map(role => {
+             children: roleOptions.map((role: any) => {
                      return {
-                         title: `${option.label}[${role.label}]`,
-                         value: `${option.value}[${role.value}]`,
+                         title: `${option.name}[${role.label}]`,
+                         value: `${option.id}-[${role.value}]`,
                          isLeaf: true
                      }
                  })
@@ -71,7 +74,9 @@ export class NamespaceDrawer extends React.Component<NamespaceDrawerProps, Names
                 userId: '',
                 selected: false,
             },
-            treeData: []
+            treeData: [],
+            added: [],
+            removed: []
         };
     }
 
@@ -89,15 +94,25 @@ export class NamespaceDrawer extends React.Component<NamespaceDrawerProps, Names
                   );
                 }(namespace)
               )
-            console.log(flatten);
-            this.setState({namespace: flatten});
+            this.setState({namespace: flatten}, () => {
+                namespaceService.getMembers(this.state.namespace.id)
+                    .then(members => {
+                        this.setState({members}, () => {
+                            const treeData = makeTreeData(members);
+                            this.setState({treeData}, () => {
+                                const selectedUsers = members.filter((member: any) => {
+                                    return member.roles.length > 0;
+                                }).map((member: any) => {
+                                    return {label: `${member.name}[${member.roles[0].name}]`, value: `${member.id}[${member.roles[0].id}]`};
+                                });
+                                this.setState({selectedUsers})
+                            });
+                        })
+                    })
+            });
         });
         this.setState({selectedUsers: []})
         this.setState({selectedRole: []})
-        const treeData = makeTreeData();
-        this.setState({treeData}, () => {
-            console.log(this.state.treeData);
-        });
     }
 
     public changeHandler = (key: string) => (e: any) => {
@@ -148,10 +163,23 @@ export class NamespaceDrawer extends React.Component<NamespaceDrawerProps, Names
     }
     public treeSelectChange = (e: any) => {
         console.log(e);
-        this.setState({ selectedUsers: e });
+        this.setState((prevState) => {
+            console.log(prevState.selectedUsers);
+            if (prevState.selectedUsers.length > e.length) {
+                // add this item to removed
+                const removed = diff(prevState.selectedUsers, e);
+                this.setState({removed: [...prevState.removed, ...removed]});
+            } else if (prevState.selectedUsers.length < e.length) {
+                const added = diff(e, prevState.selectedUsers);
+                this.setState({added: [...prevState.added, ...added]});
+            } else {
+                console.log('nothing to do');
+            }
+            return { selectedUsers: e };
+        });
     }
-    public treeOnSelect= (e: any) => {
-        console.log(e);
+    public treeOnSelect= (e: any, node: any) => {
+        console.log(e, node);
         // block if select selected user 
         const userName = e.split('[');
         const alreadySelected = this.state.selectedUsers.filter(user => {
@@ -165,9 +193,9 @@ export class NamespaceDrawer extends React.Component<NamespaceDrawerProps, Names
             const modifiedSelectedUsers = this.state.selectedUsers.filter(item => {
                 return !item.value.startsWith(userName[0])
             })
-            this.setState({selectedUsers: [...modifiedSelectedUsers, {label: e, value: e}]})
+            this.setState({selectedUsers: [...modifiedSelectedUsers, node]})
         } else {
-            this.setState({selectedUsers: [...this.state.selectedUsers, {label:e, value:e}]})
+            this.setState({selectedUsers: [...this.state.selectedUsers, node]})
         }
     }
 
@@ -238,7 +266,23 @@ export class NamespaceDrawer extends React.Component<NamespaceDrawerProps, Names
                                 <Form.Group as={Row} controlId='formBasicUserId'>
                                     <Form.Label column={true} sm={2}>Member</Form.Label>
                                     <Col sm={10}>
-                                        { this.renderTree() }
+                                        { (this.state.added.length > 0) && 
+                                            <ul>
+                                                added: {this.state.added.map(item => {
+                                                        return (<li key={item.value}>{item.label}</li>);
+                                                    }
+                                                )}
+                                            </ul>
+                                        }
+                                        { (this.state.removed.length > 0) && 
+                                            <ul>
+                                                removed: {this.state.removed.map(item => {
+                                                        return (<li key={item.value}>{item.label}</li>);
+                                                    }
+                                                )}
+                                            </ul>
+                                        }
+                                        { this.renderTree(this.state.members) }
                                     </Col>
                                 </Form.Group>
                             </div>
@@ -286,8 +330,34 @@ export class NamespaceDrawer extends React.Component<NamespaceDrawerProps, Names
           );
     }
 
-    public renderTree() {
+    public renderTree(members: any[]) {
         return (
+            <>
+            {/* { (typeof members !== 'undefined') && 
+                <div>
+                    Current Members
+                    <table>
+                        <tbody>
+                            {
+                                members.map(member => {
+                                return (<tr key={member.id}>
+                                        <td>{member.name}</td>
+                                        <td>
+                                            {
+                                                member.roles.map((role: any) => {
+                                                    return (
+                                                        <span key={role.id}>{role.name}</span>
+                                                    )
+                                                })
+                                            }
+                                        </td>
+                                    </tr>)
+                                })
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            } */}
             <TreeSelect
               style={{ width: '100%' }}
               value={this.state.selectedUsers}
@@ -298,8 +368,28 @@ export class NamespaceDrawer extends React.Component<NamespaceDrawerProps, Names
               multiple={true}
               treeCheckStrictly={true}
               onChange={this.treeSelectChange}
-              onSelect={this.treeOnSelect}
+            //   onSelect={this.treeOnSelect}
             />
+            </>
           );
     }
+}
+
+const diff = (result1: any[], result2: any[]) => {
+    const uniqueResultOne = result1.filter((obj) => {
+        return !result2.some((obj2) => {
+            return obj.value === obj2.value;
+        });
+    });
+    
+    //Find values that are in result2 but not in result1
+    const uniqueResultTwo = result2.filter((obj) => {
+        return !result1.some((obj2) => {
+            return obj.value === obj2.value;
+        });
+    });
+    
+    //Combine the two arrays of unique entries
+    return uniqueResultOne.concat(uniqueResultTwo);
+    
 }
