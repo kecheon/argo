@@ -55,7 +55,8 @@ const userOptions = [
              children: roleOptions.map(role => {
                      return {
                          title: `${option.label}[${role.label}]`,
-                         value: `${option.value}[${role.value}]`
+                         value: `${option.value}[${role.value}]`,
+                         isLeaf: true
                      }
                  })
          }
@@ -100,7 +101,6 @@ export class NamespaceDrawer extends React.Component<NamespaceDrawerProps, Names
     }
 
     public changeHandler = (key: string) => (e: any) => {
-        console.log(e.target.value);
         this.setState({
             namespace: {
                 ...this.state.namespace,
@@ -153,9 +153,19 @@ export class NamespaceDrawer extends React.Component<NamespaceDrawerProps, Names
     }
     public treeOnSelect= (e: any) => {
         console.log(e);
-        this.setState({selectedUsers: [...this.state.selectedUsers, e]})
         // block if select selected user 
-        // treeData['selectedUser'].children.selectable = false
+        const userName = e.split('[');
+        const alreadySelected = this.state.selectedUsers.filter(user => {
+            if (user.startsWith(userName[0])) {
+                return true;
+            } else {
+                return false;
+            }
+        });
+        if (alreadySelected.length > 0) {
+            // this.setState({selectedUsers: [...this.state.selectedUsers]})
+            alert('You can select only one ROLE for a user! Please remove one!')
+        }
     }
 
     public render() {
