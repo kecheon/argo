@@ -34,9 +34,9 @@ interface NamespaceDrawerState {
 }
 
 const userOptions = [
-    {label: 'user1', value: 'user1'},
-    {label: 'user2', value: 'user2'},
-    {label: 'user3', value: 'user3'},
+    {label: 'user1', value: 'user1', selectable: false},
+    {label: 'user2', value: 'user2', selectable: false},
+    {label: 'user3', value: 'user3', selectable: false},
  ];
  const roleOptions = [
      { label: 'wf-app-admin', value: 'wf-app-admin' },
@@ -55,8 +55,7 @@ const userOptions = [
              children: roleOptions.map(role => {
                      return {
                          title: `${option.label}[${role.label}]`,
-                         value: `${option.value}[${role.value}]`,
-                         isLeaf: true
+                         value: `${option.value}[${role.value}]`
                      }
                  })
          }
@@ -155,7 +154,7 @@ export class NamespaceDrawer extends React.Component<NamespaceDrawerProps, Names
         // block if select selected user 
         const userName = e.split('[');
         const alreadySelected = this.state.selectedUsers.filter(user => {
-            if (user.startsWith(userName[0])) {
+            if (user.value.startsWith(userName[0])) {
                 return true;
             } else {
                 return false;
@@ -163,11 +162,11 @@ export class NamespaceDrawer extends React.Component<NamespaceDrawerProps, Names
         });
         if (alreadySelected.length > 0) {
             const modifiedSelectedUsers = this.state.selectedUsers.filter(item => {
-                return !item.startsWith(userName[0])
+                return !item.value.startsWith(userName[0])
             })
-            this.setState({selectedUsers: [...modifiedSelectedUsers, e]})
+            this.setState({selectedUsers: [...modifiedSelectedUsers, {label: e, value: e}]})
         } else {
-            this.setState({selectedUsers: [...this.state.selectedUsers, e]})
+            this.setState({selectedUsers: [...this.state.selectedUsers, {label:e, value:e}]})
         }
     }
 
