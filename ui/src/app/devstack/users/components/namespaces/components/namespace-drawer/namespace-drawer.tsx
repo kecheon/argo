@@ -51,11 +51,12 @@ const userOptions = [
          return {
              title: option.label,
              value: option.value,
-             selectable: false,
+             disabled: true,
              children: roleOptions.map(role => {
                      return {
                          title: `${option.label}[${role.label}]`,
-                         value: `${option.value}[${role.value}]`
+                         value: `${option.value}[${role.value}]`,
+                         isLeaf: true
                      }
                  })
          }
