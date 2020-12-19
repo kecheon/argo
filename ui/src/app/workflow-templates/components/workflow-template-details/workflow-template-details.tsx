@@ -13,6 +13,7 @@ import {services} from '../../../shared/services';
 import {SubmitWorkflowPanel} from '../../../workflows/components/submit-workflow-panel';
 import {WorkflowTemplateSummaryPanel} from '../workflow-template-summary-panel';
 import {ClusterFilter} from '../../../shared/components/cluster-filter';
+import { ClusterService } from '../../../devstack/services/cluster-service';
 
 require('../../../workflows/components/workflow-details/workflow-details.scss');
 
@@ -88,7 +89,7 @@ export class WorkflowTemplateDetails extends BasePage<RouteComponentProps<any>, 
                         }}>
                         <div className='argo-container'>
                             <ClusterFilter
-                                value={'this.state.clusterName'}
+                                value={this.state.clusterName}
                                 onChange={cls => {
                                     this.setState({clusterName: cls})
                                 }}
