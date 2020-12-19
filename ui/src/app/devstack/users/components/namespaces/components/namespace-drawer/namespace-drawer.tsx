@@ -4,8 +4,8 @@ import { Namespace } from '../../../models';
 import {NamespaceService} from '../../../../../services/namespace-service';
 import {Consumer} from '../../../../../../shared/context';
 import { Form, Row, Col } from 'react-bootstrap';
-// import {MultiSelect} from './multiselector';
-import Select from 'react-select';
+import { TreeSelect } from 'antd';
+import 'antd/dist/antd.css';
 
 require('./workflow-drawer.scss');
 
@@ -26,11 +26,11 @@ interface NamespaceDrawerProps {
 
 interface NamespaceDrawerState {
     namespace?: Namespace;
-    // userOptions?: any[];
     selectedUsers?: any[];
     selectedRole?: any[];
     selected?: string;
     isSelected?: any;
+    treeData: any[];
 }
 
 const userOptions = [
@@ -40,9 +40,27 @@ const userOptions = [
  ];
  const roleOptions = [
      { label: 'wf-app-admin', value: 'wf-app-admin' },
-     { label: 'executor', value: 'executor' },
-     { label: 'viewer', value: 'viewer'}
+     { label: 'wf-tenant-admin', value: 'wf-tenant-admin' },
+     { label: 'wf-executor', value: 'wf-executor' },
+     { label: 'wf-viewer', value: 'wf-viewer'}
  ]
+
+
+ const makeTreeData = () => {
+     return userOptions.map(option => {
+         return {
+             title: option.label,
+             value: option.value,
+             selectable: false,
+             children: roleOptions.map(role => {
+                     return {
+                         title: `${option.label}[${role.label}]`,
+                         value: `${option.value}[${role.value}]`
+                     }
+                 })
+         }
+     });
+ }
 
 export class NamespaceDrawer extends React.Component<NamespaceDrawerProps, NamespaceDrawerState> {
     constructor(props: NamespaceDrawerProps) {
@@ -51,13 +69,11 @@ export class NamespaceDrawer extends React.Component<NamespaceDrawerProps, Names
             isSelected: {
                 userId: '',
                 selected: false,
-            }
+            },
+            treeData: []
         };
     }
 
-    public cancelDrawer() {
-        console.log('cancel');
-    }
     public componentDidMount() {
         namespaceService.getProfile(this.props.id).then(namespace=> {
             const flatten = Object.assign(
@@ -75,13 +91,12 @@ export class NamespaceDrawer extends React.Component<NamespaceDrawerProps, Names
             console.log(flatten);
             this.setState({namespace: flatten});
         });
-        // this.setState({userOptions: [
-        //     {label: 'user1', value: 'user1'},
-        //     {label: 'user2', value: 'user2'},
-        //     {label: 'user3', value: 'user3'},
-        //  ]})
         this.setState({selectedUsers: []})
         this.setState({selectedRole: []})
+        const treeData = makeTreeData();
+        this.setState({treeData}, () => {
+            console.log(this.state.treeData);
+        });
     }
 
     public changeHandler = (key: string) => (e: any) => {
@@ -94,24 +109,29 @@ export class NamespaceDrawer extends React.Component<NamespaceDrawerProps, Names
         })
     }
 
-    public selectRoleHandler = (selectedRole: any) => {
-        console.log(this.state.selectedUsers);
-        this.setState({isSelected: { userId: 'user id', selected: false }});
-    };
+    // public selectRoleHandler = (selectedUser: any) => (selectedRole: any) => {
+    //     this.setState({isSelected: { userId: 'user id', selected: false }}, () => {
+    //         console.log(this.state.isSelected);
+    //         console.log(selectedUser);
+    //     });
+    // };
     
-    public selectHandler = (selectedOption: any) => {
-        console.log(selectedOption);
-        // this.setState({selectedUsers: selected})
-        this.setState(
-            { selectedUsers: [...this.state.selectedUsers, selectedOption.value] }
-        );
-        this.setState(
-            { selected: selectedOption.value }
-        );
-        // this.setState({ selectedUsers: selected });
-        console.log(this.state.selectedUsers);
-        this.setState({isSelected: { userId: selectedOption.id, selected: true }});
-    }
+    // public selectHandler = (selectedOption: any) => {
+    //     console.log(selectedOption);
+    //     // this.setState({selectedUsers: selected})
+    //     this.setState(prevState => ({
+    //             selectedUsers: [...this.state.selectedUsers, selectedOption.value] }),
+    //             () => {
+    //                 this.setState(prevState => (
+    //                     { selected: selectedOption.value }),
+    //                     () => {
+    //                         console.log(this.state.selected);
+    //                     }
+    //                 );
+    //             }
+    //         )
+    //     this.setState({isSelected: { userId: selectedOption.id, selected: true }});
+    // }
 
     public submitHandler = async (e: any) => {
         e.preventDefault();
@@ -125,6 +145,17 @@ export class NamespaceDrawer extends React.Component<NamespaceDrawerProps, Names
         // } else {
         //     alert('Namespace update failed')
         // }
+    }
+    public treeSelectChange = (e: any) => {
+        console.log(e);
+        this.setState({ selectedUsers: e });
+        
+    }
+    public treeOnSelect= (e: any) => {
+        console.log(e);
+        this.setState({selectedUsers: [...this.state.selectedUsers, e]})
+        // block if select selected user 
+        // treeData['selectedUser'].children.selectable = false
     }
 
     public render() {
@@ -153,14 +184,6 @@ export class NamespaceDrawer extends React.Component<NamespaceDrawerProps, Names
                                     <th>Enabled</th>
                                     <td>{this.state.namespace.enabled ? 'Y' : 'N'}</td>
                                 </tr>
-                                {/* <tr>
-                                    {Object.entries(this.state.namespace.wf).map(([key, value]) => {
-                                        return (
-                                        <><tr><th>{key}</th>
-                                                <td>{value}</td></tr></>
-                                        )
-                                    })}
-                                </tr> */}
                                 <tr>
                                     <th>Quota</th><td/>
                                 </tr>
@@ -198,46 +221,15 @@ export class NamespaceDrawer extends React.Component<NamespaceDrawerProps, Names
                                     </Col>
                                 </Form.Group>
                             </div>
-                            <div className='argo-form-row'>
+                            <div className='argo-form-row' id='select-user'>
                                 <Form.Group as={Row} controlId='formBasicUserId'>
                                     <Form.Label column={true} sm={2}>Member</Form.Label>
                                     <Col sm={10}>
-                                        <Select options={userOptions}
-                                            isMulti={true}
-                                            onChange={this.selectHandler} />
+                                        { this.renderTree() }
                                     </Col>
                                 </Form.Group>
                             </div>
-                            { this.state.isSelected.selected &&
-                                <div className='argo-form-row'>
-                                    <Form.Group as={Row} controlId='formBasicRole'>
-                                        <Form.Label column={true} sm={2}>Role</Form.Label>
-                                        <Col sm={10}>
-                                            <Select options={roleOptions}
-                                                onChange={this.selectRoleHandler} />
-                                        </Col>
-                                    </Form.Group>
-                                </div>
-                            }
-                            {/* <div className='argo-form-row'>
-                                { 
-                                    Object.entries(this.state.namespace.wf).map(([key, value]) => {
-                                        return (
-                                            // tslint:disable-next-line:jsx-key
-                                            <Form.Group as={Row} controlId='formBasicCpu'>
-                                                <Form.Label column={true} sm={2}>{key}</Form.Label>
-                                                <Col sm={10}>
-                                                    <Form.Control type='number' 
-                                                        name={key}
-                                                        value={value}
-                                                        onChange={this.changeHandler(key)}
-                                                    />
-                                                </Col>
-                                            </Form.Group>
-                                        )
-                                    })
-                                }
-                            </div> */}
+                          
                             <div className='argo-form-row'>
                                 <Form.Group as={Row} controlId='formBasicCpu'>
                                     <Form.Label column={true} sm={2}>CPU</Form.Label>
@@ -273,10 +265,27 @@ export class NamespaceDrawer extends React.Component<NamespaceDrawerProps, Names
                                     </Col>
                                 </Form.Group>
                             </div>
+
                         </form>
                     </div>
                 )}
             </Consumer>
+          );
+    }
+
+    public renderTree() {
+        return (
+            <TreeSelect
+              style={{ width: '100%' }}
+              value={this.state.selectedUsers}
+              dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+              treeData={this.state.treeData}
+              placeholder='Please select member'
+              treeDefaultExpandAll={false}
+              multiple={true}
+              onChange={this.treeSelectChange}
+              onSelect={this.treeOnSelect}
+            />
           );
     }
 }
