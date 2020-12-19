@@ -293,7 +293,7 @@ export class Reports extends BasePage<RouteComponentProps<any>, State> {
                     <div className='columns small-4 xlarge-12'>
                         <p className='wf-filters-container__title'>Cron Workflow</p>
                         <DataLoader load={() => services.cronWorkflows.list(this.state.namespace).then(list => list.map(x => x.metadata.name))}>
-                            {list => <Select options={list} value={this.cronWorkflow} onChange={x => (this.cronWorkflow = x.value)} />}
+                            {list => <Select placeholder='Select Workflow Template' options={list} value={this.cronWorkflow} onChange={x => (this.cronWorkflow = x.value)} />}
                         </DataLoader>
                     </div>
                     <div className='columns small-43 xlarge-12'>
