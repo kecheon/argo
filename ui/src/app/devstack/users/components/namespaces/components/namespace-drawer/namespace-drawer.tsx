@@ -149,7 +149,6 @@ export class NamespaceDrawer extends React.Component<NamespaceDrawerProps, Names
     public treeSelectChange = (e: any) => {
         console.log(e);
         this.setState({ selectedUsers: e });
-        
     }
     public treeOnSelect= (e: any) => {
         console.log(e);
@@ -163,8 +162,12 @@ export class NamespaceDrawer extends React.Component<NamespaceDrawerProps, Names
             }
         });
         if (alreadySelected.length > 0) {
-            // this.setState({selectedUsers: [...this.state.selectedUsers]})
-            alert('You can select only one ROLE for a user! Please remove one!')
+            const modifiedSelectedUsers = this.state.selectedUsers.filter(item => {
+                return !item.startsWith(userName[0])
+            })
+            this.setState({selectedUsers: [...modifiedSelectedUsers, e]})
+        } else {
+            this.setState({selectedUsers: [...this.state.selectedUsers, e]})
         }
     }
 
@@ -293,6 +296,7 @@ export class NamespaceDrawer extends React.Component<NamespaceDrawerProps, Names
               placeholder='Please select member'
               treeDefaultExpandAll={false}
               multiple={true}
+              treeCheckStrictly={true}
               onChange={this.treeSelectChange}
               onSelect={this.treeOnSelect}
             />
