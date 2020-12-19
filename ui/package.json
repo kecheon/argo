@@ -16,11 +16,13 @@
     "dependencies": {
         "@babel/core": "^7.0.0-0",
         "@fortawesome/fontawesome-free": "^5.12.0",
+        "@types/antd": "^1.0.0",
         "@types/dagre": "^0.7.44",
         "@types/eventsource": "^1.1.5",
         "@types/fetch-mock": "^7.3.3",
         "@types/js-cookie": "^2.2.6",
         "@types/react-select": "^3.0.28",
+        "antd": "^4.9.4",
         "argo-ui": "https://github.com/kecheon/argo-ui.git",
         "axios": "^0.20.0",
         "bootstrap": "^4.5.3",
