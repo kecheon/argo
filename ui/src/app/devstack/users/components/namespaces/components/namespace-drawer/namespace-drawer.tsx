@@ -34,6 +34,7 @@ interface NamespaceDrawerState {
     treeData: any[];
     added?: any[];
     removed?: any[];
+    initialMembers?: any[];
 }
 
 const userOptions = [
@@ -42,15 +43,16 @@ const userOptions = [
     {label: 'user3', value: 'user3', selectable: false},
  ];
  const roleOptions = [
-     { label: 'wf-app-admin', value: 'wf-app-admin' },
-     { label: 'wf-tenant-admin', value: 'wf-tenant-admin' },
-     { label: 'wf-executor', value: 'wf-executor' },
-     { label: 'wf-viewer', value: 'wf-viewer'}
+     { label: 'wf-app-admin', value: 'd6b4c442568b4c81be7dd3d1edae068f' },
+     { label: 'wf-tenant-admin', value: '1fd3a185d39047f6bc41e7e90de6f476' },
+     { label: 'wf-executor', value: '7c9c9face23a4bfdb85f3366cc725105' },
+     { label: 'wf-viewer', value: '0d65f613347b457ebc78c032a3bcc39b'}
  ]
 
 
  const makeTreeData = (members: any[]) => {
      return members.map(option => {
+         console.log(option);
          return {
              title: option.name,
              value: option.id,
@@ -58,7 +60,7 @@ const userOptions = [
              children: roleOptions.map((role: any) => {
                      return {
                          title: `${option.name}[${role.label}]`,
-                         value: `${option.id}-[${role.value}]`,
+                         value: `${option.id}[${role.value}]`,
                          isLeaf: true
                      }
                  })
@@ -103,9 +105,14 @@ export class NamespaceDrawer extends React.Component<NamespaceDrawerProps, Names
                                 const selectedUsers = members.filter((member: any) => {
                                     return member.roles.length > 0;
                                 }).map((member: any) => {
-                                    return {label: `${member.name}[${member.roles[0].name}]`, value: `${member.id}[${member.roles[0].id}]`};
+                                    return {
+                                        label: `${member.name}[${member.roles[0].name}]`,
+                                        value: `${member.id}[${member.roles[0].id}]`
+                                    };
                                 });
-                                this.setState({selectedUsers})
+                                this.setState({selectedUsers}, () => {
+                                    this.setState({initialMembers: selectedUsers});
+                                })
                             });
                         })
                     })
@@ -162,20 +169,27 @@ export class NamespaceDrawer extends React.Component<NamespaceDrawerProps, Names
         // }
     }
     public treeSelectChange = (e: any) => {
-        console.log(e);
         this.setState((prevState) => {
-            console.log(prevState.selectedUsers);
-            if (prevState.selectedUsers.length > e.length) {
-                // add this item to removed
-                const removed = diff(prevState.selectedUsers, e);
-                this.setState({removed: [...prevState.removed, ...removed]});
-            } else if (prevState.selectedUsers.length < e.length) {
-                const added = diff(e, prevState.selectedUsers);
-                this.setState({added: [...prevState.added, ...added]});
-            } else {
-                console.log('nothing to do');
-            }
-            return { selectedUsers: e };
+            // if e already exists nothing to do
+            // if (this.state.added.includes(e) || this.state.removed.includes(e)) {
+                // return { selectedUsers: e };
+            // } else {
+                const differ = setOperation(this.state.initialMembers, e);
+                console.log('=================');
+                console.log(e);
+                console.log(this.state.initialMembers);
+                console.log(differ);
+                if (differ.equals) {
+                    this.setState({added: []});
+                    this.setState({removed: []});
+                } else {
+                    const removedItems = setOperation(this.state.initialMembers, differ.a_b).intersection;
+                    const addedItems = setOperation(e, this.state.initialMembers).a_b;
+                    this.setState({removed: removedItems});
+                    this.setState({added: addedItems});
+                }
+                return { selectedUsers: e };
+            // }
         });
     }
     public treeOnSelect= (e: any, node: any) => {
@@ -332,32 +346,6 @@ export class NamespaceDrawer extends React.Component<NamespaceDrawerProps, Names
 
     public renderTree(members: any[]) {
         return (
-            <>
-            {/* { (typeof members !== 'undefined') && 
-                <div>
-                    Current Members
-                    <table>
-                        <tbody>
-                            {
-                                members.map(member => {
-                                return (<tr key={member.id}>
-                                        <td>{member.name}</td>
-                                        <td>
-                                            {
-                                                member.roles.map((role: any) => {
-                                                    return (
-                                                        <span key={role.id}>{role.name}</span>
-                                                    )
-                                                })
-                                            }
-                                        </td>
-                                    </tr>)
-                                })
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            } */}
             <TreeSelect
               style={{ width: '100%' }}
               value={this.state.selectedUsers}
@@ -370,26 +358,53 @@ export class NamespaceDrawer extends React.Component<NamespaceDrawerProps, Names
               onChange={this.treeSelectChange}
             //   onSelect={this.treeOnSelect}
             />
-            </>
           );
     }
 }
 
-const diff = (result1: any[], result2: any[]) => {
-    const uniqueResultOne = result1.filter((obj) => {
-        return !result2.some((obj2) => {
-            return obj.value === obj2.value;
-        });
-    });
-    
-    //Find values that are in result2 but not in result1
-    const uniqueResultTwo = result2.filter((obj) => {
-        return !result1.some((obj2) => {
-            return obj.value === obj2.value;
-        });
-    });
-    
-    //Combine the two arrays of unique entries
-    return uniqueResultOne.concat(uniqueResultTwo);
-    
+const makeUnique = (input: any[]) => {
+    const result = [];
+    const map = new Map();
+    for (const item of input) {
+        if(!map.has(item.value)){
+            map.set(item.value, true);    // set any value to Map
+            result.push({
+                value: item.value,
+                label: item.label
+            });
+        }
+    }
+    console.log(result) ;
+    return result;
+}
+
+const setOperation = (list1: any[], list2: any[]) => {
+    // Generic helper function that can be used for the three operations:        
+    const operation = (list11: any[], list21: any[], isUnion = false) =>
+        list11.filter(
+            (set => (a: { value: any; }) => isUnion === set.has(a.value))(new Set(list21.map(b => b.value)))
+    );
+
+    // Following functions are to be used:
+    const inBoth = (list12: any[], list22: any[]) => operation(list12, list22, true);
+    const inFirstOnly = operation;
+    const inSecondOnly = (list13: any[], list23: any[]) => inFirstOnly(list23, list13);
+
+    // check if they equals
+    let objectsAreSame = true;
+    if (list1.length !== list2.length) {
+        objectsAreSame = false;
+    }
+    for(const propertyName in list1) {
+       if(list1[propertyName] !== list2[propertyName]) {
+          objectsAreSame = false;
+          break;
+       }
+    }
+
+    console.log('inBoth:', inBoth(list1, list2)); 
+    console.log('inFirstOnly:', inFirstOnly(list1, list2)); 
+    console.log('inSecondOnly:', inSecondOnly(list1, list2));
+    const union = inBoth(list1, list2).concat(inFirstOnly(list1, list2)).concat(inSecondOnly(list1, list2));
+    return {intersection: inBoth(list1, list2), a_b: inFirstOnly(list1, list2), b_a: inSecondOnly(list1, list2), union, equals: objectsAreSame}
 }
