@@ -61,7 +61,8 @@ const userOptions = [
              children: roleOptions.map((role: any) => {
                      return {
                          title: `${option.name}[${role.label}]`,
-                         value: { id: option.id, role: role.value },
+                        //  value: { id:option.id, role: role.value },
+                         value: `${option.id} ${role.value}`,
                          isLeaf: true
                      }
                  })
@@ -112,7 +113,7 @@ export class NamespaceDrawer extends React.Component<NamespaceDrawerProps, Names
                                 }).map((member: any) => {
                                     return {
                                         label: `${member.name}[${member.roles[0].name}]`,
-                                        value: `${member.id}[${member.roles[0].id}]`
+                                        value: `${member.id} ${member.roles[0].id}`
                                     };
                                 });
                                 this.setState({selectedUsers}, () => {
@@ -165,13 +166,13 @@ export class NamespaceDrawer extends React.Component<NamespaceDrawerProps, Names
         console.log(this.state.namespace);
 
         /******  update payload에 싣기 위해서 NamespaceForm type을 맞춰서 보낸다. *****/
-
-        // const res = await namespaceService.update(this.state.namespace);
-        // if (res.status === 'success') {
-        //     alert('Namespace updated');
-        // } else {
-        //     alert('Namespace update failed')
-        // }
+        const res = await namespaceService.updateNamespace(this.state.namespace.name,
+            this.state.namespace.id, this.state.namespace);
+        if (res.status === 'success') {
+            alert('Namespace updated');
+        } else {
+            alert('Namespace update failed')
+        }
     }
     public treeSelectChange = (e: any) => {
         // {/* PAYLOAD: '{"add": {id: userid,  roles: [role_id, .. ], "remove": ": {id: userid,  roles: [role_id, .. ]}' */}
@@ -185,8 +186,6 @@ export class NamespaceDrawer extends React.Component<NamespaceDrawerProps, Names
                 const addedItems = setOperation(e, this.state.initialMembers).a_b;
                 this.setState({removed: removedItems});
                 this.setState({added: addedItems});
-                console.log('================');
-                console.log(addedItems, removedItems);
             }
             return { selectedUsers: e };
         });
@@ -212,9 +211,33 @@ export class NamespaceDrawer extends React.Component<NamespaceDrawerProps, Names
         }
     }
 
-    public updateMemberHandler = (item: any) => {
+    public updateMemberHandler = async (operation: string, item: any) => {
         // console.log(e.target);
-        console.log(item);
+        const ids = item.value.split(' ');
+        let payload;
+        if (operation === 'add') {
+            payload = {
+                add: [{
+                    id: ids[0],
+                    roles: [ids[1]]
+                }]
+            }
+        } else {
+            payload = {
+                remove: [{
+                    id: ids[0],
+                    roles: [ids[1]]
+                }]
+            }
+        }
+        const response = await namespaceService.updateMember(this.state.namespace.id, payload);
+        if (response.status === 200) {
+            alert('Updated')
+        } else {
+            alert('Update failure')
+        }
+        console.log(payload);
+        console.log(response);
     }
 
     public render() {
@@ -286,11 +309,11 @@ export class NamespaceDrawer extends React.Component<NamespaceDrawerProps, Names
                                     <Col sm={10}>
                                         { (this.state.added.length > 0) && 
                                             <ul>
-                                                ADDED: {this.state.added.map(item => {
+                                                To be ADDED: {this.state.added.map(item => {
                                                         return (
                                                             <li key={item.value}>
                                                                 {item.label}
-                                                                 <button className='argo-button argo-button--base' onClick={() => this.updateMemberHandler(item)}>
+                                                                 <button className='argo-button argo-button--base' onClick={() => this.updateMemberHandler('add', item)}>
                                                                     update
                                                                 </button>
                                                             </li>
@@ -301,11 +324,11 @@ export class NamespaceDrawer extends React.Component<NamespaceDrawerProps, Names
                                         }
                                         { (this.state.removed.length > 0) && 
                                             <ul>
-                                                REMOVED: {this.state.removed.map(item => {
+                                                To be REMOVED: {this.state.removed.map(item => {
                                                         return (
                                                             <li key={item.value}>
                                                                 {item.label}
-                                                                 <button className='argo-button argo-button--base' onClick={() => this.updateMemberHandler(item)}>
+                                                                 <button className='argo-button argo-button--base' onClick={() => this.updateMemberHandler('remove', item)}>
                                                                     update
                                                                 </button>
                                                             </li>);
