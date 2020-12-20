@@ -21,6 +21,7 @@ import {WorkflowOperationAction, WorkflowOperationName, WorkflowOperations} from
 import {EventsPanel} from '../events-panel';
 import {WorkflowParametersPanel} from '../workflow-parameters-panel';
 import {WorkflowResourcePanel} from './workflow-resource-panel';
+import axios from 'axios';
 
 require('./workflow-details.scss');
 
@@ -328,13 +329,20 @@ export class WorkflowDetails extends React.Component<RouteComponentProps<any>, W
     private async loadWorkflow(namespace: string, name: string) {
         try {
             this.ensureUnsubscribed();
-            this.changesSubscription = services.workflows
-                .watch({name, namespace})
-                .map(changeEvent => changeEvent.object)
-                .subscribe(
-                    workflow => this.setState({workflow, error: null}),
-                    error => this.setState({error})
-                );
+            // this.changesSubscription = services.workflows
+            //     .watch({name, namespace})
+            //     .map(changeEvent => changeEvent.object)
+            //     .subscribe(
+            //         workflow => this.setState({workflow, error: null}),
+            //         error => this.setState({error})
+            //     );
+            await axios.get('/argo/workflows/'+namespace+'/'+name)
+                .then(res=>
+                    {
+                        const val = res.data ;
+                        console.log(val as Workflow);
+                        this.setState( {workflow: val,error: null });
+                    });
         } catch (error) {
             this.setState({error});
         }
