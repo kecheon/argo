@@ -264,11 +264,13 @@ export class WorkflowsList extends BasePage<RouteComponentProps<any>, State> {
                     .map(item => item.workflows)
                     .subscribe(
                         workflows => this.setState({error: null, workflows}),
-                        error => this.setState({error})
+                        // error => this.setState({error})
+                        () => this.setState({error: null})
                     );
             })
             .then(_ => this.setState({error: null}))
-            .catch(error => this.setState({error}));
+            // .catch(error => this.setState({error}));
+            .catch(error => {});
     }
 
     private changeFilters(namespace: string, cluster: string, selectedPhases: string[], selectedLabels: string[], pagination: Pagination) {
