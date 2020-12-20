@@ -98,7 +98,7 @@ export class CronWorkflowDetails extends BasePage<RouteComponentProps<any>, Stat
                             <ClusterFilter
                                 value={this.state.clusterName}
                                 onChange={cls => {
-                                    this.setState({clusterName: cls})
+                                    this.setState({clusterName: cls});
                                 }}
                             />
                             { this.state.clusterName && 

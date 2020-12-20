@@ -51,4 +51,21 @@ export class NamespaceService {
         // };
         return response.data;
     }
+    public async getMembers(id: string): Promise<any> {
+        const response = await axios.get(`${endpoint}/namespace/${id}/member`, { headers });
+        console.log(response);
+        return response.data;
+    }
+
+    public async updateMember(id: string, data: any): Promise<any> {
+        const response = await axios.patch(`${endpoint}/namespace/${id}/member`, data, { headers });
+        console.log(response);
+        return response;
+    }
+
+    public async updateNamespace(namespace: string, namespaceId: string, data: any): Promise<any> {
+        const response = await axios.patch(`${endpoint}/namespace/${namespaceId}`, data, { headers });
+        console.log(response);
+        return response;  
+    }
 }
