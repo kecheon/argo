@@ -35,6 +35,7 @@ interface NamespaceDrawerState {
     added?: any[];
     removed?: any[];
     initialMembers?: any[];
+    membersPayload?: any;
 }
 
 const userOptions = [
@@ -60,7 +61,7 @@ const userOptions = [
              children: roleOptions.map((role: any) => {
                      return {
                          title: `${option.name}[${role.label}]`,
-                         value: `${option.id}[${role.value}]`,
+                         value: { id: option.id, role: role.value },
                          isLeaf: true
                      }
                  })
@@ -78,7 +79,11 @@ export class NamespaceDrawer extends React.Component<NamespaceDrawerProps, Names
             },
             treeData: [],
             added: [],
-            removed: []
+            removed: [],
+            membersPayload: {
+                add: null,
+                remove: null
+            }
         };
     }
 
@@ -169,27 +174,21 @@ export class NamespaceDrawer extends React.Component<NamespaceDrawerProps, Names
         // }
     }
     public treeSelectChange = (e: any) => {
+        // {/* PAYLOAD: '{"add": {id: userid,  roles: [role_id, .. ], "remove": ": {id: userid,  roles: [role_id, .. ]}' */}
         this.setState((prevState) => {
-            // if e already exists nothing to do
-            // if (this.state.added.includes(e) || this.state.removed.includes(e)) {
-                // return { selectedUsers: e };
-            // } else {
-                const differ = setOperation(this.state.initialMembers, e);
-                console.log('=================');
-                console.log(e);
-                console.log(this.state.initialMembers);
-                console.log(differ);
-                if (differ.equals) {
-                    this.setState({added: []});
-                    this.setState({removed: []});
-                } else {
-                    const removedItems = setOperation(this.state.initialMembers, differ.a_b).intersection;
-                    const addedItems = setOperation(e, this.state.initialMembers).a_b;
-                    this.setState({removed: removedItems});
-                    this.setState({added: addedItems});
-                }
-                return { selectedUsers: e };
-            // }
+            const differ = setOperation(this.state.initialMembers, e);
+            if (differ.equals) {
+                this.setState({added: []});
+                this.setState({removed: []});
+            } else {
+                const removedItems = setOperation(this.state.initialMembers, differ.a_b).intersection;
+                const addedItems = setOperation(e, this.state.initialMembers).a_b;
+                this.setState({removed: removedItems});
+                this.setState({added: addedItems});
+                console.log('================');
+                console.log(addedItems, removedItems);
+            }
+            return { selectedUsers: e };
         });
     }
     public treeOnSelect= (e: any, node: any) => {
@@ -211,6 +210,11 @@ export class NamespaceDrawer extends React.Component<NamespaceDrawerProps, Names
         } else {
             this.setState({selectedUsers: [...this.state.selectedUsers, node]})
         }
+    }
+
+    public updateMemberHandler = (item: any) => {
+        // console.log(e.target);
+        console.log(item);
     }
 
     public render() {
@@ -282,16 +286,29 @@ export class NamespaceDrawer extends React.Component<NamespaceDrawerProps, Names
                                     <Col sm={10}>
                                         { (this.state.added.length > 0) && 
                                             <ul>
-                                                added: {this.state.added.map(item => {
-                                                        return (<li key={item.value}>{item.label}</li>);
+                                                ADDED: {this.state.added.map(item => {
+                                                        return (
+                                                            <li key={item.value}>
+                                                                {item.label}
+                                                                 <button className='argo-button argo-button--base' onClick={() => this.updateMemberHandler(item)}>
+                                                                    update
+                                                                </button>
+                                                            </li>
+                                                        );
                                                     }
                                                 )}
                                             </ul>
                                         }
                                         { (this.state.removed.length > 0) && 
                                             <ul>
-                                                removed: {this.state.removed.map(item => {
-                                                        return (<li key={item.value}>{item.label}</li>);
+                                                REMOVED: {this.state.removed.map(item => {
+                                                        return (
+                                                            <li key={item.value}>
+                                                                {item.label}
+                                                                 <button className='argo-button argo-button--base' onClick={() => this.updateMemberHandler(item)}>
+                                                                    update
+                                                                </button>
+                                                            </li>);
                                                     }
                                                 )}
                                             </ul>
