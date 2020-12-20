@@ -21,7 +21,6 @@ import {WorkflowOperationAction, WorkflowOperationName, WorkflowOperations} from
 import {EventsPanel} from '../events-panel';
 import {WorkflowParametersPanel} from '../workflow-parameters-panel';
 import {WorkflowResourcePanel} from './workflow-resource-panel';
-import axios from 'axios';
 
 require('./workflow-details.scss');
 
@@ -336,13 +335,8 @@ export class WorkflowDetails extends React.Component<RouteComponentProps<any>, W
             //         workflow => this.setState({workflow, error: null}),
             //         error => this.setState({error})
             //     );
-            await axios.get('/argo/workflows/'+namespace+'/'+name)
-                .then(res=>
-                    {
-                        const val = res.data ;
-                        console.log(val as Workflow);
-                        this.setState( {workflow: val,error: null });
-                    });
+            services.workflows.loadWorkflow(namespace, name)
+                .then((workflow: any) => this.setState( {workflow, error: null }));
         } catch (error) {
             this.setState({error});
         }

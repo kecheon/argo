@@ -11,6 +11,13 @@ function isString(value: any): value is string {
 }
 
 export class WorkflowsService {
+
+    public loadWorkflow(namespace: string, name: string) {
+        return requests.get(`argo/workflows/${namespace}/${name}`).then(res => {
+            return res.body as Workflow;
+        }); 
+    }
+
     public create(workflow: Workflow, namespace: string) {
         return requests
             .post(`argo/workflows/${namespace}`)
@@ -238,4 +245,5 @@ export class WorkflowsService {
         }
         return labelSelector;
     }
+
 }
